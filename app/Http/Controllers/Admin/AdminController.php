@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Models\Driver;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class DriverController extends Controller
+class AdminController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('driver.dashboard');
+        return view('admin.dashboard');
     }
 
     /**
@@ -34,7 +34,7 @@ class DriverController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Driver $driver)
+    public function show(string $id)
     {
         //
     }
@@ -42,7 +42,7 @@ class DriverController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Driver $driver)
+    public function edit(string $id)
     {
         //
     }
@@ -50,7 +50,7 @@ class DriverController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Driver $driver)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -58,7 +58,7 @@ class DriverController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Driver $driver)
+    public function destroy(string $id)
     {
         //
     }

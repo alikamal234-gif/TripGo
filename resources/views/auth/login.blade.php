@@ -60,8 +60,9 @@
         
         <!-- Formulaire de connexion -->
         <div class="bg-white rounded-xl shadow-lg p-8 border border-gray-100">
-            <form id="loginForm" class="space-y-6">
+            <form id="loginForm" class="space-y-6" method="post" action="{{ route('login.post') }}">
                 <!-- Champ Email -->
+                @csrf
                 <div>
                     <label for="email" class="block text-sm font-medium tripgo-black-text mb-2">
                         Adresse e-mail
@@ -205,37 +206,7 @@
             }
         });
         
-        // Form submission
-        const loginForm = document.getElementById('loginForm');
-        const errorMessage = document.getElementById('errorMessage');
-        const successMessage = document.getElementById('successMessage');
         
-        loginForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Hide previous messages
-            errorMessage.classList.add('hidden');
-            successMessage.classList.add('hidden');
-            
-            // Get form values
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            
-            // Simple validation (in a real app, this would be server-side)
-            if (email && password) {
-                // Show success message
-                successMessage.classList.remove('hidden');
-                
-                // Simulate redirect after 2 seconds
-                setTimeout(() => {
-                    // In a real app, this would redirect to the dashboard
-                    alert('Redirection vers le tableau de bord...');
-                }, 2000);
-            } else {
-                // Show error message
-                errorMessage.classList.remove('hidden');
-            }
-        });
     </script>
 </body>
 </html>
