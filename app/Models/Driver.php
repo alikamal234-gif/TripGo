@@ -6,8 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Driver extends Model
 {
+    public $incrementing = false;
+
+    protected $keyType = 'int';
     protected $fillable = [
-        'user_id',
+        'id',
         'license_number',
         'is_verified',
         'ville'

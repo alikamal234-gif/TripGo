@@ -12,14 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('drivers', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->unique()->constrained('users')->cascadeOnDelete();
+            $table->foreignId('id')->primary()->unique()->constrained('users')->cascadeOnDelete();
             $table->string('license_number')->unique();
             $table->boolean('is_verified')->default(false);
             $table->string('ville');
             $table->timestamps();
         });
-    }
+    }   
 
     /**
      * Reverse the migrations.

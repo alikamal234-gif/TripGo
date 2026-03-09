@@ -35,6 +35,7 @@ class RegisterController extends Controller
             'seatCount' => ['nullable','integer'],
             'vehiclePlate' => ['nullable','string']
         ]);
+
         DB::transaction(function () use ($data,$request) {
 
             $roleId = DB::table('roles')
@@ -55,7 +56,7 @@ class RegisterController extends Controller
 
             if($data['role'] === 'passenger'){
                 Passenger::create([
-                    'user_id'=>$user->id,
+                    'id'=>$user->id,
                     'num_trip'=>0
                 ]);
             }
@@ -71,19 +72,18 @@ class RegisterController extends Controller
     {
 
         $driver = Driver::create([
-            'user_id'=>$id,
+            'id'=>(int)$id,
             'license_number'=>$request->licenseNumber,
             'ville'=>$request->city,
             'is_verified'=>false
         ]);
-
         Vehicle::create([
             'driver_id'=>$driver->id,
             'vehicle_plate'=>$request->vehiclePlate,
             'type'=>$request->vehicleType,
             'num_seats'=>$request->seatCount,
             'coulour'=>$request->vehicleColor,
-            'is_active'=>true
+            'is_active'=>false
         ]);
 
     }
