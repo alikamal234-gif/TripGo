@@ -1,43 +1,90 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
-use App\Http\Controllers\Controller;
 
+use App\Http\Controllers\Controller;
 use App\Models\User;
-use DB;
+use App\Models\Driver;
+use App\Models\Passenger;
+use App\Models\Vehicle;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 
 class RegisterController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         return view('auth.register');
     }
 
-   public function registerUser(Request $request){
+    public function registerUser(Request $request)
+    {
         $data = $request->validate([
-            'name' => ['required','string','min:0'],
+            'name' => ['required','string','min:2'],
             'email' => ['required','email'],
             'phone' => ['required','numeric'],
             'password' => ['required','confirmed',Password::min(8)->letters()->numbers()],
-            'role' => ['exists:roles,name']
+            'role' => ['required','exists:roles,name'],
+
+            'licenseNumber' => ['nullable','string'],
+            'city' => ['nullable','string'],
+            'vehicleType' => ['nullable','string'],
+            'vehicleColor' => ['nullable','string'],
+            'seatCount' => ['nullable','integer'],
+            'vehiclePlate' => ['nullable','string']
         ]);
-        dd($data);
-        DB::transaction(function () use($data){
-            User::create($data);
+        DB::transaction(function () use ($data,$request) {
 
-            if($data['role'] == ''){
+            $roleId = DB::table('roles')
+                ->where('name',$data['role'])
+                ->value('id');
 
-            }else if($data['role'] == ''){
+            $user = User::create([
+                'name'=>$data['name'],
+                'email'=>$data['email'],
+                'phone'=>$data['phone'],
+                'password'=>Hash::make($data['password']),
+                'role_id'=>$roleId
+            ]);
 
+            if($data['role'] === 'driver'){
+                $this->registerDriver($user->id,$request);
             }
-        });
-   }
-   public function registerDriver(){
 
-   }
+            if($data['role'] === 'passenger'){
+                Passenger::create([
+                    'user_id'=>$user->id,
+                    'num_trip'=>0
+                ]);
+            }
+
+        });
+
+        return redirect()->route('login')
+            ->with('success','Compte créé avec succès');
+    }
+
+
+    public function registerDriver(string $id, Request $request)
+    {
+
+        $driver = Driver::create([
+            'user_id'=>$id,
+            'license_number'=>$request->licenseNumber,
+            'ville'=>$request->city,
+            'is_verified'=>false
+        ]);
+
+        Vehicle::create([
+            'driver_id'=>$driver->id,
+            'vehicle_plate'=>$request->vehiclePlate,
+            'type'=>$request->vehicleType,
+            'num_seats'=>$request->seatCount,
+            'coulour'=>$request->vehicleColor,
+            'is_active'=>true
+        ]);
+
+    }
 }

@@ -82,7 +82,8 @@
         
         <!-- Formulaire d'inscription -->
         <div class="bg-white rounded-xl shadow-lg p-8 border border-gray-100">
-            <form id="registerForm" class="space-y-6">
+            <form id="registerForm" action="{{ route('register.post') }}" method="post" class="space-y-6">
+                @csrf
                 <!-- Champ Nom -->
                 <div>
                     <label for="name" class="block text-sm font-medium tripgo-black-text mb-2">
@@ -179,7 +180,7 @@
                         </div>
                         <input 
                             id="confirmPassword" 
-                            name="confirmPassword" 
+                            name="password_confirmation" 
                             type="password" 
                             required
                             class="input-focus appearance-none block w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg placeholder-gray-400 text-gray-900 focus:outline-none transition duration-150"
@@ -468,65 +469,7 @@
             });
         });
         
-        // Form submission
-        const registerForm = document.getElementById('registerForm');
-        const errorMessage = document.getElementById('errorMessage');
-        const successMessage = document.getElementById('successMessage');
         
-        registerForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Hide previous messages
-            errorMessage.classList.add('hidden');
-            successMessage.classList.add('hidden');
-            
-            // Get form values
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const phone = document.getElementById('phone').value;
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-            const role = document.getElementById('role').value;
-            
-            // Validate passwords match
-            if (password !== confirmPassword) {
-                errorMessage.querySelector('p:last-child').textContent = 'Les mots de passe ne correspondent pas.';
-                errorMessage.classList.remove('hidden');
-                return;
-            }
-            
-            // Validate role-specific fields
-            if (role === 'driver') {
-                const licenseNumber = document.getElementById('licenseNumber').value;
-                const city = document.getElementById('city').value;
-                const vehicleType = document.getElementById('vehicleType').value;
-                const vehicleColor = document.getElementById('vehicleColor').value;
-                const seatCount = document.getElementById('seatCount').value;
-                const vehiclePlate = document.getElementById('vehiclePlate').value;
-                
-                if (!licenseNumber || !city || !vehicleType || !vehicleColor || !seatCount || !vehiclePlate) {
-                    errorMessage.querySelector('p:last-child').textContent = 'Veuillez remplir tous les champs du véhicule.';
-                    errorMessage.classList.remove('hidden');
-                    return;
-                }
-            }
-            
-            // If all validations pass
-            if (name && email && phone && password) {
-                // Show success message
-                successMessage.classList.remove('hidden');
-                
-                // Simulate redirect after 2 seconds
-                setTimeout(() => {
-                    // In a real app, this would redirect to the login page or dashboard
-                    alert('Redirection vers la page de connexion...');
-                }, 2000);
-            } else {
-                // Show error message
-                errorMessage.querySelector('p:last-child').textContent = 'Veuillez remplir tous les champs obligatoires.';
-                errorMessage.classList.remove('hidden');
-            }
-        });
         
         // Set default role to passenger
         passengerOption.click();
