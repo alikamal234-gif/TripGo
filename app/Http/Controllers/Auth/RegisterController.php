@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 
+use App\Models\User;
+use DB;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rules\Password;
 
 class RegisterController extends Controller
 {
@@ -15,51 +18,26 @@ class RegisterController extends Controller
         return view('auth.register');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+   public function registerUser(Request $request){
+        $data = $request->validate([
+            'name' => ['required','string','min:0'],
+            'email' => ['required','email'],
+            'phone' => ['required','numeric'],
+            'password' => ['required','confirmed',Password::min(8)->letters()->numbers()],
+            'role' => ['exists:roles,name']
+        ]);
+        dd($data);
+        DB::transaction(function () use($data){
+            User::create($data);
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+            if($data['role'] == ''){
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+            }else if($data['role'] == ''){
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+            }
+        });
+   }
+   public function registerDriver(){
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
+   }
 }
