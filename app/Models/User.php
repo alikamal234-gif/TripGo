@@ -54,4 +54,7 @@ class User extends Authenticatable
     public function driver(){
         return $this->belongsTo(Driver::class);
     }
+    public function passenger(){
+        return $this->belongsTo(Passenger::class);
+    }
 }
