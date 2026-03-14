@@ -12,7 +12,7 @@ class DriverController extends Controller
      */
     public function index()
     {
-        return view('driver.dashboard');
+        return view('passenger.dashboard');
     }
 
     /**
