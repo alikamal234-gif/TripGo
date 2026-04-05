@@ -17,7 +17,7 @@ class Trip extends Model
         'status'
     ];
 
-    
+
 
     public function passenger()
     {

@@ -13,13 +13,15 @@ class Driver extends Model
         'id',
         'license_number',
         'is_verified',
-        'ville'
+        
     ];
-    public function user(){
-        return $this->belongsTo(User::class);
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id');
     }
 
-    public function vehicle(){
-        return $this->belongsTo(Vehicle::class);
+    public function vehicle()
+    {
+        return $this->hasOne(Vehicle::class, 'driver_id');
     }
 }

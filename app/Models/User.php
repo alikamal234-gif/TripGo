@@ -21,6 +21,9 @@ class User extends Authenticatable
         'name',
         'email',
         'phone',
+        'date_birth',
+        'postal_code',
+        'ville',
         'password',
         'role_id'
     ];
@@ -52,9 +55,9 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
     public function driver(){
-        return $this->belongsTo(Driver::class);
+        return $this->belongsTo(Driver::class,'id');
     }
     public function passenger(){
-        return $this->belongsTo(Passenger::class);
+        return $this->belongsTo(Passenger::class,'id');
     }
 }

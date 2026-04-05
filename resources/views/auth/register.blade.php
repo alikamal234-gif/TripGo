@@ -143,6 +143,60 @@
                         >
                     </div>
                 </div>
+                 <!-- Champ Ville -->
+                    <div>
+                        <label for="ville" class="block text-sm font-medium tripgo-black-text mb-2">
+                            Ville
+                        </label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-map-marker-alt text-gray-400"></i>
+                            </div>
+                            <input 
+                                id="ville" 
+                                name="ville" 
+                                type="text"
+                                class="input-focus appearance-none block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg placeholder-gray-400 text-gray-900 focus:outline-none transition duration-150"
+                                placeholder="Paris"
+                            >
+                        </div>
+                    </div>
+                 <!-- Champ code -->
+                    <div>
+                        <label for="postal_code" class="block text-sm font-medium tripgo-black-text mb-2">
+                            Ville
+                        </label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-map-marker-alt text-gray-400"></i>
+                            </div>
+                            <input 
+                                id="postal_code" 
+                                name="postal_code" 
+                                type="number"
+                                class="input-focus appearance-none block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg placeholder-gray-400 text-gray-900 focus:outline-none transition duration-150"
+                                placeholder="4000"
+                            >
+                        </div>
+                    </div>
+                 <!-- Champ date -->
+                    <div>
+                        <label for="date_birth" class="block text-sm font-medium tripgo-black-text mb-2">
+                            date birthday
+                        </label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-map-marker-alt text-gray-400"></i>
+                            </div>
+                            <input 
+                                id="date_birth" 
+                                name="date_birth" 
+                                type="date"
+                                class="input-focus appearance-none block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg placeholder-gray-400 text-gray-900 focus:outline-none transition duration-150"
+                                placeholder="Paris"
+                            >
+                        </div>
+                    </div>
                 
                 <!-- Champ Mot de passe -->
                 <div>
@@ -235,24 +289,7 @@
                         </div>
                     </div>
                     
-                    <!-- Champ Ville -->
-                    <div>
-                        <label for="city" class="block text-sm font-medium tripgo-black-text mb-2">
-                            Ville
-                        </label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <i class="fas fa-map-marker-alt text-gray-400"></i>
-                            </div>
-                            <input 
-                                id="city" 
-                                name="city" 
-                                type="text"
-                                class="input-focus appearance-none block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg placeholder-gray-400 text-gray-900 focus:outline-none transition duration-150"
-                                placeholder="Paris"
-                            >
-                        </div>
-                    </div>
+                   
                     
                     <!-- Champ Type de véhicule -->
                     <div>

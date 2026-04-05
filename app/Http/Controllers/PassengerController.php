@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Passenger;
 use Illuminate\Http\Request;
 
 class PassengerController extends Controller
@@ -11,7 +12,12 @@ class PassengerController extends Controller
      */
     public function index()
     {
-        return view('passenger.dashboard');
+        $user = Passenger::with('trips.driver','trips.departureAddress', 'trips.destinationAddress')
+            ->findOrFail(auth()->id());
+
+        $trips = $user->trips;
+        // dd($trips[1]->driver->name);
+        return view('passenger.dashboard', compact('trips'));
     }
 
     /**

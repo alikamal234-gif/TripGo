@@ -12,6 +12,10 @@ class Passenger extends Model
     ];
 
     public function user(){
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class,'id');
+    }
+
+    public function trips(){
+        return $this->hasMany(Trip::class);
     }
 }

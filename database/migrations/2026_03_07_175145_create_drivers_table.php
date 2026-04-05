@@ -15,7 +15,6 @@ return new class extends Migration
             $table->foreignId('id')->primary()->unique()->constrained('users')->cascadeOnDelete();
             $table->string('license_number')->unique();
             $table->boolean('is_verified')->default(false);
-            $table->string('ville');
             $table->timestamps();
         });
     }   

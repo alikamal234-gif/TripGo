@@ -183,9 +183,13 @@
                         
                         <!-- Action Buttons -->
                         <div class="flex flex-col space-y-2">
-                            <button class="btn-yellow px-6 py-2 rounded-lg tripgo-black-text font-medium">
-                                <i class="fas fa-edit mr-2"></i> Modifier
+                            <form action="" method="post">
+                                @method('DELETE')
+                                @csrf
+                                <button class="hover:bg-red-500 px-6 py-2 rounded-lg tripgo-black-text font-medium">
+                                <i class="fas fa-trash-can mr-2"></i> supprimer le compte
                             </button>
+                            </form>
                             <button class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50">
                                 <i class="fas fa-share-alt mr-2"></i> Partager
                             </button>
@@ -203,35 +207,10 @@
                             <span class="text-xs text-green-600 font-medium">+12%</span>
                         </div>
                         <h4 class="text-2xl font-bold tripgo-black-text">{{ $user->driver->completed_trips ?? 0 }}</h4>
-                        <p class="text-gray-600 text-sm">Trajets effectués</p>
+                        <p class="text-gray-600 text-sm">Number Of Trips</p>    
                     </div>
                     
-                    <div class="stat-card bg-white rounded-xl shadow-sm p-6">
-                        <div class="flex items-center justify-between mb-2">
-                            <i class="fas fa-users text-2xl text-blue-500"></i>
-                            <span class="text-xs text-green-600 font-medium">+8%</span>
-                        </div>
-                        <h4 class="text-2xl font-bold tripgo-black-text">{{ $user->driver->total_passengers ?? 0 }}</h4>
-                        <p class="text-gray-600 text-sm">Passagers transportés</p>
-                    </div>
                     
-                    <div class="stat-card bg-white rounded-xl shadow-sm p-6">
-                        <div class="flex items-center justify-between mb-2">
-                            <i class="fas fa-euro-sign text-2xl text-green-500"></i>
-                            <span class="text-xs text-green-600 font-medium">+23%</span>
-                        </div>
-                        <h4 class="text-2xl font-bold tripgo-black-text">€{{ number_format($user->driver->total_earnings ?? 0, 0, ',', ' ') }}</h4>
-                        <p class="text-gray-600 text-sm">Revenus totaux</p>
-                    </div>
-                    
-                    <div class="stat-card bg-white rounded-xl shadow-sm p-6">
-                        <div class="flex items-center justify-between mb-2">
-                            <i class="fas fa-clock text-2xl text-purple-500"></i>
-                            <span class="text-xs text-red-600 font-medium">-5%</span>
-                        </div>
-                        <h4 class="text-2xl font-bold tripgo-black-text">{{ $user->driver->driving_hours ?? 0 }}h</h4>
-                        <p class="text-gray-600 text-sm">Temps de conduite</p>
-                    </div>
                 </div>
                 @else
                 <!-- Passenger Statistics -->
@@ -286,9 +265,7 @@
                             <button class="tab-button px-4 py-2 rounded-lg font-medium text-gray-600" onclick="switchTab('vehicle')">
                                 Véhicule
                             </button>
-                            <button class="tab-button px-4 py-2 rounded-lg font-medium text-gray-600" onclick="switchTab('documents')">
-                                Documents
-                            </button>
+                           
                             @endif
                             <button class="tab-button px-4 py-2 rounded-lg font-medium text-gray-600" onclick="switchTab('preferences')">
                                 Préférences
@@ -312,7 +289,7 @@
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Téléphone</label>
-                                    <input type="tel" value="{{ $user->phone ?? '' }}" class="input-focus w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none">
+                                    <input type="string" value="{{ $user->phone ?? '' }}" class="input-focus w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none">
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Date de naissance</label>
@@ -342,37 +319,26 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Marque et modèle</label>
-                                    <input type="text" value="{{ $user->driver->vehicle->make }} {{ $user->driver->vehicle->model }}" class="input-focus w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none">
+                                    <input type="text" value="{{ $user->driver->vehicle->type }}" class="input-focus w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none">
                                 </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Type de véhicule</label>
-                                    <select class="input-focus w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none">
-                                        <option {{ $user->driver->vehicle->type === 'sedan' ? 'selected' : '' }}>Berline</option>
-                                        <option {{ $user->driver->vehicle->type === 'compact' ? 'selected' : '' }}>Compacte</option>
-                                        <option {{ $user->driver->vehicle->type === 'suv' ? 'selected' : '' }}>SUV</option>
-                                        <option {{ $user->driver->vehicle->type === 'van' ? 'selected' : '' }}>Fourgonnette</option>
-                                    </select>
+                               <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">number de plate</label>
+                                    <input type="text" value="{{ $user->driver->vehicle->vehicle_plate }}" class="input-focus w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none">
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Couleur</label>
-                                    <input type="text" value="{{ $user->driver->vehicle->color }}" class="input-focus w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none">
+                                    <input type="text" value="{{ $user->driver->vehicle->coulour }}" class="input-focus w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none">
                                 </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Année</label>
-                                    <input type="text" value="{{ $user->driver->vehicle->year }}" class="input-focus w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Plaque d'immatriculation</label>
-                                    <input type="text" value="{{ $user->driver->vehicle->license_plate }}" class="input-focus w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none">
-                                </div>
+                                
+                                
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Nombre de sièges</label>
                                     <select class="input-focus w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none">
-                                        <option {{ $user->driver->vehicle->seats == 2 ? 'selected' : '' }}>2</option>
-                                        <option {{ $user->driver->vehicle->seats == 3 ? 'selected' : '' }}>3</option>
-                                        <option {{ $user->driver->vehicle->seats == 4 ? 'selected' : '' }}>4</option>
-                                        <option {{ $user->driver->vehicle->seats == 5 ? 'selected' : '' }}>5</option>
-                                        <option {{ $user->driver->vehicle->seats >= 6 ? 'selected' : '' }}>6+</option>
+                                        <option {{ $user->driver->vehicle->num_seats == 2 ? 'selected' : '' }}>2</option>
+                                        <option {{ $user->driver->vehicle->num_seats == 3 ? 'selected' : '' }}>3</option>
+                                        <option {{ $user->driver->vehicle->num_seats == 4 ? 'selected' : '' }}>4</option>
+                                        <option {{ $user->driver->vehicle->num_seats == 5 ? 'selected' : '' }}>5</option>
+                                        <option {{ $user->driver->vehicle->num_seats >= 6 ? 'selected' : '' }}>6+</option>
                                     </select>
                                 </div>
                             </div>
@@ -403,65 +369,7 @@
                             </div>
                         </div>
                         
-                        <!-- Documents Tab -->
-                        <div id="documents-tab" class="tab-content hidden">
-                            <h4 class="text-lg font-semibold tripgo-black-text mb-4">Documents</h4>
-                            <div class="space-y-4">
-                                <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
-                                    <div class="flex items-center space-x-4">
-                                        <i class="fas fa-id-card text-2xl text-blue-500"></i>
-                                        <div>
-                                            <p class="font-medium">Permis de conduire</p>
-                                            <p class="text-sm text-gray-600">Expire: {{ $user->driver->license_expiry ?? 'Non renseigné' }}</p>
-                                        </div>
-                                    </div>
-                                    <div class="flex items-center space-x-2">
-                                        <span class="px-2 py-1 bg-{{ $user->driver->license_verified ? 'green' : 'yellow' }}-100 text-{{ $user->driver->license_verified ? 'green' : 'yellow' }}-800 rounded text-xs font-medium">
-                                            {{ $user->driver->license_verified ? 'Validé' : 'En attente' }}
-                                        </span>
-                                        <button class="text-blue-600 hover:text-blue-800">
-                                            <i class="fas fa-{{ $user->driver->license_verified ? 'eye' : 'upload' }}"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                
-                                <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
-                                    <div class="flex items-center space-x-4">
-                                        <i class="fas fa-car text-2xl text-green-500"></i>
-                                        <div>
-                                            <p class="font-medium">Carte grise</p>
-                                            <p class="text-sm text-gray-600">Expire: {{ $user->driver->registration_expiry ?? 'Non renseigné' }}</p>
-                                        </div>
-                                    </div>
-                                    <div class="flex items-center space-x-2">
-                                        <span class="px-2 py-1 bg-{{ $user->driver->registration_verified ? 'green' : 'yellow' }}-100 text-{{ $user->driver->registration_verified ? 'green' : 'yellow' }}-800 rounded text-xs font-medium">
-                                            {{ $user->driver->registration_verified ? 'Validé' : 'En attente' }}
-                                        </span>
-                                        <button class="text-blue-600 hover:text-blue-800">
-                                            <i class="fas fa-{{ $user->driver->registration_verified ? 'eye' : 'upload' }}"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                
-                                <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
-                                    <div class="flex items-center space-x-4">
-                                        <i class="fas fa-shield-alt text-2xl text-purple-500"></i>
-                                        <div>
-                                            <p class="font-medium">Assurance</p>
-                                            <p class="text-sm text-gray-600">Expire: {{ $user->driver->insurance_expiry ?? 'Non renseigné' }}</p>
-                                        </div>
-                                    </div>
-                                    <div class="flex items-center space-x-2">
-                                        <span class="px-2 py-1 bg-{{ $user->driver->insurance_verified ? 'green' : 'yellow' }}-100 text-{{ $user->driver->insurance_verified ? 'green' : 'yellow' }}-800 rounded text-xs font-medium">
-                                            {{ $user->driver->insurance_verified ? 'Validé' : 'En attente' }}
-                                        </span>
-                                        <button class="text-blue-600 hover:text-blue-800">
-                                            <i class="fas fa-{{ $user->driver->insurance_verified ? 'eye' : 'upload' }}"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        
                         @endif
                         
                         <!-- Preferences Tab -->
@@ -487,7 +395,7 @@
                                 </div>
                                 
                                 <div>
-                                    <h5 class="font-medium mb-3">Langue et région</h5>
+                                    <h5 class="font-medium mb-3">Langue </h5>
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <div>
                                             <label class="block text-sm font-medium text-gray-700 mb-2">Langue</label>
@@ -497,34 +405,11 @@
                                                 <option {{ $user->language === 'es' ? 'selected' : '' }}>Español</option>
                                             </select>
                                         </div>
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-700 mb-2">Fuseau horaire</label>
-                                            <select class="input-focus w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none">
-                                                <option {{ $user->timezone === 'Europe/Paris' ? 'selected' : '' }}>Europe/Paris</option>
-                                                <option {{ $user->timezone === 'America/New_York' ? 'selected' : '' }}>America/New_York</option>
-                                                <option {{ $user->timezone === 'Asia/Tokyo' ? 'selected' : '' }}>Asia/Tokyo</option>
-                                            </select>
-                                        </div>
+                                        
                                     </div>
                                 </div>
                                 
-                                <div>
-                                    <h5 class="font-medium mb-3">Confidentialité</h5>
-                                    <div class="space-y-3">
-                                        <label class="flex items-center justify-between">
-                                            <span class="text-gray-700">Profil public</span>
-                                            <input type="checkbox" {{ $user->public_profile ? 'checked' : '' }} class="w-5 h-5 text-yellow-500 rounded focus:ring-yellow-400">
-                                        </label>
-                                        <label class="flex items-center justify-between">
-                                            <span class="text-gray-700">Afficher ma position</span>
-                                            <input type="checkbox" {{ $user->share_location ? 'checked' : '' }} class="w-5 h-5 text-yellow-500 rounded focus:ring-yellow-400">
-                                        </label>
-                                        <label class="flex items-center justify-between">
-                                            <span class="text-gray-700">Partager mes statistiques</span>
-                                            <input type="checkbox" {{ $user->share_stats ? 'checked' : '' }} class="w-5 h-5 text-yellow-500 rounded focus:ring-yellow-400">
-                                        </label>
-                                    </div>
-                                </div>
+                                
                             </div>
                             <div class="mt-6 flex justify-end">
                                 <button class="btn-yellow px-6 py-2 rounded-lg tripgo-black-text font-medium">

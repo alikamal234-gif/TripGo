@@ -9,6 +9,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
     <style>
         /* Custom animations */
         @keyframes slideIn {
@@ -108,62 +115,164 @@
                 Request a Ride
             </h2>
 
-            <div class="grid md:grid-cols-2 gap-4 mb-4">
-                <div class="relative">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Pickup Location</label>
+            <form action="{{ route('passenger.trip') }}" method="post">
+                @csrf
+                <div class="grid md:grid-cols-2 gap-4 mb-4">
                     <div class="relative">
-                        <i
-                            class="fas fa-map-marker-alt absolute left-3 top-1/2 transform -translate-y-1/2 text-green-500"></i>
-                        <input type="text" placeholder="Enter pickup location"
-                            class="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Pickup Location </label>
+                        <div class="relative">
+                            <i
+                                class="fas fa-map-marker-alt absolute left-3 top-1/2 transform -translate-y-1/2 text-green-500"></i>
+                            <input type="text" placeholder="Enter pickup location" id="location" readonly
+                                name="departure"
+                                class="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg cursor-not-allowed focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
+                        </div>
+                    </div>
+
+                    <div class="relative">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Pickup Location Name</label>
+                        <div class="relative">
+                            <i
+                                class="fas fa-map-marker-alt absolute left-3 top-1/2 transform -translate-y-1/2 text-green-500"></i>
+                            <input type="text" placeholder="Enter pickup location name" name="departure_name"
+                                class="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg  focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
+                        </div>
+                    </div>
+
+
+                    <div class="relative">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Destination </label>
+                        <div class="relative">
+                            <i
+                                class="fas fa-flag-checkered absolute left-3 top-1/2 transform -translate-y-1/2 text-red-500"></i>
+                            <input type="text" placeholder="Where to?" id="destination" readonly name="destination"
+                                class="w-full pl-10 pr-3 py-3 border border-gray-300 cursor-not-allowed rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
+                        </div>
+                    </div>
+
+                    <div class="relative">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Destination Name</label>
+                        <div class="relative">
+                            <i
+                                class="fas fa-flag-checkered absolute left-3 top-1/2 transform -translate-y-1/2 text-red-500"></i>
+                            <input type="text" placeholder="Where to name?" name="destination_name"
+                                class="w-full pl-10 pr-3 py-3 border border-gray-300  rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-4 mb-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Date & Time</label>
+                        <input type="datetime-local" name="departure_time"
+                            class="w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Passengers</label>
+                        {{-- <input type="number" name="available_seats" min="1" max="4"
+                            class="w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
+                        --}} <select name="available_seats"
+                            class="w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
+                            <option value="1">1 Passenger</option>
+                            <option value="2">2 Passengers</option>
+                            <option value="3">3 Passengers</option>
+                            <option value="4">4 Passengers</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Offer Price (Optional)</label>
+                        <div class="relative">
+                            <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
+                            <input type="number" placeholder="0.00" name="price"
+                                class="w-full pl-8 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
+                        </div>
                     </div>
                 </div>
 
-                <div class="relative">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Destination</label>
-                    <div class="relative">
-                        <i
-                            class="fas fa-flag-checkered absolute left-3 top-1/2 transform -translate-y-1/2 text-red-500"></i>
-                        <input type="text" placeholder="Where to?"
-                            class="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
-                    </div>
-                </div>
-            </div>
-
-            <div class="grid md:grid-cols-3 gap-4 mb-6">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Date & Time</label>
-                    <input type="datetime-local"
-                        class="w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
-                </div>
-
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Passengers</label>
-                    <select
-                        class="w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
-                        <option>1 Passenger</option>
-                        <option>2 Passengers</option>
-                        <option>3 Passengers</option>
-                        <option>4 Passengers</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Offer Price (Optional)</label>
-                    <div class="relative">
-                        <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
-                        <input type="number" placeholder="0.00"
-                            class="w-full pl-8 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
-                    </div>
-                </div>
-            </div>
-
-            <button onclick="findRide()"
-                class="w-full md:w-auto px-8 py-3 bg-yellow-500  text-black font-semibold rounded-lg hover:bg-indigo-700 transform hover:scale-105 transition-all duration-300 shadow-lg">
-                <i class="fas fa-search mr-2"></i>
-                Find a Ride
-            </button>
+                <button type="submit"
+                    class="w-full md:w-auto px-8 py-3 bg-yellow-500  text-black font-semibold rounded-lg hover:bg-indigo-700 transform hover:scale-105 transition-all duration-300 shadow-lg">
+                    <i class="fas fa-search mr-2"></i>
+                    Find a Ride
+                </button>
+            </form>
         </section>
+
+
+
+        <section class="grid md:grid-cols-2 gap-6 mb-8">
+
+            @foreach ($trips as $trip)
+                <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition-all border border-gray-100">
+
+                    <!-- Header -->
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="bg-indigo-100 p-3 rounded-full">
+                                <i class="fas fa-car text-indigo-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Trip</p>
+                                <p class="font-semibold text-gray-800">
+                                    {{ optional($trip->departureAddress)->name }}
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Status -->
+                        <span class="px-3 py-1 text-xs rounded-full
+                            @if($trip->status === 'pending') bg-yellow-100 text-yellow-700
+                            @elseif($trip->status === 'completed') bg-green-100 text-green-700
+                            @else bg-gray-100 text-gray-600
+                            @endif
+                        ">
+                            {{ ucfirst($trip->status) }}
+                        </span>
+                    </div>
+
+                    <!-- Info -->
+                    <div class="grid grid-cols-2 gap-4 text-sm text-gray-600">
+
+                        <div>
+                            <p class="text-gray-400">Departure</p>
+                            <p class="font-semibold text-gray-800">
+                                {{ \Carbon\Carbon::parse($trip->departure_time)->format('d M - H:i') }}
+                            </p>
+                        </div>
+
+                        <div>
+                            <p class="text-gray-400">Seats</p>
+                            <p class="font-semibold text-gray-800">
+                                {{ $trip->available_seats }}
+                            </p>
+                        </div>
+
+                        <div>
+                            <p class="text-gray-400">Price</p>
+                            <p class="font-semibold text-gray-800">
+                                {{ $trip->price }} DH
+                            </p>
+                        </div>
+
+                        <div>
+                            <p class="text-gray-400">Destination</p>
+                            <p class="font-semibold text-gray-800">
+                                {{ optional($trip->destinationAddress)->name }}
+                            </p>
+                        </div>
+
+                    </div>
+
+                </div>
+            @endforeach
+
+        </section>
+
+
+
+
 
         <!-- Quick Stats Cards -->
         <section class="grid md:grid-cols-3 gap-6 mb-8">
@@ -171,20 +280,22 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-gray-500 text-sm font-medium">Total Trips</p>
-                        <p class="text-3xl font-bold text-gray-800 mt-2">47</p>
+                        <p class="text-3xl font-bold text-gray-800 mt-2">{{ $trips->count() }}</p>
                     </div>
                     <div class="bg-indigo-100 p-3 rounded-full">
                         <i class="fas fa-car text-indigo-600 text-xl"></i>
                     </div>
                 </div>
             </div>
-
+            @php
+$trips_completed = $trips->where('status', 'accepted');
+            @endphp
             <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition-shadow animate-slide-in"
                 style="animation-delay: 0.1s">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-gray-500 text-sm font-medium">Completed Trips</p>
-                        <p class="text-3xl font-bold text-gray-800 mt-2">42</p>
+                        <p class="text-3xl font-bold text-gray-800 mt-2">{{ $trips_completed->count() }}</p>
                     </div>
                     <div class="bg-green-100 p-3 rounded-full">
                         <i class="fas fa-check-circle text-green-600 text-xl"></i>
@@ -197,7 +308,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-gray-500 text-sm font-medium">Total Spent</p>
-                        <p class="text-3xl font-bold text-gray-800 mt-2">$892</p>
+                        <p class="text-3xl font-bold text-gray-800 mt-2">{{ $trips->sum('price') }}$</p>
                     </div>
                     <div class="bg-yellow-100 p-3 rounded-full">
                         <i class="fas fa-dollar-sign text-yellow-600 text-xl"></i>
@@ -216,80 +327,35 @@
 
                 <div class="space-y-4">
                     <!-- Trip 1 -->
-                    <div
-                        class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-all hover:border-indigo-300">
-                        <div class="flex justify-between items-start mb-2">
-                            <div class="flex items-center space-x-3">
-                                <img src="https://picsum.photos/seed/driver1/40/40" alt="Driver"
-                                    class="w-10 h-10 rounded-full">
-                                <div>
-                                    <p class="font-semibold text-gray-800">Michael Chen</p>
-                                    <p class="text-sm text-gray-500">Toyota Camry</p>
-                                </div>
-                            </div>
-                            <span
-                                class="px-3 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-full">Completed</span>
-                        </div>
-                        <div class="text-sm text-gray-600 space-y-1">
-                            <p><i class="fas fa-map-marker-alt text-green-500 mr-2"></i>Downtown Station</p>
-                            <p><i class="fas fa-flag-checkered text-red-500 mr-2"></i>Airport Terminal 2</p>
-                        </div>
-                        <div class="flex justify-between items-center mt-3 pt-3 border-t border-gray-100">
-                            <span class="text-lg font-bold text-gray-800">$24.50</span>
-                            <span class="text-xs text-gray-500">Dec 15, 2023 • 2:30 PM</span>
-                        </div>
-                    </div>
 
-                    <!-- Trip 2 -->
-                    <div
-                        class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-all hover:border-indigo-300">
-                        <div class="flex justify-between items-start mb-2">
-                            <div class="flex items-center space-x-3">
-                                <img src="https://picsum.photos/seed/driver2/40/40" alt="Driver"
-                                    class="w-10 h-10 rounded-full">
-                                <div>
-                                    <p class="font-semibold text-gray-800">Sarah Williams</p>
-                                    <p class="text-sm text-gray-500">Honda Accord</p>
+                    @foreach ($trips as $trip)
+                        @if(isset($trip->driver))
+                            <div
+                                class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-all hover:border-indigo-300">
+                                <div class="flex justify-between items-start mb-2">
+                                    <div class="flex items-center space-x-3">
+                                        <img src="https://picsum.photos/seed/driver1/40/40" alt="Driver"
+                                            class="w-10 h-10 rounded-full">
+                                        <div>
+                                            <p class="font-semibold text-gray-800">{{ $trip?->driver->name }}</p>
+                                            <p class="text-sm text-gray-500">{{ $trip?->driver->ville }}</p>
+                                        </div>
+                                    </div>
+                                    <span
+                                        class="px-3 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-full">Accepted</span>
+                                </div>
+                                <div class="text-sm text-gray-600 space-y-1">
+                                    <p><i class="fas fa-map-marker-alt text-green-500 mr-2"></i>{{ $trip->departureAddress->name }}</p>
+                                    <p><i class="fas fa-flag-checkered text-red-500 mr-2"></i>{{ $trip->destinationAddress->name }}</p>
+                                </div>
+                                <div class="flex justify-between items-center mt-3 pt-3 border-t border-gray-100">
+                                    <span class="text-lg font-bold text-gray-800">{{ $trip->price }} DH</span>
+                                    <span class="text-xs text-gray-500">{{ $trip->departure_time }}</span>
                                 </div>
                             </div>
-                            <span
-                                class="px-3 py-1 bg-yellow-100 text-yellow-700 text-xs font-semibold rounded-full">Accepted</span>
-                        </div>
-                        <div class="text-sm text-gray-600 space-y-1">
-                            <p><i class="fas fa-map-marker-alt text-green-500 mr-2"></i>123 Main Street</p>
-                            <p><i class="fas fa-flag-checkered text-red-500 mr-2"></i>Shopping Mall</p>
-                        </div>
-                        <div class="flex justify-between items-center mt-3 pt-3 border-t border-gray-100">
-                            <span class="text-lg font-bold text-gray-800">$15.00</span>
-                            <span class="text-xs text-gray-500">Dec 16, 2023 • 10:00 AM</span>
-                        </div>
-                    </div>
+                        @endif
+                    @endforeach
 
-                    <!-- Trip 3 -->
-                    <div
-                        class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-all hover:border-indigo-300">
-                        <div class="flex justify-between items-start mb-2">
-                            <div class="flex items-center space-x-3">
-                                <img src="https://picsum.photos/seed/driver3/40/40" alt="Driver"
-                                    class="w-10 h-10 rounded-full">
-                                <div>
-                                    <p class="font-semibold text-gray-800">David Park</p>
-                                    <p class="text-sm text-gray-500">Nissan Altima</p>
-                                </div>
-                            </div>
-                            <span
-                                class="px-3 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full">Pending</span>
-                        </div>
-                        <div class="text-sm text-gray-600 space-y-1">
-                            <p><i class="fas fa-map-marker-alt text-green-500 mr-2"></i>Office Building</p>
-                            <p><i class="fas fa-flag-checkered text-red-500 mr-2"></i>Home</p>
-                        </div>
-                        <div class="flex justify-between items-center mt-3 pt-3 border-t border-gray-100">
-                            <span class="text-lg font-bold text-gray-800">$18.75</span>
-                            <span class="text-xs text-gray-500">Dec 17, 2023 • 6:00 PM</span>
-                        </div>
-                    </div>
-                </div>
             </section>
 
             <!-- Map Section -->
@@ -310,6 +376,16 @@
                             Your Location
                         </span>
                     </div>
+                    <button class="text-green-600 hover:text-indigo-700 font-medium" onclick="locationStart()">
+                        <i
+                            class="fas fa-map-marker-alt absolute left-3 top-1/2 transform -translate-y-1/2 text-green-500"></i>
+                        Pickup Location
+                    </button>
+                    <button class="text-red-600 hover:text-indigo-700 font-medium" onclick="locationDestination()">
+                        <i
+                            class="fas fa-flag-checkered absolute left-3 top-1/2 transform -translate-y-1/2 text-red-500"></i>
+                        Destination
+                    </button>
                     <button class="text-indigo-600 hover:text-indigo-700 font-medium">
                         <i class="fas fa-sync-alt mr-1"></i> Refresh
                     </button>
@@ -328,45 +404,68 @@
     </div>
 
     <script>
-        function toggleDropdown() {
-            const dropdown = document.getElementById('dropdown');
-            dropdown.classList.toggle('hidden');
-        }
+        const map = L.map('map').setView([33.5731, -7.5898], 13);
 
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap'
+        }).addTo(map);
 
-        // hadchi dyal maaps 
+        let start = null;
+        let destination = null;
+        let routeControl = null;
+        let markers = [];
+        let locationStart = document.getElementById('location')
+        let locationDestination = document.getElementById('destination')
+        map.on("click", function (e) {
 
-        const ville = "benguerir";
+            const latlng = e.latlng;
 
-        async function getCoord(ville) {
+            if (!start) {
 
-            const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${ville}`);
-            const data = await response.json();
+                start = latlng;
 
-            return [data[0].lat, data[0].lon];
+                markers.push(
+                    L.marker(latlng).addTo(map).bindPopup("Start").openPopup()
+                );
 
-        }
+                locationStart.value = latlng
+                return;
+            }
 
-        async function initMap() {
+            if (!destination) {
 
-            const coord = await getCoord(ville);
+                destination = latlng;
 
-            const map = L.map('map').setView(coord, 13);
+                markers.push(
+                    L.marker(latlng).addTo(map).bindPopup("Destination").openPopup()
+                );
+                locationDestination.value = destination
 
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+                routeControl = L.Routing.control({
+                    waypoints: [
+                        L.latLng(start),
+                        L.latLng(destination)
+                    ],
+                    routeWhileDragging: false,
+                    addWaypoints: false
+                }).addTo(map);
 
-            L.marker(coord)
-                .addTo(map)
-                .bindPopup(ville)
-                .openPopup();
+                return;
+            }
 
+            markers.forEach(m => map.removeLayer(m));
+            markers = [];
 
-        }
+            if (routeControl) {
+                map.removeControl(routeControl);
+            }
 
-        initMap();
+            start = null;
+            destination = null;
 
+        });
     </script>
-       
-</body >
 
-</html >
+</body>
+
+</html>

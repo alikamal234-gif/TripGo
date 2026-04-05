@@ -18,6 +18,9 @@ return new class extends Migration
             $table->string('phone');
             $table->foreignId('role_id')->constrained()->cascadeOnDelete();
             $table->string('password');
+            $table->string('ville');
+            $table->date('date_birth');
+            $table->string('postal_code');
             $table->timestamps();
         });
 

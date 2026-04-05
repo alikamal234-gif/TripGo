@@ -25,17 +25,19 @@ class RegisterController extends Controller
             'name' => ['required','string','min:2'],
             'email' => ['required','email'],
             'phone' => ['required','numeric'],
+            'ville' => ['required','string'],
+            'postal_code' => ['required','numeric'],
+            'date_birth' => ['required','date'],
             'password' => ['required','confirmed',Password::min(8)->letters()->numbers()],
             'role' => ['required','exists:roles,name'],
 
             'licenseNumber' => ['nullable','string'],
-            'city' => ['nullable','string'],
             'vehicleType' => ['nullable','string'],
             'vehicleColor' => ['nullable','string'],
             'seatCount' => ['nullable','integer'],
             'vehiclePlate' => ['nullable','string']
         ]);
-
+        // dd($data);
         DB::transaction(function () use ($data,$request) {
 
             $roleId = DB::table('roles')
@@ -46,6 +48,9 @@ class RegisterController extends Controller
                 'name'=>$data['name'],
                 'email'=>$data['email'],
                 'phone'=>$data['phone'],
+                'date_birth' => $data['date_birth'],
+                'ville' => $data['ville'],
+                'postal_code' => $data['postal_code'],
                 'password'=>Hash::make($data['password']),
                 'role_id'=>$roleId
             ]);
@@ -74,7 +79,6 @@ class RegisterController extends Controller
         $driver = Driver::create([
             'id'=>(int)$id,
             'license_number'=>$request->licenseNumber,
-            'ville'=>$request->city,
             'is_verified'=>false
         ]);
         Vehicle::create([
