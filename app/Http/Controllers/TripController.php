@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 
 class TripController extends Controller
 {
-
     /**
      * Store a newly created resource in storage.
      */
@@ -19,25 +18,25 @@ class TripController extends Controller
         $data = $request->validate([
 
             'departure' => ['required'],
-            'departure_name' => ['required','string'],
-            'destination_name' => ['required','string'],
-            'destination' => ['required','string'],
-            'departure_time' => ['required','date'],
-            'available_seats' => ['required',],
-            'price' => ['required','numeric'],
-            ]);
+            'departure_name' => ['required', 'string'],
+            'destination_name' => ['required', 'string'],
+            'destination' => ['required', 'string'],
+            'departure_time' => ['required', 'date'],
+            'available_seats' => ['required'],
+            'price' => ['required', 'numeric'],
+        ]);
 
-        DB::transaction(function () use ($data,$request) {
+        DB::transaction(function () use ($data) {
 
             $departure = Address::create([
                 'coordonnees' => $data['departure'],
                 'name' => $data['departure_name'],
-                'type' => 'departure'
+                'type' => 'departure',
             ]);
             $destination = Address::create([
                 'coordonnees' => $data['destination'],
                 'name' => $data['destination_name'],
-                'type' => 'destination'
+                'type' => 'destination',
             ]);
 
             Trip::create([
@@ -48,11 +47,12 @@ class TripController extends Controller
                 'departure_time' => $data['departure_time'],
                 'available_seats' => $data['available_seats'],
                 'price' => $data['price'],
-                'status' => 'pending'
-                ]);
+                'status' => 'pending',
+            ]);
 
         });
-        return redirect()->route('passenger.dashboard')->with('success','your trip bacame lancing');
+
+        return redirect()->route('passenger.dashboard')->with('success', 'your trip bacame lancing');
     }
 
     /**
@@ -61,6 +61,17 @@ class TripController extends Controller
     public function update(Request $request, string $id)
     {
         //
+    }
+
+    public function accept(string $id)
+    {
+        $trip = Trip::findOrFail($id);
+        if (! $trip->driver_id) {
+            $trip->update([
+                'driver_id' => auth()->id(),
+            ]);
+        }
+        return redirect()->route('driver.dashboard')->with('success', 'you accept one trip');
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Driver;
+use App\Models\Trip;
 use Illuminate\Http\Request;
 
 class DriverController extends Controller
@@ -11,9 +12,10 @@ class DriverController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        return view('passenger.dashboard');
-    }
+{
+    $trips = Trip::latest()->where('driver_id',null)->get();
+    return view('driver.dashboard', compact('trips'));
+}
 
     /**
      * Show the form for creating a new resource.
