@@ -241,149 +241,181 @@
 
                     <!-- Liste des trajets acceptés -->
                     <div class="space-y-4">
-                        <!-- Trajet accepté 1 - En cours -->
-                        <div class="border-2 border-blue-500 bg-blue-50 rounded-xl p-4">
-                            <div class="flex items-start justify-between mb-3">
-                                <div class="flex items-center space-x-3">
-                                    <div class="relative">
-                                        <img src="https://picsum.photos/seed/accepted1/40/40.jpg" alt="Passager"
-                                            class="w-10 h-10 rounded-full">
-                                        <span class="absolute -bottom-1 -right-1 bg-blue-500 text-white rounded-full p-1">
-                                            <i class="fas fa-phone text-xs"></i>
+                        @foreach ($trips_accept as $trip)
+                            @if ($trip->status == "encours")
+                                    <div class="border-2 border-blue-500 bg-blue-50 rounded-xl p-4">
+                                <div class="flex items-start justify-between mb-3">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="relative">
+                                            <img src="https://picsum.photos/seed/accepted1/40/40.jpg" alt="Passager"
+                                                class="w-10 h-10 rounded-full">
+                                            <span class="absolute -bottom-1 -right-1 bg-blue-500 text-white rounded-full p-1">
+                                                <i class="fas fa-phone text-xs"></i>
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <p class="font-bold text-indrive-dark">{{ $trip->passenger->name }}</p>
+                                            <p class="text-xs text-gray-600">En route</p>
+                                        </div>
+                                    </div>
+                                    <span class="bg-blue-500 text-white px-3 py-1 rounded-full text-xs font-bold">
+                                        EN COURS
+                                    </span>
+                                </div>
+
+                                <div class="space-y-2 mb-3">
+                                    <div class="flex items-center text-sm">
+                                        <i class="fas fa-map-marker-alt text-green-500 w-5"></i>
+                                        <span class="text-gray-700 ml-2">{{ $trip->departureAddress->name}}</span>
+                                    </div>
+                                    <div class="flex items-center text-sm">
+                                        <i class="fas fa-flag-checkered text-red-500 w-5"></i>
+                                        <span class="text-gray-700 ml-2">{{ $trip->destinationAddress->name }}</span>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center justify-between pt-3 border-t border-blue-200">
+                                    <div class="flex items-center space-x-4">
+                                        <span class="text-sm text-gray-600">
+                                            <i class="fas fa-road mr-1"></i>28.5 km
+                                        </span>
+                                        <span class="text-sm text-gray-600">
+                                            <i class="fas fa-clock mr-1"></i>35 min
                                         </span>
                                     </div>
-                                    <div>
-                                        <p class="font-bold text-indrive-dark">Sophie Martin</p>
-                                        <p class="text-xs text-gray-600">⭐ 4.9 • En route</p>
+                                    <div class="text-right">
+                                        <p class="text-lg font-bold text-indrive-yellow">{{ $trip->price }}</p>
+                                        <p class="text-xs text-gray-600">confirmé</p>
                                     </div>
                                 </div>
-                                <span class="bg-blue-500 text-white px-3 py-1 rounded-full text-xs font-bold">
-                                    EN COURS
-                                </span>
-                            </div>
 
-                            <div class="space-y-2 mb-3">
-                                <div class="flex items-center text-sm">
-                                    <i class="fas fa-map-marker-alt text-green-500 w-5"></i>
-                                    <span class="text-gray-700 ml-2">15 Rue de la Paix, 75002 Paris</span>
+                                <div class="flex space-x-2 mt-4">
+                                    <form action="{{ route('trip.terminer', $trip->id) }}" method="post">
+                                        @csrf
+                                    <button class="flex-1 bg-green-500 text-white font-bold py-2 rounded-lg hover:bg-green-600 transition-colors">
+                                        Finish Trip
+                                    </button>
+                                    </form>
                                 </div>
-                                <div class="flex items-center text-sm">
-                                    <i class="fas fa-flag-checkered text-red-500 w-5"></i>
-                                    <span class="text-gray-700 ml-2">Aéroport Charles de Gaulle, Terminal 2</span>
-                                </div>
-                            </div>
+                                     </div>
 
-                            <div class="flex items-center justify-between pt-3 border-t border-blue-200">
-                                <div class="flex items-center space-x-4">
-                                    <span class="text-sm text-gray-600">
-                                        <i class="fas fa-road mr-1"></i>28.5 km
-                                    </span>
-                                    <span class="text-sm text-gray-600">
-                                        <i class="fas fa-clock mr-1"></i>35 min
-                                    </span>
-                                </div>
-                                <div class="text-right">
-                                    <p class="text-lg font-bold text-indrive-yellow">45€</p>
-                                    <p class="text-xs text-gray-600">confirmé</p>
-                                </div>
-                            </div>
+                            @elseif ($trip->status == "avenir")
+                                <!-- Trajet accepté 2 - À venir -->
+                                <div class="border-2 border-gray-300 bg-gray-50 rounded-xl p-4">
+                                    <div class="flex items-start justify-between mb-3">
+                                        <div class="flex items-center space-x-3">
+                                            <img src="https://picsum.photos/seed/accepted2/40/40.jpg" alt="Passager" class="w-10 h-10 rounded-full">
+                                            <div>
+                                                <p class="font-bold text-indrive-dark">{{ $trip->passenger->name }}</p>
+                                                <p class="text-xs text-gray-600">e venur</p>
+                                            </div>
+                                        </div>
+                                        <span class="bg-gray-500 text-white px-3 py-1 rounded-full text-xs font-bold">
+                                            À VENIR
+                                        </span>
+                                    </div>
 
-                            <div class="flex space-x-2 mt-4">
-                                <button class="flex-1 bg-green-500 text-white font-bold py-2 rounded-lg hover:bg-green-600 transition-colors">
-                                    <i class="fas fa-navigation mr-2"></i>
-                                    Démarrer navigation
-                                </button>
-                                <button class="flex-1 bg-indrive-yellow text-black font-bold py-2 rounded-lg hover:bg-yellow-400 transition-colors">
-                                    <i class="fas fa-comment mr-2"></i>
-                                    Contacter
-                                </button>
-                            </div>
-                        </div>
+                                    <div class="space-y-2 mb-3">
+                                        <div class="flex items-center text-sm">
+                                            <i class="fas fa-map-marker-alt text-green-500 w-5"></i>
+                                            <span class="text-gray-700 ml-2">{{ $trip->departureAddress->name}}</span>
+                                        </div>
+                                        <div class="flex items-center text-sm">
+                                            <i class="fas fa-flag-checkered text-red-500 w-5"></i>
+                                            <span class="text-gray-700 ml-2">{{ $trip->destinationAddress->name }}</span>
+                                        </div>
+                                    </div>
 
-                        
-                            <div class="flex items-center justify-between pt-3 border-t border-gray-300">
-                                <div class="flex items-center space-x-4">
-                                    <span class="text-sm text-gray-600">
-                                        <i class="fas fa-road mr-1"></i>42.3 km
-                                    </span>
-                                    <span class="text-sm text-gray-600">
-                                        <i class="fas fa-clock mr-1"></i>45 min
-                                    </span>
-                                </div>
-                                <div class="text-right">
-                                    <p class="text-lg font-bold text-indrive-yellow">65€</p>
-                                    <p class="text-xs text-gray-600">confirmé</p>
-                                </div>
-                            </div>
+                                    <div class="flex items-center justify-between pt-3 border-t border-gray-300">
+                                        <div class="flex items-center space-x-4">
+                                            <span class="text-sm text-gray-600">
+                                                <i class="fas fa-road mr-1"></i>42.3 km
+                                            </span>
+                                            <span class="text-sm text-gray-600">
+                                                <i class="fas fa-clock mr-1"></i>45 min
+                                            </span>
+                                        </div>
+                                        <div class="text-right">
+                                            <p class="text-lg font-bold text-indrive-yellow">65€</p>
+                                            <p class="text-xs text-gray-600">confirmé</p>
+                                        </div>
+                                    </div>
 
-                            <div class="flex space-x-2 mt-4">
-                                <button class="flex-1 bg-indrive-yellow text-black font-bold py-2 rounded-lg hover:bg-yellow-400 transition-colors">
-                                    <i class="fas fa-calendar-check mr-2"></i>
-                                    Confirmer arrivée
-                                </button>
-                                <button class="flex-1 bg-gray-200 text-gray-700 font-bold py-2 rounded-lg hover:bg-gray-300 transition-colors">
-                                    <i class="fas fa-info-circle mr-2"></i>
-                                    Détails
-                                </button>
-                            </div>
-                        </div>
+                                    <div class="flex space-x-2 mt-4">
+                                        <form action="{{ route('trip.start', $trip->id) }}" method="post">
+                                            @csrf
+                                            <button
+                                                class="flex-1 bg-indrive-yellow text-black font-bold py-2 rounded-lg hover:bg-yellow-400 transition-colors">
+                                                Start Trip
+                                            </button>
+                                        </form>
 
-                        <!-- Trajet accepté 3 - Terminé aujourd'hui -->
-                        <div class="border-2 border-green-500 bg-green-50 rounded-xl p-4 opacity-75">
-                            <div class="flex items-start justify-between mb-3">
-                                <div class="flex items-center space-x-3">
-                                    <img src="https://picsum.photos/seed/accepted3/40/40.jpg" alt="Passager"
-                                        class="w-10 h-10 rounded-full">
-                                    <div>
-                                        <p class="font-bold text-indrive-dark">Marie Laurent</p>
-                                        <p class="text-xs text-gray-600">⭐ 5.0 • Terminé à 11:45</p>
                                     </div>
                                 </div>
-                                <span class="bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold">
-                                    TERMINÉ
-                                </span>
-                            </div>
+                            @elseif ($trip->status == "terminer")
+                                <!-- Trajet accepté 3 - Terminé aujourd'hui -->
+                                <div class="border-2 border-green-500 bg-green-50 rounded-xl p-4 opacity-75">
+                                    <div class="flex items-start justify-between mb-3">
+                                        <div class="flex items-center space-x-3">
+                                            <img src="https://picsum.photos/seed/accepted3/40/40.jpg" alt="Passager" class="w-10 h-10 rounded-full">
+                                            <div>
+                                                <p class="font-bold text-indrive-dark">{{ $trip->passenger->name }}</p>
+                                                <p class="text-xs text-gray-600">⭐ {{ $trip->rating }} Terminé</p>
+                                            </div>
+                                        </div>
+                                        <span class="bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold">
+                                            TERMINÉ
+                                        </span>
+                                    </div>
 
-                            <div class="space-y-2 mb-3">
-                                <div class="flex items-center text-sm">
-                                    <i class="fas fa-map-marker-alt text-green-500 w-5"></i>
-                                    <span class="text-gray-700 ml-2">Tour Eiffel, Quai Branly</span>
-                                </div>
-                                <div class="flex items-center text-sm">
-                                    <i class="fas fa-flag-checkered text-red-500 w-5"></i>
-                                    <span class="text-gray-700 ml-2">Musée du Louvre, Rue de Rivoli</span>
-                                </div>
-                            </div>
+                                    <div class="space-y-2 mb-3">
+                                        <div class="flex items-center text-sm">
+                                            <i class="fas fa-map-marker-alt text-green-500 w-5"></i>
+                                            <span class="text-gray-700 ml-2">{{ $trip->departureAddress->name}}</span>
+                                        </div>
+                                        <div class="flex items-center text-sm">
+                                            <i class="fas fa-flag-checkered text-red-500 w-5"></i>
+                                            <span class="text-gray-700 ml-2">{{ $trip->destinationAddress->name }}</span>
+                                        </div>
+                                    </div>
 
-                            <div class="flex items-center justify-between pt-3 border-t border-green-200">
-                                <div class="flex items-center space-x-4">
-                                    <span class="text-sm text-gray-600">
-                                        <i class="fas fa-road mr-1"></i>4.2 km
-                                    </span>
-                                    <span class="text-sm text-gray-600">
-                                        <i class="fas fa-clock mr-1"></i>15 min
-                                    </span>
-                                </div>
-                                <div class="text-right">
-                                    <p class="text-lg font-bold text-indrive-yellow">18€</p>
-                                    <p class="text-xs text-gray-600">payé</p>
-                                </div>
-                            </div>
+                                    <div class="flex items-center justify-between pt-3 border-t border-green-200">
+                                        <div class="flex items-center space-x-4">
+                                            <span class="text-sm text-gray-600">
+                                                <i class="fas fa-road mr-1"></i>4.2 km
+                                            </span>
+                                            <span class="text-sm text-gray-600">
+                                                <i class="fas fa-clock mr-1"></i>15 min
+                                            </span>
+                                        </div>
+                                        <div class="text-right">
+                                            <p class="text-lg font-bold text-indrive-yellow">{{ $trip->price }}</p>
+                                            <p class="text-xs text-gray-600">payé</p>
+                                        </div>
+                                    </div>
 
-                            <div class="flex items-center justify-between mt-4 pt-3 border-t border-green-200">
-                                <div class="flex items-center space-x-2">
-                                    <i class="fas fa-star text-yellow-500"></i>
-                                    <i class="fas fa-star text-yellow-500"></i>
-                                    <i class="fas fa-star text-yellow-500"></i>
-                                    <i class="fas fa-star text-yellow-500"></i>
-                                    <i class="fas fa-star text-yellow-500"></i>
-                                    <span class="text-sm text-gray-600 ml-2">Excellent trajet!</span>
+                                    <div class="flex items-center justify-between mt-4 pt-3 border-t border-green-200">
+                                        <div class="flex items-center space-x-2">
+                                            <i class="fas fa-star text-yellow-500"></i>
+                                            <i class="fas fa-star text-yellow-500"></i>
+                                            <i class="fas fa-star text-yellow-500"></i>
+                                            <i class="fas fa-star text-yellow-500"></i>
+                                            <i class="fas fa-star text-yellow-500"></i>
+                                            <span class="text-sm text-gray-600 ml-2">Excellent trajet!</span>
+                                        </div>
+                                        <button class="text-indrive-yellow hover:text-yellow-400 transition-colors">
+                                            <i class="fas fa-receipt"></i>
+                                        </button>
+                                    </div>
                                 </div>
-                                <button class="text-indrive-yellow hover:text-yellow-400 transition-colors">
-                                    <i class="fas fa-receipt"></i>
-                                </button>
-                            </div>
-                        </div>
+                            @endif
+                        @endforeach
+                        <!-- Trajet accepté 1 - En cours -->
+
+
+
+
+
                     </div>
 
                     <!-- Bouton voir plus -->
@@ -411,7 +443,7 @@
                         <!-- Trip 1 - New -->
 
                         @php
-                        $nouveau = true;
+$nouveau = true;
                         @endphp
                         @foreach($trips as $trip)
 
@@ -460,7 +492,7 @@
                                 </div>
                             </div>
 
-                            <div class="flex space-x-2 mt-3">
+                            <div class="flex space-x-2 mt-3 ">
                                 <form action="{{ route('trip.accept', $trip->id) }}" method="post">
                                     @csrf
                                     <button type="submit" class="flex-1 bg-indrive-yellow text-black font-bold py-2 rounded-lg hover:bg-yellow-400 transition-colors">
@@ -474,7 +506,7 @@
                             </div>
                         </div>
                         @php
-                        $nouveau = false;
+    $nouveau = false;
                         @endphp
                         @endforeach
                     </div>
@@ -579,7 +611,7 @@
         const tripLocations = [
             @foreach ($trips as $trip)
             @php
-            preg_match('/LatLng\((.*),\s*(.*)\)/', $trip->departureAddress->coordonnees, $matches1);
+    preg_match('/LatLng\((.*),\s*(.*)\)/', $trip->departureAddress->coordonnees, $matches1);
             @endphp
             {
                 lat: {{ $matches1[1] }},

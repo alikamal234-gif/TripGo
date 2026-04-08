@@ -19,6 +19,8 @@ Route::prefix('admin')->group(function (){
 Route::prefix('driver')->group(function (){
     Route::get('/dashboard',[DriverController::class,'index'])->name('driver.dashboard');
     Route::post('/dashboard/trip/{id}/accept',[TripController::class,'accept'])->name('trip.accept');
+    Route::post('/dashboard/trip/{id}/start',[TripController::class,'start'])->name('trip.start');
+    Route::post('/dashboard/trip/{id}/terminer',[TripController::class,'terminer'])->name('trip.terminer');
 
 });
 

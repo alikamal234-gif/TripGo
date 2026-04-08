@@ -47,7 +47,8 @@ class TripController extends Controller
                 'departure_time' => $data['departure_time'],
                 'available_seats' => $data['available_seats'],
                 'price' => $data['price'],
-                'status' => 'pending',
+                'rating' => 0,
+                'status' => 'avenir',
             ]);
 
         });
@@ -72,6 +73,24 @@ class TripController extends Controller
             ]);
         }
         return redirect()->route('driver.dashboard')->with('success', 'you accept one trip');
+    }
+
+    public function start(string $id){
+        $trip = Trip::findOrFail($id);
+            $trip->update([
+                'status' => 'encours',
+                'start_time' => now()
+            ]);
+        return redirect()->route('driver.dashboard')->with('success', 'you start trip');
+    }
+
+    public function terminer(string $id){
+        $trip = Trip::findOrFail($id);
+            $trip->update([
+                'status' => 'terminer',
+                'termine_time' => now()
+            ]);
+        return redirect()->route('driver.dashboard')->with('success', 'your trip is finished');
     }
 
     /**

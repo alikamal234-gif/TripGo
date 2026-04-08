@@ -14,7 +14,8 @@ class DriverController extends Controller
     public function index()
 {
     $trips = Trip::latest()->where('driver_id',null)->get();
-    return view('driver.dashboard', compact('trips'));
+        $trips_accept = Trip::where('driver_id', auth()->id())->get();
+    return view('driver.dashboard', compact('trips','trips_accept'));
 }
 
     /**

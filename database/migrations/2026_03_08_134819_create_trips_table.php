@@ -17,9 +17,12 @@ return new class extends Migration {
             $table->foreignId('departure_address_id')->constrained('addresses')->cascadeOnDelete();
             $table->foreignId('destination_address_id')->constrained('addresses')->cascadeOnDelete();
             $table->dateTime('departure_time');
+            $table->dateTime('start_time')->nullable();
+            $table->dateTime('termine_time')->nullable();
             $table->integer('available_seats');
             $table->decimal('price',8,2);
-            $table->enum('status', ['pending', 'accepted', 'refused']);
+            $table->enum('status', ['encours', 'avenir', 'terminer']);
+            $table->integer('rating');
             $table->timestamps();
         });
     }

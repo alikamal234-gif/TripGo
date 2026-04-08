@@ -342,7 +342,7 @@ $trips_completed = $trips->where('status', 'accepted');
                                         </div>
                                     </div>
                                     <span
-                                        class="px-3 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-full">Accepted</span>
+                                        class="px-3 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-full">{{ $trip->status }}</span>
                                 </div>
                                 <div class="text-sm text-gray-600 space-y-1">
                                     <p><i class="fas fa-map-marker-alt text-green-500 mr-2"></i>{{ $trip->departureAddress->name }}</p>
@@ -351,6 +351,10 @@ $trips_completed = $trips->where('status', 'accepted');
                                 <div class="flex justify-between items-center mt-3 pt-3 border-t border-gray-100">
                                     <span class="text-lg font-bold text-gray-800">{{ $trip->price }} DH</span>
                                     <span class="text-xs text-gray-500">{{ $trip->departure_time }}</span>
+                                </div>
+                                <div class="flex justify-between items-center mt-3 pt-3 border-t border-gray-100">
+                                    <span class="text-xs text-gray-500">Rating : </span>
+                                    <input class="border-2 border-black w-50" type="number" name="rating" min="1" max="5">
                                 </div>
                             </div>
                         @endif

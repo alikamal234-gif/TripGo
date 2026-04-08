@@ -14,7 +14,10 @@ class Trip extends Model
         'departure_time',
         'available_seats',
         'price',
-        'status'
+        'status',
+        'rating',
+        'termine_time',
+        'start_time'
     ];
 
 
