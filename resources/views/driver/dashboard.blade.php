@@ -396,11 +396,11 @@
 
                                     <div class="flex items-center justify-between mt-4 pt-3 border-t border-green-200">
                                         <div class="flex items-center space-x-2">
-                                            <i class="fas fa-star text-yellow-500"></i>
-                                            <i class="fas fa-star text-yellow-500"></i>
-                                            <i class="fas fa-star text-yellow-500"></i>
-                                            <i class="fas fa-star text-yellow-500"></i>
-                                            <i class="fas fa-star text-yellow-500"></i>
+                                            <i class="fas fa-star @if($trip->rating > 0) text-yellow-500 @endif "></i>
+                                            <i class="fas fa-star @if($trip->rating > 1) text-yellow-500 @endif "></i>
+                                            <i class="fas fa-star @if($trip->rating > 2) text-yellow-500 @endif "></i>
+                                            <i class="fas fa-star @if($trip->rating > 3) text-yellow-500 @endif "></i>
+                                            <i class="fas fa-star @if($trip->rating > 4) text-yellow-500 @endif "></i>
                                             <span class="text-sm text-gray-600 ml-2">Excellent trajet!</span>
                                         </div>
                                         <button class="text-indrive-yellow hover:text-yellow-400 transition-colors">

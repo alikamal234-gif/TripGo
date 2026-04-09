@@ -27,6 +27,7 @@ Route::prefix('driver')->group(function (){
 Route::prefix('passenger')->group(function (){
     Route::get('/dashboard',[PassengerController::class,'index'])->name('passenger.dashboard');
     Route::post('/lance-trip',[TripController::class,'store'])->name('passenger.trip');
+    Route::patch('/trip/ratie/{id}',[TripController::class,'rate'])->name('trips.rate');
 });
 
 Route::middleware('auth')->group(function (){

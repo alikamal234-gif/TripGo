@@ -56,6 +56,17 @@ class TripController extends Controller
         return redirect()->route('passenger.dashboard')->with('success', 'your trip bacame lancing');
     }
 
+    public function rate(string $id, Request $request)
+    {
+        $trip = Trip::findOrFail($id);
+
+        $trip->update([
+            'rating' => $request->rating,
+        ]);
+
+        return redirect()->route('passenger.dashboard');
+    }
+
     /**
      * Update the specified resource in storage.
      */
@@ -72,24 +83,29 @@ class TripController extends Controller
                 'driver_id' => auth()->id(),
             ]);
         }
+
         return redirect()->route('driver.dashboard')->with('success', 'you accept one trip');
     }
 
-    public function start(string $id){
+    public function start(string $id)
+    {
         $trip = Trip::findOrFail($id);
-            $trip->update([
-                'status' => 'encours',
-                'start_time' => now()
-            ]);
+        $trip->update([
+            'status' => 'encours',
+            'start_time' => now(),
+        ]);
+
         return redirect()->route('driver.dashboard')->with('success', 'you start trip');
     }
 
-    public function terminer(string $id){
+    public function terminer(string $id)
+    {
         $trip = Trip::findOrFail($id);
-            $trip->update([
-                'status' => 'terminer',
-                'termine_time' => now()
-            ]);
+        $trip->update([
+            'status' => 'terminer',
+            'termine_time' => now(),
+        ]);
+
         return redirect()->route('driver.dashboard')->with('success', 'your trip is finished');
     }
 

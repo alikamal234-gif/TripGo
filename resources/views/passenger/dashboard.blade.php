@@ -17,7 +17,6 @@
 
     <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
     <style>
-        /* Custom animations */
         @keyframes slideIn {
             from {
                 transform: translateY(-10px);
@@ -41,26 +40,21 @@
 </head>
 
 <body class="bg-gray-50">
-    <!-- Top Navigation Bar -->
     <nav class="bg-white shadow-md sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
-                <!-- Logo -->
                 <a href="/"
                     class="flex items-center space-x-2 text-yellow-500  font-bold text-xl hover:scale-105 transition-transform">
                     <i class="fas fa-car text-2xl"></i>
                     <span>TripGo</span>
                 </a>
 
-                <!-- Nav Actions -->
                 <div class="flex items-center space-x-4">
-                    <!-- Search Icon -->
                     <button
                         class="p-2 rounded-full bg-gray-100 hover:bg-indigo-600 hover:text-white transition-all duration-300 group">
                         <i class="fas fa-search text-gray-600 group-hover:text-white"></i>
                     </button>
 
-                    <!-- Notifications -->
                     <button
                         class="relative p-2 rounded-full bg-gray-100 hover:bg-indigo-600 hover:text-white transition-all duration-300 group">
                         <i class="fas fa-bell text-gray-600 group-hover:text-white"></i>
@@ -68,7 +62,6 @@
                             class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5">3</span>
                     </button>
 
-                    <!-- Profile Dropdown -->
                     <div class="relative">
                         <button onclick="toggleDropdown()"
                             class="flex items-center space-x-2 hover:opacity-80 transition-opacity">
@@ -77,7 +70,6 @@
                             <i class="fas fa-chevron-down text-gray-600 text-sm"></i>
                         </button>
 
-                        <!-- Dropdown Menu -->
                         <div id="dropdown"
                             class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-2 animate-slide-in">
                             <a href="#"
@@ -100,15 +92,12 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <!-- Welcome Section -->
         <section class="mb-8 animate-slide-in">
             <h1 class="text-3xl font-bold text-gray-800 mb-2">Welcome back, Alex Johnson</h1>
             <p class="text-gray-600">Find a ride quickly and travel easily.</p>
         </section>
 
-        <!-- Ride Request Card -->
         <section class="bg-white rounded-2xl shadow-lg p-6 mb-8 animate-slide-in">
             <h2 class="text-xl font-semibold text-gray-800 mb-6 flex items-center">
                 <i class="fas fa-route mr-2 text-indigo-600"></i>
@@ -205,67 +194,68 @@
         <section class="grid md:grid-cols-2 gap-6 mb-8">
 
             @foreach ($trips as $trip)
+                @if ($trip->status == "avenir")
+
+
                 <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition-all border border-gray-100">
 
-                    <!-- Header -->
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="flex items-center gap-3">
-                            <div class="bg-indigo-100 p-3 rounded-full">
-                                <i class="fas fa-car text-indigo-600"></i>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="bg-indigo-100 p-3 rounded-full">
+                                    <i class="fas fa-car text-indigo-600"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Trip</p>
+                                    <p class="font-semibold text-gray-800">
+                                        {{ optional($trip->departureAddress)->name }}
+                                    </p>
+                                </div>
                             </div>
+
+                            <span class="px-3 py-1 text-xs rounded-full
+                                @if($trip->status === 'pending') bg-yellow-100 text-yellow-700
+                                @elseif($trip->status === 'completed') bg-green-100 text-green-700
+                                @else bg-gray-100 text-gray-600
+                                @endif
+                            ">
+                                {{ ucfirst($trip->status) }}
+                            </span>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4 text-sm text-gray-600">
+
                             <div>
-                                <p class="text-sm text-gray-500">Trip</p>
+                                <p class="text-gray-400">Departure</p>
                                 <p class="font-semibold text-gray-800">
-                                    {{ optional($trip->departureAddress)->name }}
+                                    {{ \Carbon\Carbon::parse($trip->departure_time)->format('d M - H:i') }}
                                 </p>
                             </div>
-                        </div>
 
-                        <!-- Status -->
-                        <span class="px-3 py-1 text-xs rounded-full
-                            @if($trip->status === 'pending') bg-yellow-100 text-yellow-700
-                            @elseif($trip->status === 'completed') bg-green-100 text-green-700
-                            @else bg-gray-100 text-gray-600
-                            @endif
-                        ">
-                            {{ ucfirst($trip->status) }}
-                        </span>
-                    </div>
+                            <div>
+                                <p class="text-gray-400">Seats</p>
+                                <p class="font-semibold text-gray-800">
+                                    {{ $trip->available_seats }}
+                                </p>
+                            </div>
 
-                    <!-- Info -->
-                    <div class="grid grid-cols-2 gap-4 text-sm text-gray-600">
+                            <div>
+                                <p class="text-gray-400">Price</p>
+                                <p class="font-semibold text-gray-800">
+                                    {{ $trip->price }} DH
+                                </p>
+                            </div>
 
-                        <div>
-                            <p class="text-gray-400">Departure</p>
-                            <p class="font-semibold text-gray-800">
-                                {{ \Carbon\Carbon::parse($trip->departure_time)->format('d M - H:i') }}
-                            </p>
-                        </div>
+                            <div>
+                                <p class="text-gray-400">Destination</p>
+                                <p class="font-semibold text-gray-800">
+                                    {{ optional($trip->destinationAddress)->name }}
+                                </p>
+                            </div>
 
-                        <div>
-                            <p class="text-gray-400">Seats</p>
-                            <p class="font-semibold text-gray-800">
-                                {{ $trip->available_seats }}
-                            </p>
-                        </div>
-
-                        <div>
-                            <p class="text-gray-400">Price</p>
-                            <p class="font-semibold text-gray-800">
-                                {{ $trip->price }} DH
-                            </p>
-                        </div>
-
-                        <div>
-                            <p class="text-gray-400">Destination</p>
-                            <p class="font-semibold text-gray-800">
-                                {{ optional($trip->destinationAddress)->name }}
-                            </p>
                         </div>
 
                     </div>
-
-                </div>
+                    @endif
             @endforeach
 
         </section>
@@ -274,7 +264,6 @@
 
 
 
-        <!-- Quick Stats Cards -->
         <section class="grid md:grid-cols-3 gap-6 mb-8">
             <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition-shadow animate-slide-in">
                 <div class="flex items-center justify-between">
@@ -318,7 +307,6 @@ $trips_completed = $trips->where('status', 'accepted');
         </section>
 
         <div class="grid lg:grid-cols-2 gap-8">
-            <!-- Recent Trips Section -->
             <section class="bg-white rounded-2xl shadow-lg p-6 animate-slide-in">
                 <h2 class="text-xl font-semibold text-gray-800 mb-6 flex items-center justify-between">
                     <span><i class="fas fa-history mr-2 text-indigo-600"></i>Recent Trips</span>
@@ -326,7 +314,6 @@ $trips_completed = $trips->where('status', 'accepted');
                 </h2>
 
                 <div class="space-y-4">
-                    <!-- Trip 1 -->
 
                     @foreach ($trips as $trip)
                         @if(isset($trip->driver))
@@ -352,17 +339,25 @@ $trips_completed = $trips->where('status', 'accepted');
                                     <span class="text-lg font-bold text-gray-800">{{ $trip->price }} DH</span>
                                     <span class="text-xs text-gray-500">{{ $trip->departure_time }}</span>
                                 </div>
-                                <div class="flex justify-between items-center mt-3 pt-3 border-t border-gray-100">
+
+                                @if ($trip->status == "terminer")
+                                <form class="flex justify-between items-center mt-3 pt-3 border-t border-gray-100" action="{{ route('trips.rate', $trip->id) }}" method="post">
+                                    @csrf
+                                    @method('PATCH')
                                     <span class="text-xs text-gray-500">Rating : </span>
-                                    <input class="border-2 border-black w-50" type="number" name="rating" min="1" max="5">
-                                </div>
+                                    <div class="flex gap-3">
+                                        <input value="{{ $trip->rating }}" class="border-2 pr-2 pl-2 border-black w-50" type="number" name="rating" min="1" max="5" placeholder="rating"> <p class="font-bold ">/5</p>
+                                    </div>
+                                    <button type="submit" class="bg-yellow-400 text-black text-1xl font-bold p-3 rounded-lg">submit Rating</button>
+                                </form>
+                                @endif
+
                             </div>
                         @endif
                     @endforeach
 
             </section>
 
-            <!-- Map Section -->
             <section class="bg-white rounded-2xl shadow-lg p-6 animate-slide-in">
                 <h2 class="text-xl font-semibold text-gray-800 mb-6 flex items-center">
                     <i class="fas fa-map mr-2 text-indigo-600"></i>
@@ -398,7 +393,6 @@ $trips_completed = $trips->where('status', 'accepted');
         </div>
     </main>
 
-    <!-- Toast Notification -->
     <div id="toast"
         class="fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg transform translate-y-full transition-transform duration-300 z-50">
         <div class="flex items-center">
@@ -473,3 +467,133 @@ $trips_completed = $trips->where('status', 'accepted');
 </body>
 
 </html>
+<style>
+    .star-btn {
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .star-btn:hover .star-icon {
+        transform: scale(1.2) rotate(10deg);
+    }
+
+    .star-btn:focus {
+        outline: none;
+    }
+
+    .star-btn:focus .star-icon {
+        box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.3);
+        border-radius: 50%;
+    }
+
+    @keyframes starPulse {
+        0% {
+            transform: scale(1);
+        }
+
+        50% {
+            transform: scale(1.3);
+        }
+
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    .star-selected {
+        animation: starPulse 0.3s ease;
+    }
+
+    .rating-1 {
+        color: #ef4444;
+        font-weight: 600;
+    }
+
+    .rating-2 {
+        color: #f97316;
+        font-weight: 600;
+    }
+
+    .rating-3 {
+        color: #eab308;
+        font-weight: 600;
+    }
+
+    .rating-4 {
+        color: #22c55e;
+        font-weight: 600;
+    }
+
+    .rating-5 {
+        color: #10b981;
+        font-weight: 600;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const starButtons = document.querySelectorAll('.star-btn');
+        const ratingInput = document.getElementById('rating-input');
+        const ratingText = document.getElementById('rating-text');
+        const starIcons = document.querySelectorAll('.star-icon');
+
+        const ratingTexts = {
+            0: 'Cliquez',
+            1: 'Médiocre',
+            2: 'Faible',
+            3: 'Correct',
+            4: 'Bon',
+            5: 'Excellent'
+        };
+
+        function updateStars(rating) {
+            starIcons.forEach((icon, index) => {
+                if (index < rating) {
+                    icon.classList.remove('text-gray-300');
+                    icon.classList.add('text-yellow-400', 'star-selected');
+                } else {
+                    icon.classList.add('text-gray-300');
+                    icon.classList.remove('text-yellow-400', 'star-selected');
+                }
+            });
+
+            ratingText.textContent = ratingTexts[rating];
+            ratingText.className = 'text-xs ml-2 min-w-[60px]';
+            if (rating > 0) {
+                ratingText.classList.add(`rating-${rating}`);
+            }
+        }
+
+        starButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const rating = parseInt(this.dataset.rating);
+                ratingInput.value = rating;
+                updateStars(rating);
+
+                this.style.transform = 'scale(1.3)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 200);
+            });
+
+            button.addEventListener('mouseenter', function () {
+                const hoverRating = parseInt(this.dataset.rating);
+                starIcons.forEach((icon, index) => {
+                    if (index < hoverRating) {
+                        icon.classList.add('text-yellow-300');
+                    } else {
+                        icon.classList.remove('text-yellow-300');
+                    }
+                });
+            });
+        });
+
+        document.getElementById('star-rating').addEventListener('mouseleave', function () {
+            const currentRating = parseInt(ratingInput.value);
+            updateStars(currentRating);
+        });
+    });
+</script>
