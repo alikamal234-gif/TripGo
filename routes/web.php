@@ -16,7 +16,7 @@ Route::prefix('admin')->group(function (){
     Route::get('/dashboard',[AdminController::class,'index'])->name('admin.dashboard');
 });
 
-Route::prefix('driver')->group(function (){
+Route::prefix('driver')->middleware('auth')->group(function (){
     Route::get('/dashboard',[DriverController::class,'index'])->name('driver.dashboard');
     Route::post('/dashboard/trip/{id}/accept',[TripController::class,'accept'])->name('trip.accept');
     Route::post('/dashboard/trip/{id}/start',[TripController::class,'start'])->name('trip.start');
@@ -24,7 +24,7 @@ Route::prefix('driver')->group(function (){
 
 });
 
-Route::prefix('passenger')->group(function (){
+Route::prefix('passenger')->middleware('auth')->group(function (){
     Route::get('/dashboard',[PassengerController::class,'index'])->name('passenger.dashboard');
     Route::post('/lance-trip',[TripController::class,'store'])->name('passenger.trip');
     Route::patch('/trip/ratie/{id}',[TripController::class,'rate'])->name('trips.rate');

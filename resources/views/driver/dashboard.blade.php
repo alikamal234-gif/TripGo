@@ -173,7 +173,7 @@
                         <img src="https://picsum.photos/seed/driver123/40/40.jpg" alt="Profile"
                             class="w-10 h-10 rounded-full border-2 border-indrive-yellow">
                         <div class="hidden md:block">
-                            <p class="font-bold text-indrive-dark">Marc Dubois</p>
+                            <p class="font-bold text-indrive-dark">{{ auth()->user()->name }}</p>
                             <p class="text-xs text-green-600 flex items-center">
                                 <i class="fas fa-circle text-xs mr-1"></i>
                                 En ligne
