@@ -35,4 +35,19 @@ Route::middleware('auth')->group(function (){
 });
 
 
+
+
+Route::prefix('admin')
+    ->middleware(['auth', 'is_admin'])
+    ->group(function () {
+
+        Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+
+        Route::get('/users', [AdminController::class, 'users'])->name('admin.users');
+
+        Route::get('/trips', [AdminController::class, 'trips'])->name('admin.trips');
+
+        Route::get('/drivers', [AdminController::class, 'drivers'])->name('admin.drivers');
+
+}); 
 include "auth.php";
