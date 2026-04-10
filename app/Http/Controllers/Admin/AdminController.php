@@ -5,6 +5,7 @@ use App\Models\User;
 use App\Models\Trip;
 use App\Models\Driver;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
@@ -36,5 +37,12 @@ class AdminController extends Controller
         $drivers = Driver::with('user')->latest()->get();
 
         return view('admin.drivers', compact('drivers'));
+    }
+    public function valider(Request $request,string $id){
+        $driver = Driver::findOrFail($id);
+        $driver->update([
+            'is_verified' => $request->verification
+        ]);
+        return redirect()->route('admin.drivers')->with('success', "driver $driver->name is valider for use app");
     }
 }

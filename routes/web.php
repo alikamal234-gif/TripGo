@@ -48,6 +48,6 @@ Route::prefix('admin')
         Route::get('/trips', [AdminController::class, 'trips'])->name('admin.trips');
 
         Route::get('/drivers', [AdminController::class, 'drivers'])->name('admin.drivers');
-
+        Route::patch('/driver/{id}/valide', [AdminController::class,'valider'])->name('driver.valide');
 }); 
 include "auth.php";

@@ -173,6 +173,18 @@
                                         <i class="fas fa-id-card w-5 text-gray-400"></i>
                                         <span>{{ $driver->license_number }}</span>
                                     </div>
+                                    <div class="flex items-center text-sm text-gray-600">
+                                        <i class="fas fa-id-card w-5 text-gray-400"></i>
+                                        <form action="{{ route('driver.valide', $driver->id) }}" method="POST" class="mt-2">
+                                            @csrf
+                                            @method('PATCH')
+
+                                            <select name="verification" onchange="this.form.submit()" class="p-2 border rounded w-full">
+                                                <option value="1" {{ $driver->is_verified == 1 ? 'selected' : '' }}>is valide</option>
+                                                <option value="0" {{ $driver->is_verified == 0 ? 'selected' : '' }}>is not valide</option>
+                                            </select>
+                                        </form>
+                                    </div>
                                 </div>
 
                                 <div class="flex items-center justify-between pt-4 border-t">
