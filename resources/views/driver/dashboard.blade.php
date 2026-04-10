@@ -180,8 +180,8 @@
 
                     <!-- Profile -->
                     <div class="flex items-center space-x-3">
-                        <img src="https://picsum.photos/seed/driver123/40/40.jpg" alt="Profile"
-                            class="w-10 h-10 rounded-full border-2 border-indrive-yellow">
+                        <a href="{{ route('profile') }}"><img src="https://picsum.photos/seed/driver123/40/40.jpg" alt="Profile"
+                            class="w-10 h-10 rounded-full border-2 border-indrive-yellow"></div></a>
                         <div class="hidden md:block">
                             <div class="flex gap-2">
                                 <p class="font-bold text-indrive-dark">{{ auth()->user()->name }}</p>

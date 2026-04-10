@@ -81,10 +81,36 @@
                         abordables et sûrs. Proposez votre prix et voyagez en toute liberté.
                     </p>
                     <div class="flex flex-wrap gap-4">
-                        <a href="{{ route('register') }}" class="px-8 py-4 bg-indrive-yellow text-black font-bold rounded-xl hover:bg-yellow-400 transform hover:scale-105 transition-all duration-300 shadow-lg text-lg">
-                            <i class="fas fa-bolt mr-2"></i>
-                            Get free account 
-                        </a>
+                        @if (!auth()->check())
+                            <a href="{{ route('register') }}" class="px-8 py-4 bg-indrive-yellow text-black font-bold rounded-xl hover:bg-yellow-400 transform hover:scale-105 transition-all duration-300 shadow-lg text-lg">
+                                <i class="fas fa-bolt mr-2"></i>
+                                Get free account 
+                            </a>
+                        @elseif (auth()->user()->is_driver())
+                        
+                            <a href="{{ route('driver.dashboard') }}"
+                                class="px-8 py-4 bg-indrive-yellow text-black font-bold rounded-xl hover:bg-yellow-400 transform hover:scale-105 transition-all duration-300 shadow-lg text-lg">
+                                <i class="fas fa-bolt mr-2"></i>
+                                Go to dashboard driver
+                            </a>
+                        @elseif (auth()->user()->is_passenger())
+                        
+                            <a href="{{ route('passenger.dashboard') }}"
+                                class="px-8 py-4 bg-indrive-yellow text-black font-bold rounded-xl hover:bg-yellow-400 transform hover:scale-105 transition-all duration-300 shadow-lg text-lg">
+                                <i class="fas fa-bolt mr-2"></i>
+                                Go to dashboard passenger
+                            </a>
+                        
+                        @elseif (auth()->user()->is_admin())
+                        
+                            <a href="{{ route('admin.dashboard') }}"
+                                class="px-8 py-4 bg-indrive-yellow text-black font-bold rounded-xl hover:bg-yellow-400 transform hover:scale-105 transition-all duration-300 shadow-lg text-lg">
+                                <i class="fas fa-bolt mr-2"></i>
+                                Go to dashboard admin 
+                            </a>
+                        
+                        @endif
+                        
                         <button class="px-8 py-4 bg-white text-indrive-dark font-bold rounded-xl border-2 border-gray-300 hover:border-indrive-yellow hover:text-indrive-yellow transition-all duration-300 shadow-lg text-lg">
                             <i class="fas fa-play-circle mr-2"></i>
                             Comment ça marche

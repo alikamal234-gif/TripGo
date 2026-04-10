@@ -50,10 +50,10 @@
                 </a>
 
                 <div class="flex items-center space-x-4">
-                    <button
+                    {{-- <button
                         class="p-2 rounded-full bg-gray-100 hover:bg-indigo-600 hover:text-white transition-all duration-300 group">
                         <i class="fas fa-search text-gray-600 group-hover:text-white"></i>
-                    </button>
+                    </button> --}}
 
                     <button
                         class="relative p-2 rounded-full bg-gray-100 hover:bg-indigo-600 hover:text-white transition-all duration-300 group">
@@ -62,30 +62,20 @@
                             class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5">3</span>
                     </button>
 
-                    <div class="relative">
-                        <button onclick="toggleDropdown()"
-                            class="flex items-center space-x-2 hover:opacity-80 transition-opacity">
+                    <div class="flex gap-2">
+                        <a href="{{ route('profile') }}"><button class="flex items-center space-x-2 hover:opacity-80 transition-opacity">
                             <img src="https://picsum.photos/seed/passenger/40/40" alt="Profile"
                                 class="w-10 h-10 rounded-full border-2 border-transparent hover:border-indigo-600 transition-all">
-                            <i class="fas fa-chevron-down text-gray-600 text-sm"></i>
                         </button>
-
-                        <div id="dropdown"
-                            class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-2 animate-slide-in">
-                            <a href="#"
-                                class="block px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors">
-                                <i class="fas fa-user mr-2"></i> Profile
-                            </a>
-                            <a href="#"
-                                class="block px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors">
-                                <i class="fas fa-cog mr-2"></i> Settings
-                            </a>
-                            <hr class="my-2">
-                            <a href="#"
-                                class="block px-4 py-2 text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors">
-                                <i class="fas fa-sign-out-alt mr-2"></i> Logout
-                            </a>
-                        </div>
+                    </a>
+                        <form action="{{ route('logout') }}" method="POST" >
+                            @csrf
+                            <button type="submit"
+                                class="bg-red-500 hover:bg-red-600 text-white p-2 rounded-lg relative w-8 h-8 flex items-center justify-center">
+                                <i class="fas fa-power-off text-sm"></i>
+                            </button>
+                        </form>
+                        
                     </div>
                 </div>
             </div>
