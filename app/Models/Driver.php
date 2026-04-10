@@ -24,4 +24,7 @@ class Driver extends Model
     {
         return $this->hasOne(Vehicle::class, 'driver_id');
     }
+    public function trips(){
+        return $this->hasMany(Trip::class);
+    }
 }
