@@ -17,30 +17,24 @@ class AdminController extends Controller
         'trips_count'   => Trip::count(),
         'drivers_count' => Driver::count(),
 
-        // Stats Chauffeurs
         'drivers_verified'   => Driver::where('is_verified', 1)->count(),
         'drivers_unverified' => Driver::where('is_verified', 0)->count(),
 
-        // Stats Trajets par statut
         'trips_avenir'   => Trip::where('status', 'avenir')->count(),
         'trips_encours'  => Trip::where('status', 'encours')->count(),
         'trips_terminer' => Trip::where('status', 'terminer')->count(),
 
-        // Revenus
         'total_revenue'  => Trip::where('status', 'terminer')->sum('price'),
         'revenue_today'  => Trip::where('status', 'terminer')
                                ->whereDate('updated_at', today())
                                ->sum('price'),
 
-        // Activité aujourd'hui
         'trips_today'   => Trip::whereDate('created_at', today())->count(),
         'users_today'   => User::whereDate('created_at', today())->count(),
 
-        // Trajets récents
         'recent_trips'  => Trip::with(['passenger', 'driver'])
                               ->latest()->take(5)->get(),
 
-        // Nouveaux utilisateurs récents
         'recent_users'  => User::latest()->take(5)->get(),
     ]);
 }

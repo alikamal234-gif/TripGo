@@ -183,7 +183,16 @@
                         <img src="https://picsum.photos/seed/driver123/40/40.jpg" alt="Profile"
                             class="w-10 h-10 rounded-full border-2 border-indrive-yellow">
                         <div class="hidden md:block">
-                            <p class="font-bold text-indrive-dark">{{ auth()->user()->name }}</p>
+                            <div class="flex gap-2">
+                                <p class="font-bold text-indrive-dark">{{ auth()->user()->name }}</p>
+                                <form action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button type="submit"
+                                        class="bg-red-500 hover:bg-red-600 text-white p-2 rounded-lg relative w-8 h-8 flex items-center justify-center">
+                                        <i class="fas fa-power-off text-sm"></i>
+                                    </button>
+                                </form>
+                            </div>
                             <p class="text-xs text-green-600 flex items-center">
                                 <i class="fas fa-circle text-xs mr-1"></i>
                                 En ligne

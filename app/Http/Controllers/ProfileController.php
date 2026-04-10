@@ -15,26 +15,30 @@ class ProfileController extends Controller
     public function index()
     {
         $user = User::with('role')->findOrFail(auth()->id());
-
         $role = $user->role->name;
 
-        if ($role === "driver") {
-
+        if ($role == "driver") {
             $user->load([
-                'driver.vehicle'
+                'driver.vehicle',
+                'driver.trips.departureAddress',
+                'driver.trips.destinationAddress'
             ]);
 
-        } elseif ($role === "passenger") {
+            $finishedTrips = $user->driver->trips->where('status', 'terminer');
+            $averageRating = $finishedTrips->avg('rating') ? number_format($finishedTrips->avg('rating'), 1) : 'Nouveau';
 
+        } elseif ($role == "passenger") {
             $user->load([
-                'passenger.trips'
+                'passenger.trips.departureAddress',
+                'passenger.trips.destinationAddress'
             ]);
+            $averageRating = null;
 
         } else {
             abort(404);
         }
 
-        return view('profile', compact('user'));
+        return view('profile', compact('user', 'role', 'averageRating'));
     }
 
     /**

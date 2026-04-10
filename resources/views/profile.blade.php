@@ -1,467 +1,255 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <title>Profil - TripGo</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        
+
         body {
             font-family: 'Inter', sans-serif;
         }
-        
+
         .tripgo-yellow {
             background-color: #FFD500;
         }
-        
-        .tripgo-yellow-text {
-            color: #FFD500;
-        }
-        
-        .tripgo-black {
-            background-color: #121212;
-        }
-        
-        .tripgo-black-text {
-            color: #121212;
-        }
-        
-        .input-focus:focus {
-            border-color: #FFD500;
-            box-shadow: 0 0 0 3px rgba(255, 213, 0, 0.2);
-        }
-        
-        .btn-yellow:hover {
-            background-color: #E5C200;
-        }
-        
-        .btn-yellow:active {
-            background-color: #CCAC00;
-        }
-        
-        .pattern-bg {
-            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23FFD500' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-        }
-        
-        .sidebar-item {
-            transition: all 0.2s ease;
-        }
-        
-        .sidebar-item:hover {
-            background-color: rgba(255, 213, 0, 0.1);
-            border-left: 3px solid #FFD500;
-        }
-        
-        .sidebar-item.active {
-            background-color: rgba(255, 213, 0, 0.15);
-            border-left: 3px solid #FFD500;
-        }
-        
-        .stat-card {
-            transition: all 0.3s ease;
-        }
-        
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
-        
-        .tab-button {
-            transition: all 0.2s ease;
-        }
-        
-        .tab-button:hover {
-            background-color: rgba(255, 213, 0, 0.1);
-        }
-        
-        .tab-button.active {
-            background-color: #FFD500;
-            color: #121212;
-        }
+
+        .tripgo-black { background-color: #121212; }
+        .tripgo-black-text { color: #121212; }
+        .pattern-bg { background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23FFD500' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); }
+        .sidebar-item { transition: all 0.2s ease; border-left: 3px solid transparent; }
+        .sidebar-item:hover, .sidebar-item.active { background-color: rgba(255, 213, 0, 0.15); border-left: 3px solid #FFD500; }
+        .stat-card { transition: all 0.3s ease; }
+        .stat-card:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.08); }
+        .tab-button { transition: all 0.2s ease; cursor: pointer; }
+        .tab-button:hover { background-color: rgba(255, 213, 0, 0.1); }
+        .tab-button.active { background-color: #FFD500; color: #121212; font-weight: 600; }
     </style>
 </head>
 <body class="bg-gray-50 pattern-bg">
     <div class="flex h-screen">
         <!-- Sidebar -->
-        <div class="w-64 tripgo-black text-white">
+        <div class="w-64 tripgo-black text-white flex-shrink-0 hidden md:flex md:flex-col">
             <div class="p-6">
-                <!-- Logo -->
                 <div class="flex items-center space-x-3 mb-8">
                     <div class="w-10 h-10 tripgo-yellow rounded-full flex items-center justify-center">
                         <i class="fas fa-route tripgo-black-text"></i>
                     </div>
                     <h1 class="text-xl font-bold">TripGo</h1>
                 </div>
-                
-                <!-- Navigation -->
                 <nav class="space-y-2">
-                    <a href="#" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg">
-                        <i class="fas fa-home w-5"></i>
-                        <span>Home</span>
+                    <a href="/" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white">
+                        <i class="fas fa-home w-5"></i><span>Home</span>
                     </a>
-                    <a href="#" class="sidebar-item active flex items-center space-x-3 px-4 py-3 rounded-lg">
-                        <i class="fas fa-user w-5"></i>
-                        <span>Mon profil</span>
-                    </a>
-                    <!-- Afficher seulement si c'est un conducteur -->
-                    @if($user->role->name === 'driver')
-                    <a href="#" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg">
-                        <i class="fas fa-car w-5"></i>
-                        <span>Mes véhicules</span>
-                    </a>
-                    @endif
-                    
-                    <a href="#" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg">
-                        <i class="fas fa-cog w-5"></i>
-                        <span>Paramètres</span>
-                    </a>
-                    <a href="#" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-red-400">
-                        <i class="fas fa-sign-out-alt w-5"></i>
-                        <span>Déconnexion</span>
+                    <a href="#" class="sidebar-item active flex items-center space-x-3 px-4 py-3 rounded-lg text-white">
+                        <i class="fas fa-user w-5"></i><span>Mon profil</span>
                     </a>
                 </nav>
             </div>
         </div>
-        
+
         <!-- Main Content -->
         <div class="flex-1 overflow-y-auto">
             <!-- Header -->
-            <div class="bg-white shadow-sm border-b border-gray-200">
+            <div class="bg-white shadow-sm border-b sticky top-0 z-10">
                 <div class="px-6 py-4 flex items-center justify-between">
-                    <h2 class="text-2xl font-bold tripgo-black-text">Mon profil</h2>
-                    <div class="flex items-center space-x-4">
-                        <button class="relative p-2 text-gray-600 hover:text-gray-900">
-                            <i class="fas fa-bell text-xl"></i>
-                            <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
-                        </button>
-                        <div class="flex items-center space-x-3">
-                            <img src="{{ $user->profile_photo_url ?? 'https://picsum.photos/seed/' . $user->id . '/40/40.jpg' }}" alt="Profile" class="w-10 h-10 rounded-full">
-                            <div>
-                                <p class="text-sm font-medium tripgo-black-text">{{ $user->name }}</p>
-                                <p class="text-xs text-gray-500">{{ ucfirst($user->role->name) }}</p>
-                            </div>
+                    <h2 class="text-2xl font-bold tripgo-black-text">
+                        {{ $role === 'driver' ? 'Espace Conducteur' : 'Espace Passager' }}
+                    </h2>
+                    <div class="flex items-center space-x-3 bg-gray-50 px-4 py-2 rounded-full">
+                        <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center text-gray-600 font-bold">
+                            {{ strtoupper(substr($user->name, 0, 1)) }}
                         </div>
+                        <span class="text-sm font-medium tripgo-black-text hidden sm:block">{{ $user->name }}</span>
+                                <form action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button type="submit"
+                                        class="bg-red-500 hover:bg-red-600 text-white p-2 rounded-lg relative w-8 h-8 flex items-center justify-center">
+                                        <i class="fas fa-power-off text-sm"></i>
+                                    </button>
+                                </form>
                     </div>
                 </div>
             </div>
-            
-            <!-- Profile Content -->
-            <div class="p-6">
-                <!-- Profile Header -->
+
+            <div class="p-6 max-w-6xl mx-auto">
+                
+                <!-- CARD INFOS PERSO -->
                 <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
-                    <div class="flex flex-col md:flex-row items-center md:items-start space-y-4 md:space-y-0 md:space-x-6">
-                        <!-- Profile Picture -->
-                        <div class="relative">
-                            <img src="{{ $user->profile_photo_url ?? 'https://picsum.photos/seed/' . $user->id . '/120/120.jpg' }}" alt="Profile" class="w-32 h-32 rounded-full border-4 border-yellow-400">
-                            <button class="absolute bottom-0 right-0 w-10 h-10 tripgo-yellow rounded-full flex items-center justify-center shadow-lg hover:bg-yellow-400 transition">
-                                <i class="fas fa-camera tripgo-black-text"></i>
-                            </button>
+                    <div class="flex flex-col md:flex-row items-start space-y-4 md:space-y-0 md:space-x-6">
+                        <div class="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center text-gray-500 text-3xl font-bold flex-shrink-0">
+                            {{ strtoupper(substr($user->name, 0, 1)) }}
                         </div>
-                        
-                        <!-- Profile Info -->
-                        <div class="flex-1 text-center md:text-left">
-                            <h3 class="text-2xl font-bold tripgo-black-text">{{ $user->name }}</h3>
-                            <p class="text-gray-600 mb-2">{{ $user->email }}</p>
-                            <p class="text-gray-600 mb-4">{{ $user->phone ?? 'Non renseigné' }}</p>
+                        <div class="flex-1">
+                            <div class="flex flex-wrap items-center gap-3 mb-2">
+                                <h3 class="text-2xl font-bold tripgo-black-text">{{ $user->name }}</h3>
+                                
+                                @if($role === 'driver')
+                                    @if($user->driver->is_verified)
+                                        <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold flex items-center gap-1">
+                                            <i class="fas fa-shield-halved"></i> Vérifié
+                                        </span>
+                                    @else
+                                        <span class="px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs font-semibold flex items-center gap-1">
+                                            <i class="fas fa-exclamation-triangle"></i> Non vérifié
+                                        </span>
+                                    @endif
+                                @endif
+                            </div>
                             
-                            <!-- Badges -->
-                            <div class="flex flex-wrap gap-2 justify-center md:justify-start">
-                                <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
-                                    <i class="fas fa-check-circle mr-1"></i> {{ $user->email_verified_at ? 'Vérifié' : 'Non vérifié' }}
-                                </span>
-                                <span class="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm font-medium">
-                                    <i class="fas fa-star mr-1"></i> {{ $user->average_rating ?? 'Nouveau' }} ({{ $user->ratings_count ?? 0 }} avis)
-                                </span>
-                                <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
-                                    <i class="fas fa-{{ $user->role->name === 'driver' ? 'car' : 'user' }} mr-1"></i> {{ ucfirst($user->role->name) }}
-                                </span>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-2 text-sm text-gray-600">
+                                <div><i class="fas fa-envelope mr-2 text-gray-400"></i>{{ $user->email }}</div>
+                                <div><i class="fas fa-phone mr-2 text-gray-400"></i>{{ $user->phone }}</div>
+                                <div><i class="fas fa-map-marker-alt mr-2 text-gray-400"></i>{{ $user->ville }} ({{ $user->postal_code }})</div>
                             </div>
-                        </div>
-                        
-                        <!-- Action Buttons -->
-                        <div class="flex flex-col space-y-2">
-                            <form action="" method="post">
-                                @method('DELETE')
-                                @csrf
-                                <button class="hover:bg-red-500 px-6 py-2 rounded-lg tripgo-black-text font-medium">
-                                <i class="fas fa-trash-can mr-2"></i> supprimer le compte
-                            </button>
-                            </form>
-                            <button class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50">
-                                <i class="fas fa-share-alt mr-2"></i> Partager
-                            </button>
                         </div>
                     </div>
                 </div>
-                
-                <!-- Statistics Cards - Différentes selon le rôle -->
-                @if($user->role->name === 'driver')
-                <!-- Driver Statistics -->
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-                    <div class="stat-card bg-white rounded-xl shadow-sm p-6">
-                        <div class="flex items-center justify-between mb-2">
-                            <i class="fas fa-route text-2xl text-yellow-500"></i>
-                            <span class="text-xs text-green-600 font-medium">+12%</span>
-                        </div>
-                        <h4 class="text-2xl font-bold tripgo-black-text">{{ $user->driver->completed_trips ?? 0 }}</h4>
-                        <p class="text-gray-600 text-sm">Number Of Trips</p>    
-                    </div>
-                    
-                    
-                </div>
-                @else
-                <!-- Passenger Statistics -->
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-                    <div class="stat-card bg-white rounded-xl shadow-sm p-6">
-                        <div class="flex items-center justify-between mb-2">
-                            <i class="fas fa-route text-2xl text-yellow-500"></i>
-                            <span class="text-xs text-green-600 font-medium">+5%</span>
-                        </div>
-                        <h4 class="text-2xl font-bold tripgo-black-text">{{ count($user->passenger->trips ?? []) }}</h4>
-                        <p class="text-gray-600 text-sm">Trajets effectués</p>
-                    </div>
-                    
-                    <div class="stat-card bg-white rounded-xl shadow-sm p-6">
-                        <div class="flex items-center justify-between mb-2">
-                            <i class="fas fa-map-marked-alt text-2xl text-blue-500"></i>
-                            <span class="text-xs text-green-600 font-medium">+15%</span>
-                        </div>
-                        <h4 class="text-2xl font-bold tripgo-black-text">{{ $user->passenger->total_distance ?? 0 }} km</h4>
-                        <p class="text-gray-600 text-sm">Distance parcourue</p>
-                    </div>
-                    
-                    <div class="stat-card bg-white rounded-xl shadow-sm p-6">
-                        <div class="flex items-center justify-between mb-2">
-                            <i class="fas fa-euro-sign text-2xl text-green-500"></i>
-                            <span class="text-xs text-red-600 font-medium">-10%</span>
-                        </div>
-                        <h4 class="text-2xl font-bold tripgo-black-text">€{{ number_format($user->passenger->total_spent ?? 0, 0, ',', ' ') }}</h4>
-                        <p class="text-gray-600 text-sm">Total dépensé</p>
-                    </div>
-                    
-                    <div class="stat-card bg-white rounded-xl shadow-sm p-6">
-                        <div class="flex items-center justify-between mb-2">
-                            <i class="fas fa-award text-2xl text-purple-500"></i>
-                            <span class="text-xs text-green-600 font-medium">Nouveau!</span>
-                        </div>
-                        <h4 class="text-2xl font-bold tripgo-black-text">{{ $user->passenger->loyalty_points ?? 0 }}</h4>
-                        <p class="text-gray-600 text-sm">Points de fidélité</p>
-                    </div>
-                </div>
-                @endif
-                
-                <!-- Tabs Section -->
-                <div class="bg-white rounded-xl shadow-sm">
-                    <!-- Tab Headers -->
-                    <div class="border-b border-gray-200">
-                        <div class="flex space-x-1 p-1">
-                            <button class="tab-button active px-4 py-2 rounded-lg font-medium" onclick="switchTab('personal')">
-                                Informations personnelles
-                            </button>
-                            @if($user->role->name === 'driver')
-                            <button class="tab-button px-4 py-2 rounded-lg font-medium text-gray-600" onclick="switchTab('vehicle')">
-                                Véhicule
-                            </button>
-                           
-                            @endif
-                            <button class="tab-button px-4 py-2 rounded-lg font-medium text-gray-600" onclick="switchTab('preferences')">
-                                Préférences
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <!-- Tab Content -->
-                    <div class="p-6">
-                        <!-- Personal Information Tab -->
-                        <div id="personal-tab" class="tab-content">
-                            <h4 class="text-lg font-semibold tripgo-black-text mb-4">Informations personnelles</h4>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Nom complet</label>
-                                    <input type="text" value="{{ $user->name }}" class="input-focus w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
-                                    <input type="email" value="{{ $user->email }}" class="input-focus w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Téléphone</label>
-                                    <input type="string" value="{{ $user->phone ?? '' }}" class="input-focus w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Date de naissance</label>
-                                    <input type="date" value="{{ $user->birth_date ?? '' }}" class="input-focus w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Ville</label>
-                                    <input type="text" value="{{ $user->city ?? '' }}" class="input-focus w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Code postal</label>
-                                    <input type="text" value="{{ $user->postal_code ?? '' }}" class="input-focus w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none">
-                                </div>
-                            </div>
-                            <div class="mt-6 flex justify-end">
-                                <button class="btn-yellow px-6 py-2 rounded-lg tripgo-black-text font-medium">
-                                    Enregistrer les modifications
-                                </button>
-                            </div>
-                        </div>
-                        
-                       @if($user->driver && $user->driver->vehicle)
-                        <!-- Vehicle Tab -->
-                        <div id="vehicle-tab" class="tab-content hidden">
-                            <h4 class="text-lg font-semibold tripgo-black-text mb-4">Informations sur le véhicule</h4>
-                            @if($user->driver->vehicle->type)
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Marque et modèle</label>
-                                    <input type="text" value="{{ $user->driver->vehicle->type }}" class="input-focus w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none">
-                                </div>
-                               <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">number de plate</label>
-                                    <input type="text" value="{{ $user->driver->vehicle->vehicle_plate }}" class="input-focus w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Couleur</label>
-                                    <input type="text" value="{{ $user->driver->vehicle->coulour }}" class="input-focus w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none">
-                                </div>
-                                
-                                
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Nombre de sièges</label>
-                                    <select class="input-focus w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none">
-                                        <option {{ $user->driver->vehicle->num_seats == 2 ? 'selected' : '' }}>2</option>
-                                        <option {{ $user->driver->vehicle->num_seats == 3 ? 'selected' : '' }}>3</option>
-                                        <option {{ $user->driver->vehicle->num_seats == 4 ? 'selected' : '' }}>4</option>
-                                        <option {{ $user->driver->vehicle->num_seats == 5 ? 'selected' : '' }}>5</option>
-                                        <option {{ $user->driver->vehicle->num_seats >= 6 ? 'selected' : '' }}>6+</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="mt-6">
-                                <div class="flex items-center space-x-4">
-                                    <img src="{{ $user->driver->vehicle->photo_url ?? 'https://picsum.photos/seed/vehicle' . $user->id . '/200/120.jpg' }}" alt="Vehicle" class="rounded-lg">
-                                    <div>
-                                        <p class="text-sm text-gray-600 mb-2">Photo du véhicule</p>
-                                        <button class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50">
-                                            <i class="fas fa-upload mr-2"></i> Changer la photo
-                                        </button>
+
+                <!-- STATS & INFOS SPÉCIFIQUES -->
+                @if($role === 'driver')
+                    <!-- DRIVER VIEW -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                        <div class="lg:col-span-1 space-y-4">
+                            <div class="stat-card bg-white rounded-xl shadow-sm p-5 border-l-4 border-yellow-400">
+                                <p class="text-sm text-gray-500 mb-1">Note moyenne</p>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-3xl font-bold tripgo-black-text">{{ $averageRating }}</span>
+                                    <div class="text-yellow-500">
+                                        @for($i = 1; $i <= 5; $i++)
+                                            @if($averageRating !== 'Nouveau' && $i <= floor($averageRating))
+                                                <i class="fas fa-star"></i>
+                                            @else
+                                                <i class="far fa-star text-gray-300"></i>
+                                            @endif
+                                        @endfor
                                     </div>
                                 </div>
                             </div>
+                            <div class="stat-card bg-white rounded-xl shadow-sm p-5 border-l-4 border-blue-400">
+                                <p class="text-sm text-gray-500 mb-1">Trajets terminés</p>
+                                <span class="text-3xl font-bold tripgo-black-text">{{ $user->driver->trips->where('status', 'terminer')->count() }}</span>
+                            </div>
+                        </div>
+
+                        <div class="lg:col-span-2 bg-white rounded-xl shadow-sm p-6">
+                            <h4 class="text-lg font-bold tripgo-black-text mb-4 flex items-center gap-2">
+                                <i class="fas fa-car text-yellow-500"></i> Mon Véhicule
+                            </h4>
+                            @if($user->driver->vehicle)
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                    <div class="bg-gray-50 p-4 rounded-lg text-center">
+                                        <i class="fas fa-car-side text-2xl text-gray-400 mb-2"></i>
+                                        <p class="text-xs text-gray-500">Modèle</p>
+                                        <p class="font-semibold tripgo-black-text">{{ $user->driver->vehicle->type }}</p>
+                                    </div>
+                                    <div class="bg-gray-50 p-4 rounded-lg text-center">
+                                        <i class="fas fa-id-card text-2xl text-gray-400 mb-2"></i>
+                                        <p class="text-xs text-gray-500">Immatriculation</p>
+                                        <p class="font-semibold tripgo-black-text">{{ $user->driver->vehicle->vehicle_plate }}</p>
+                                    </div>
+                                    <div class="bg-gray-50 p-4 rounded-lg text-center">
+                                        <i class="fas fa-palette text-2xl text-gray-400 mb-2"></i>
+                                        <p class="text-xs text-gray-500">Couleur</p>
+                                        <p class="font-semibold tripgo-black-text capitalize">{{ $user->driver->vehicle->coulour }}</p>
+                                    </div>
+                                    <div class="bg-gray-50 p-4 rounded-lg text-center">
+                                        <i class="fas fa-users text-2xl text-gray-400 mb-2"></i>
+                                        <p class="text-xs text-gray-500">Places dispo.</p>
+                                        <p class="font-semibold tripgo-black-text">{{ $user->driver->vehicle->num_seats }}</p>
+                                    </div>
+                                </div>
                             @else
-                            <div class="text-center py-8">
-                                <i class="fas fa-car text-4xl text-gray-400 mb-4"></i>
-                                <p class="text-gray-600 mb-4">Aucun véhicule enregistré</p>
-                                <button class="btn-yellow px-6 py-2 rounded-lg tripgo-black-text font-medium">
-                                    <i class="fas fa-plus mr-2"></i> Ajouter un véhicule
-                                </button>
-                            </div>
+                                <div class="text-center py-8 text-gray-500 bg-gray-50 rounded-lg">
+                                    <i class="fas fa-car-crash text-4xl mb-3 text-gray-300"></i>
+                                    <p>Aucun véhicule trouvé.</p>
+                                </div>
                             @endif
-                            <div class="mt-6 flex justify-end">
-                                <button class="btn-yellow px-6 py-2 rounded-lg tripgo-black-text font-medium">
-                                    Enregistrer les modifications
-                                </button>
-                            </div>
-                        </div>
-                        
-                        
-                        @endif
-                        
-                        <!-- Preferences Tab -->
-                        <div id="preferences-tab" class="tab-content hidden">
-                            <h4 class="text-lg font-semibold tripgo-black-text mb-4">Préférences</h4>
-                            <div class="space-y-6">
-                                <div>
-                                    <h5 class="font-medium mb-3">Notifications</h5>
-                                    <div class="space-y-3">
-                                        <label class="flex items-center justify-between">
-                                            <span class="text-gray-700">Notifications par email</span>
-                                            <input type="checkbox" {{ $user->email_notifications ? 'checked' : '' }} class="w-5 h-5 text-yellow-500 rounded focus:ring-yellow-400">
-                                        </label>
-                                        <label class="flex items-center justify-between">
-                                            <span class="text-gray-700">Notifications push</span>
-                                            <input type="checkbox" {{ $user->push_notifications ? 'checked' : '' }} class="w-5 h-5 text-yellow-500 rounded focus:ring-yellow-400">
-                                        </label>
-                                        <label class="flex items-center justify-between">
-                                            <span class="text-gray-700">SMS de confirmation</span>
-                                            <input type="checkbox" {{ $user->sms_notifications ? 'checked' : '' }} class="w-5 h-5 text-yellow-500 rounded focus:ring-yellow-400">
-                                        </label>
-                                    </div>
-                                </div>
-                                
-                                <div>
-                                    <h5 class="font-medium mb-3">Langue </h5>
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-700 mb-2">Langue</label>
-                                            <select class="input-focus w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none">
-                                                <option {{ $user->language === 'fr' ? 'selected' : '' }}>Français</option>
-                                                <option {{ $user->language === 'en' ? 'selected' : '' }}>English</option>
-                                                <option {{ $user->language === 'es' ? 'selected' : '' }}>Español</option>
-                                            </select>
-                                        </div>
-                                        
-                                    </div>
-                                </div>
-                                
-                                
-                            </div>
-                            <div class="mt-6 flex justify-end">
-                                <button class="btn-yellow px-6 py-2 rounded-lg tripgo-black-text font-medium">
-                                    Enregistrer les préférences
-                                </button>
-                            </div>
                         </div>
                     </div>
+
+                @else
+                    <!-- PASSENGER VIEW -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                        <div class="stat-card bg-white rounded-xl shadow-sm p-6 text-center">
+                            <i class="fas fa-route text-3xl text-yellow-500 mb-3"></i>
+                            <p class="text-3xl font-bold tripgo-black-text">{{ $user->passenger->trips->count() }}</p>
+                            <p class="text-gray-500 text-sm">Trajets réservés</p>
+                        </div>
+                        <div class="stat-card bg-white rounded-xl shadow-sm p-6 text-center">
+                            <i class="fas fa-check-circle text-3xl text-green-500 mb-3"></i>
+                            <p class="text-3xl font-bold tripgo-black-text">{{ $user->passenger->trips->where('status', 'terminer')->count() }}</p>
+                            <p class="text-gray-500 text-sm">Trajets terminés</p>
+                        </div>
+                        <div class="stat-card bg-white rounded-xl shadow-sm p-6 text-center">
+                            <i class="fas fa-hourglass-half text-3xl text-blue-500 mb-3"></i>
+                            <p class="text-3xl font-bold tripgo-black-text">{{ $user->passenger->trips->where('status', 'avenir')->count() }}</p>
+                            <p class="text-gray-500 text-sm">Trajets à venir</p>
+                        </div>
+                    </div>
+                @endif
+
+                <!-- LISTE DES TRAJETS -->
+                <div class="bg-white rounded-xl shadow-sm">
+                    <div class="p-6 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <h4 class="text-lg font-bold tripgo-black-text">
+                            {{ $role === 'driver' ? 'Historique de mes courses' : 'Mes trajets' }}
+                        </h4>
+                        <div class="flex space-x-2 bg-gray-100 p-1 rounded-lg">
+                            <button onclick="filterTrips('all', this)" class="tab-button active px-3 py-1 rounded-md text-sm">Tous</button>
+                            <button onclick="filterTrips('avenir', this)" class="tab-button px-3 py-1 rounded-md text-sm text-gray-600">A venir</button>
+                            <button onclick="filterTrips('encours', this)" class="tab-button px-3 py-1 rounded-md text-sm text-gray-600">En cours</button>
+                            <button onclick="filterTrips('terminer', this)" class="tab-button px-3 py-1 rounded-md text-sm text-gray-600">Terminés</button>
+                        </div>
+                    </div>
+                    
+                    <div id="trips-container" class="divide-y divide-gray-100">
+                        @php
+// Utilisation stricte de votre logique de modèles
+$trips = $role === 'driver' ? $user->driver->trips : $user->passenger->trips;
+                        @endphp
+
+                        @if($trips && $trips->count() > 0)
+                            @foreach($trips->sortByDesc('departure_time') as $trip)
+                                @include('partials.trip-card', ['trip' => $trip])
+                            @endforeach
+                        @else
+                            <div class="p-10 text-center text-gray-400">
+                                <i class="fas fa-suitcase-rolling text-5xl mb-4 text-gray-200"></i>
+                                <p class="text-lg">Aucun trajet trouvé.</p>
+                            </div>
+                        @endif
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>
-    
+
     <script>
-        // Tab switching functionality
-        function switchTab(tabName) {
-            // Hide all tab contents
-            const tabContents = document.querySelectorAll('.tab-content');
-            tabContents.forEach(content => {
-                content.classList.add('hidden');
+        function filterTrips(status, btnElement) {
+            const buttons = btnElement.parentElement.querySelectorAll('.tab-button');
+            buttons.forEach(btn => {
+                btn.classList.remove('active');
+                btn.classList.add('text-gray-600');
             });
-            
-            // Remove active class from all tab buttons
-            const tabButtons = document.querySelectorAll('.tab-button');
-            tabButtons.forEach(button => {
-                button.classList.remove('active');
-                button.classList.add('text-gray-600');
-            });
-            
-            // Show selected tab content
-            document.getElementById(tabName + '-tab').classList.remove('hidden');
-            
-            // Add active class to clicked button
-            event.target.classList.add('active');
-            event.target.classList.remove('text-gray-600');
-        }
-        
-        // Handle profile picture upload
-        document.querySelector('.fa-camera').parentElement.addEventListener('click', function() {
-            // Create a hidden file input
-            const fileInput = document.createElement('input');
-            fileInput.type = 'file';
-            fileInput.accept = 'image/*';
-            fileInput.onchange = function(e) {
-                const file = e.target.files[0];
-                if (file) {
-                    // In a real app, this would upload the file
-                    alert('Photo de profil mise à jour avec succès!');
+            btnElement.classList.add('active');
+            btnElement.classList.remove('text-gray-600');
+
+            const cards = document.querySelectorAll('.trip-row');
+            cards.forEach(card => {
+                if (status === 'all' || card.dataset.status === status) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
                 }
-            };
-            fileInput.click();
-        });
+            });
+        }
     </script>
 </body>
 </html>

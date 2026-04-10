@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\PassengerController;
 use App\Http\Controllers\ProfileController;
@@ -32,6 +33,7 @@ Route::prefix('passenger')->middleware('auth')->group(function (){
 
 Route::middleware('auth')->group(function (){
     Route::get('/profile',[ProfileController::class,'index'])->name('profile');
+    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });
 
 
