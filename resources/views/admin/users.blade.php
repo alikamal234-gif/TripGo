@@ -150,19 +150,13 @@
                     <!-- Pagination -->
                     <div class="bg-gray-50 px-6 py-3 flex items-center justify-between border-t">
                         <div class="text-sm text-gray-700">
-                            Affichage de <span class="font-medium">1</span> à <span class="font-medium">{{ $users->count() }}</span> sur 
-                            <span class="font-medium">{{ $users->count() }}</span> résultats
+                            Affichage de
+                            <span class="font-medium">{{ $users->firstItem() }}</span> à
+                            <span class="font-medium">{{ $users->lastItem() }}</span> sur
+                            <span class="font-medium">{{ $users->total() }}</span> résultats
                         </div>
-                        <div class="flex space-x-2">
-                            <button class="px-3 py-1 border border-gray-300 rounded-md text-sm hover:bg-gray-50">
-                                Précédent
-                            </button>
-                            <button class="px-3 py-1 bg-indigo-600 text-white rounded-md text-sm">
-                                1
-                            </button>
-                            <button class="px-3 py-1 border border-gray-300 rounded-md text-sm hover:bg-gray-50">
-                                Suivant
-                            </button>
+                        <div>
+                            {{ $users->links() }}
                         </div>
                     </div>
                 </div>

@@ -86,33 +86,31 @@
             <!-- Content -->
             <div class="p-6">
                 <!-- Stats Overview -->
-                <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                     <div class="bg-white rounded-lg p-4 text-center">
                         <i class="fas fa-route text-blue-500 text-2xl mb-2"></i>
-                        <p class="text-2xl font-bold text-gray-800">{{ $trips->count() }}</p>
+                        <p class="text-2xl font-bold text-gray-800">{{ $stats['total'] }}</p>
                         <p class="text-sm text-gray-600">Total</p>
                     </div>
                     <div class="bg-white rounded-lg p-4 text-center">
                         <i class="fas fa-clock text-yellow-500 text-2xl mb-2"></i>
-                        <p class="text-2xl font-bold text-gray-800">{{ $trips->where('status', 'avenir')->count() }}
+                        <p class="text-2xl font-bold text-gray-800">{{ $stats['avenir'] }}
+                       
+                       
+                        
                         </p>
-                        <p class="text-sm text-gray-600">En attente</p>
+                        <p class="text-sm text-gray-600">Lancés</p>
                     </div>
-                    <div class="bg-white rounded-lg p-4 text-center">
-                        <i class="fas fa-check-circle text-green-500 text-2xl mb-2"></i>
-                        <p class="text-2xl font-bold text-gray-800">{{ $trips->where('status', 'accepted')->count() }}
-                        </p>
-                        <p class="text-sm text-gray-600">Acceptés</p>
-                    </div>
+                   
                     <div class="bg-white rounded-lg p-4 text-center">
                         <i class="fas fa-car text-indigo-500 text-2xl mb-2"></i>
                         <p class="text-2xl font-bold text-gray-800">
-                            {{ $trips->where('status', 'encours')->count() }}</p>
+                            {{ $stats['encours'] }}</p>
                         <p class="text-sm text-gray-600">En cours</p>
                     </div>
                     <div class="bg-white rounded-lg p-4 text-center">
                                                 <i class="fas fa-flag-checkered text-purple-500 text-2xl mb-2"></i>
-                        <p class="text-2xl font-bold text-gray-800">{{ $trips->where('status', 'terminer')->count() }}</p>
+                        <p class="text-2xl font-bold text-gray-800">{{ $stats['terminer'] }}</p>
                         <p class="text-sm text-gray-600">Terminés</p>
                     </div>
                 </div>
@@ -222,9 +220,9 @@
                                                 @else 
                                                     bg-red-100 text-red-800
                                                 @endif">
-                                                {{ $trip->status === 'encours' ? 'En cours' : 
-                                                   ($trip->status === 'terminer' ? 'Terminé' : 
-                                                   ($trip->status === 'avenir' ? 'Accepté' : 'anuller'))
+                                                {{ $trip->status === 'encours' ? 'En cours' :
+        ($trip->status === 'terminer' ? 'Terminé' :
+            ($trip->status === 'avenir' ? 'Accepté' : 'anuller'))
                                                    
                                                 }}
                                             </span>
@@ -259,19 +257,13 @@
                     <!-- Pagination -->
                     <div class="bg-gray-50 px-6 py-3 flex items-center justify-between border-t">
                         <div class="text-sm text-gray-700">
-                            Affichage de <span class="font-medium">1</span> à <span class="font-medium">{{ $trips->count() }}</span> sur 
-                            <span class="font-medium">{{ $trips->count() }}</span> résultats
+                            Affichage de
+                            <span class="font-medium">{{ $trips->firstItem() }}</span> à
+                            <span class="font-medium">{{ $trips->lastItem() }}</span> sur
+                            <span class="font-medium">{{ $trips->total() }}</span> résultats
                         </div>
-                        <div class="flex space-x-2">
-                            <button class="px-3 py-1 border border-gray-300 rounded-md text-sm hover:bg-gray-50">
-                                Précédent
-                            </button>
-                            <button class="px-3 py-1 bg-indigo-600 text-white rounded-md text-sm">
-                                1
-                            </button>
-                            <button class="px-3 py-1 border border-gray-300 rounded-md text-sm hover:bg-gray-50">
-                                Suivant
-                            </button>
+                        <div>
+                            {{ $trips->links() }}
                         </div>
                     </div>
                 </div>

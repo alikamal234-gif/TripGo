@@ -76,35 +76,27 @@
             <!-- Content -->
             <div class="p-6">
                 <!-- Stats Cards -->
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                     <div class="bg-white rounded-lg p-4 border-l-4 border-green-500">
                         <div class="flex items-center justify-between">
                             <div>
                                 <p class="text-sm text-gray-600">Actifs</p>
-                                <p class="text-2xl font-bold text-gray-800">{{ $drivers->where('status', 'active')->count() }}</p>
+                                <p class="text-2xl font-bold text-gray-800">{{ $drivers->where('is_verified', true)->count() }}</p>
                             </div>
                             <i class="fas fa-check-circle text-green-500 text-2xl"></i>
                         </div>
                     </div>
-                    <div class="bg-white rounded-lg p-4 border-l-4 border-yellow-500">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <p class="text-sm text-gray-600">En attente</p>
-                                <p class="text-2xl font-bold text-gray-800">{{ $drivers->where('status', 'pending')->count() }}</p>
-                            </div>
-                            <i class="fas fa-clock text-yellow-500 text-2xl"></i>
-                        </div>
-                    </div>
+                    
                     <div class="bg-white rounded-lg p-4 border-l-4 border-red-500">
                         <div class="flex items-center justify-between">
                             <div>
                                 <p class="text-sm text-gray-600">Inactifs</p>
-                                <p class="text-2xl font-bold text-gray-800">{{ $drivers->where('status', 'inactive')->count() }}</p>
+                                <p class="text-2xl font-bold text-gray-800">{{ $drivers->where('is_verified', false)->count() }}</p>
                             </div>
                             <i class="fas fa-ban text-red-500 text-2xl"></i>
                         </div>
                     </div>
-                    <div class="bg-white rounded-lg p-4 border-l-4 bg-indigo-600 text-white">
+                    <div class="bg-white rounded-lg p-4 border-l-4 bg-indigo-600 ">
                         <div class="flex items-center justify-between">
                             <div>
                                 <p class="text-sm">Total</p>
