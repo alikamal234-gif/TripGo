@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Chauffeurs - TripGo Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -63,7 +64,15 @@
                     </div>
                 </div>
             </header>
-
+            {{-- message success --}}
+            <div class="box-message hidden bg-green-200 rounded-lg p-4 border-l-4 border-green-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-message bg-green-200 mt-5 font-bold text-gray-800"></p>
+                    </div>
+                    <i class="fas fa-check-circle text-green-500 text-2xl"></i>
+                </div>
+            </div>
             <!-- Content -->
             <div class="p-6">
                 <!-- Stats Cards -->
@@ -175,11 +184,11 @@
                                     </div>
                                     <div class="flex items-center text-sm text-gray-600">
                                         <i class="fas fa-id-card w-5 text-gray-400"></i>
-                                        <form action="{{ route('driver.valide', $driver->id) }}" method="POST" class="mt-2">
+                                        <form class="verify-form mt-2" data-id="{{ $driver->id }}" data-url="{{ route('driver.valide', $driver->id) }}" ">
                                             @csrf
                                             @method('PATCH')
 
-                                            <select name="verification" onchange="this.form.submit()" class="p-2 border rounded w-full">
+                                            <select name="verification" class="verify-select p-2 border rounded w-full">
                                                 <option value="1" {{ $driver->is_verified == 1 ? 'selected' : '' }}>is valide</option>
                                                 <option value="0" {{ $driver->is_verified == 0 ? 'selected' : '' }}>is not valide</option>
                                             </select>
@@ -218,3 +227,41 @@
     </div>
 </body>
 </html>
+
+<script>
+    document.querySelectorAll('.verify-select').forEach(select => {
+        select.addEventListener('change',function(){
+            const form = select.closest('.verify-form')
+            const url = form.dataset.url
+            const value = this.value
+            console.log(form)
+
+            fetch(url,{
+                method : 'POST',
+                headers : {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept' : 'application/json'
+                },
+                body : new URLSearchParams({
+                    _method: 'PATCH',
+                    verification : value
+                })
+            }).then(res => res.json())
+            .then(data => {
+                console.log(data)
+                showToast('Updated successfully');
+            })
+            .catch(err => {
+                    console.error(err);
+                    showToast('Error', 'error');
+                });
+        })
+    })
+
+    function showToast(message, type = 'success') {
+        const textmessage = document.querySelector('.text-message')
+        textmessage.textContent = message
+        const box = textmessage.closest('.box-message')
+        box.style.display = 'block'
+}
+</script>

@@ -27,7 +27,7 @@ class AdminController extends Controller
 
     public function trips()
     {
-        $trips = Trip::with(['passenger','driver'])->latest()->get();
+        $trips = Trip::with(['passenger', 'driver'])->latest()->get();
 
         return view('admin.trips', compact('trips'));
     }
@@ -38,11 +38,17 @@ class AdminController extends Controller
 
         return view('admin.drivers', compact('drivers'));
     }
-    public function valider(Request $request,string $id){
+    public function valider(Request $request, string $id)
+    {
         $driver = Driver::findOrFail($id);
         $driver->update([
             'is_verified' => $request->verification
         ]);
-        return redirect()->route('admin.drivers')->with('success', "driver $driver->name is valider for use app");
+
+
+        return response()->json([
+            'success' => true,
+            'message' => 'driver was verified'
+        ]);
     }
 }
