@@ -60,4 +60,10 @@ class User extends Authenticatable
     public function passenger(){
         return $this->belongsTo(Passenger::class,'id');
     }
+
+
+    public function is_admin()
+{
+    return $this->role && $this->role->name === 'admin';
+}
 }
