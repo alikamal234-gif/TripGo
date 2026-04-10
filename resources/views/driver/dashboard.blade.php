@@ -137,6 +137,16 @@
 
 <body class="bg-gradient-to-br from-gray-50 via-white to-indrive-gray min-h-screen">
     <!-- Driver Header -->
+    @if(!auth()->user()->driver->is_verified)
+        <div class=" bg-red-200  p-4 border-l-4 border-red-500">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="bg-red-200 mt-5 font-bold text-gray-800">your account is not validated yet </p>
+                </div>
+
+            </div>
+        </div>
+    @endif
     <header class="bg-white shadow-sm sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
@@ -448,66 +458,70 @@ $nouveau = true;
                         @foreach($trips as $trip)
 
 
-                        <div
-                            class="trip-card bg-white border-2 border-indrive-yellow rounded-xl p-4 cursor-pointer new-trip">
-                            <div class="flex items-start justify-between mb-2">
-                                <div class="flex items-center space-x-2">
-                                    <img src="https://picsum.photos/seed/passenger1/32/32.jpg" alt="Passenger"
-                                        class="w-8 h-8 rounded-full">
-                                    <div>
-                                        <p class="font-bold text-indrive-dark">{{ $trip->passenger->name }}</p>
-                                        {{-- <p class="text-xs text-gray-600">⭐ 4.8 • 23 trajets</p> --}}
-                                    </div>
-                                </div>
-                                @if($nouveau)
-                                <span
-                                    class="bg-indrive-yellow text-black px-2 py-1 rounded-full text-xs font-bold animate-pulse-slow">
-                                    NOUVEAU
-                                </span>
-                                @endif
-                            </div>
+                                                                        <div
+                                                                            class="trip-card bg-white border-2 border-indrive-yellow rounded-xl p-4 cursor-pointer new-trip">
+                                                                            <div class="flex items-start justify-between mb-2">
+                                                                                <div class="flex items-center space-x-2">
+                                                                                    <img src="https://picsum.photos/seed/passenger1/32/32.jpg" alt="Passenger"
+                                                                                        class="w-8 h-8 rounded-full">
+                                                                                    <div>
+                                                                                        <p class="font-bold text-indrive-dark">{{ $trip->passenger->name }}</p>
+                                                                                        {{-- <p class="text-xs text-gray-600">⭐ 4.8 • 23 trajets</p> --}}
+                                                                                    </div>
+                                                                                </div>
+                                                                                @if($nouveau)
+                                                                                <span
+                                                                                    class="bg-indrive-yellow text-black px-2 py-1 rounded-full text-xs font-bold animate-pulse-slow">
+                                                                                    NOUVEAU
+                                                                                </span>
+                                                                                @endif
+                                                                            </div>
 
-                            <div class="space-y-2 items-start">
-                                <div class="flex items-center text-sm">
-                                    <i class="fas fa-map-marker-alt text-green-500 w-5"></i>
-                                    <span class="text-gray-700 ml-2">{{ $trip->departureAddress->name }}  {{ $trip->id }}</span>
-                                </div>
-                                <div class="flex items-center text-sm">
-                                    <i class="fas fa-flag-checkered text-red-500 w-5"></i>
-                                    <span class="text-gray-700 ml-2">{{ $trip->destinationAddress->name }}</span>
-                                </div>
-                            </div>
-                            <div class="flex items-center justify-between mt-3 pt-3 border-t">
-                                <div class="flex items-center space-x-4">
-                                    <span class="text-sm text-gray-600">
-                                        <i class="fas fa-road mr-1"></i>5.2 km
-                                    </span>
-                                    <span class="text-sm text-gray-600">
-                                        <i class="fas fa-clock mr-1"></i>{{ $trip->departue_time }}
-                                    </span>
-                                </div>
-                                <div class="text-right">
-                                    <p class="text-lg font-bold text-indrive-yellow">{{ $trip->price }}</p>
-                                    <p class="text-xs text-gray-600">proposé</p>
-                                </div>
-                            </div>
+                                                                            <div class="space-y-2 items-start">
+                                                                                <div class="flex items-center text-sm">
+                                                                                    <i class="fas fa-map-marker-alt text-green-500 w-5"></i>
+                                                                                    <span class="text-gray-700 ml-2">{{ $trip->departureAddress->name }}  {{ $trip->id }}</span>
+                                                                                </div>
+                                                                                <div class="flex items-center text-sm">
+                                                                                    <i class="fas fa-flag-checkered text-red-500 w-5"></i>
+                                                                                    <span class="text-gray-700 ml-2">{{ $trip->destinationAddress->name }}</span>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="flex items-center justify-between mt-3 pt-3 border-t">
+                                                                                <div class="flex items-center space-x-4">
+                                                                                    <span class="text-sm text-gray-600">
+                                                                                        <i class="fas fa-road mr-1"></i>5.2 km
+                                                                                    </span>
+                                                                                    <span class="text-sm text-gray-600">
+                                                                                        <i class="fas fa-clock mr-1"></i>{{ $trip->departue_time }}
+                                                                                    </span>
+                                                                                </div>
+                                                                                <div class="text-right">
+                                                                                    <p class="text-lg font-bold text-indrive-yellow">{{ $trip->price }}</p>
+                                                                                    <p class="text-xs text-gray-600">proposé</p>
+                                                                                </div>
+                                                                            </div>
 
-                            <div class="flex space-x-2 mt-3 ">
-                                <form action="{{ route('trip.accept', $trip->id) }}" method="post">
-                                    @csrf
-                                    <button type="submit" class="flex-1 bg-indrive-yellow text-black font-bold py-2 rounded-lg hover:bg-yellow-400 transition-colors">
-                                        Accepter
-                                    </button>
-                                </form>
-                                <button
-                                    class="flex-1 bg-gray-200 text-gray-700 font-bold py-2 rounded-lg hover:bg-gray-300 transition-colors">
-                                    Détails
-                                </button>
-                            </div>
-                        </div>
-                        @php
-    $nouveau = false;
-                        @endphp
+                                                                            <div class="flex space-x-2 mt-3 ">
+                                                                                <form action="{{ route('trip.accept', $trip->id) }}" method="post">
+                                                                                    @csrf
+                                                                                    <button @if (!auth()->user()->driver->is_verified)
+                                                                                        disabled
+                                                                                    @endif type="submit" class="
+                                                                                        {{ auth()->user()->driver->is_verified ? 'bg-indrive-yellow hover:bg-yellow-400 cursor-pointer' : 'bg-gray-400 cursor-not-allowed' }}
+                                                                                    flex-1  text-black font-bold py-2 rounded-lg  transition-colors">
+                                                                                        Accepter
+                                                                                    </button>
+                                                                                </form>
+                                                                                <button
+                                                                                    class=" detail-trip flex-1 bg-gray-200 text-gray-700 font-bold py-2 rounded-lg hover:bg-gray-300 transition-colors">
+                                                                                    Détails
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+                                                                        @php    
+                            $nouveau = false;
+                                                                        @endphp
                         @endforeach
                     </div>
                 </div>
@@ -715,8 +729,9 @@ $nouveau = true;
     });
 
     // Handle details buttons
-    document.querySelectorAll('.trip-card button:last-child').forEach(button => {
-        button.addEventListener('click', function (e) {
+    const detail = document.querySelector('.detail-trip')
+    // document.querySelectorAll('.trip-card button:last-child').forEach(button => {
+        detail.addEventListener('click', function (e) {
             e.stopPropagation();
             const card = this.closest('.trip-card');
             const passengerName = card.querySelector('.font-bold').textContent;
@@ -753,7 +768,7 @@ $nouveau = true;
                 }
             });
         });
-    });
+    // });
 
     // Animations
     const observer = new IntersectionObserver((entries) => {

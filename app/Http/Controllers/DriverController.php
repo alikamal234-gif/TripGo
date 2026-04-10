@@ -15,7 +15,7 @@ class DriverController extends Controller
 {
     $trips = Trip::latest()->where('driver_id',null)->get();
         $trips_accept = Trip::where('driver_id', auth()->id())->get();
-    return view('driver.dashboard', compact('trips','trips_accept'));
+    return view('driver.dashboard', compact('trips', 'trips_accept'));
 }
 
     /**

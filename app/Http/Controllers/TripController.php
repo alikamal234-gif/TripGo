@@ -77,6 +77,9 @@ class TripController extends Controller
 
     public function accept(string $id)
     {
+        if(auth()->user()->is_driver() && auth()->user()->driver->is_verified !== 1){
+            return redirect()->route('driver.dashboard')->with('error', 'your account is not valider now ');
+        }
         $trip = Trip::findOrFail($id);
         if (! $trip->driver_id) {
             $trip->update([
@@ -89,6 +92,9 @@ class TripController extends Controller
 
     public function start(string $id)
     {
+        if(auth()->user()->is_driver() && auth()->user()->driver->is_verified !== 1){
+            return redirect()->route('driver.dashboard')->with('error', 'your account is not valider now ');
+        }
         $trip = Trip::findOrFail($id);
         $trip->update([
             'status' => 'encours',
@@ -100,6 +106,9 @@ class TripController extends Controller
 
     public function terminer(string $id)
     {
+        if(auth()->user()->is_driver() && auth()->user()->driver->is_verified !== 1){
+            return redirect()->route('driver.dashboard')->with('error', 'your account is not valider now ');
+        }
         $trip = Trip::findOrFail($id);
         $trip->update([
             'status' => 'terminer',

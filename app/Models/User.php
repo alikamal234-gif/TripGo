@@ -66,4 +66,12 @@ class User extends Authenticatable
 {
     return $this->role && $this->role->name === 'admin';
 }
+    public function is_driver()
+{
+    return $this->role && $this->role->name === 'driver';
+}
+    public function is_passenger()
+{
+    return $this->role && $this->role->name === 'passenger';
+}
 }
