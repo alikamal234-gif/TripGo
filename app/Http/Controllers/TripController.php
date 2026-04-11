@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Address;
+use App\Models\Notification;
 use App\Models\Trip;
 use DB;
 use Illuminate\Http\Request;
@@ -39,7 +40,7 @@ class TripController extends Controller
                 'type' => 'destination',
             ]);
 
-            Trip::create([
+            $trip = Trip::create([
                 'passenger_id' => auth()->id(),
                 'driver_id' => null,
                 'departure_address_id' => $departure->id,
@@ -50,6 +51,14 @@ class TripController extends Controller
                 'rating' => 0,
                 'status' => 'avenir',
             ]);
+
+            Notification::create([
+                'user_id' => auth()->id(),
+                'type' => Notification::TYPE_TRIP_CREATED,
+                'message' => 'Trip is Lancer',
+                'trip_id' => $trip->id,
+            ]);
+            
 
         });
 
@@ -76,23 +85,40 @@ class TripController extends Controller
     }
 
     public function accept(string $id)
-    {
-        if(auth()->user()->is_driver() && auth()->user()->driver->is_verified !== 1){
-            return redirect()->route('driver.dashboard')->with('error', 'your account is not valider now ');
-        }
-        $trip = Trip::findOrFail($id);
-        if (! $trip->driver_id) {
-            $trip->update([
-                'driver_id' => auth()->id(),
-            ]);
-        }
-
-        return redirect()->route('driver.dashboard')->with('success', 'you accept one trip');
+{
+    if (auth()->user()->is_driver() && auth()->user()->driver->is_verified !== 1) {
+        return redirect()->route('driver.dashboard')->with('error', 'your account is not validated');
     }
+
+    $trip = Trip::findOrFail($id);
+
+    if (!$trip->driver_id) {
+        DB::transaction(function () use ($trip) {
+            
+            $trip->update(['driver_id' => auth()->id()]);
+
+            Notification::create([
+                'user_id' => $trip->passenger_id,
+                'type'    => Notification::TYPE_TRIP_ACCEPTED,
+                'message' => 'Votre trajet a été accepté par un chauffeur',
+                'trip_id' => $trip->id,
+            ]);
+
+            Notification::create([
+                'user_id' => auth()->id(),
+                'type'    => Notification::TYPE_TRIP_ACCEPTED,
+                'message' => 'Vous avez accepté un trajet',
+                'trip_id' => $trip->id,
+            ]);
+        });
+    }
+
+    return redirect()->route('driver.dashboard')->with('success', 'Trip accepted');
+}
 
     public function start(string $id)
     {
-        if(auth()->user()->is_driver() && auth()->user()->driver->is_verified !== 1){
+        if (auth()->user()->is_driver() && auth()->user()->driver->is_verified !== 1) {
             return redirect()->route('driver.dashboard')->with('error', 'your account is not valider now ');
         }
         $trip = Trip::findOrFail($id);
@@ -105,18 +131,39 @@ class TripController extends Controller
     }
 
     public function terminer(string $id)
-    {
-        if(auth()->user()->is_driver() && auth()->user()->driver->is_verified !== 1){
-            return redirect()->route('driver.dashboard')->with('error', 'your account is not valider now ');
-        }
-        $trip = Trip::findOrFail($id);
+{
+    if (auth()->user()->is_driver() && auth()->user()->driver->is_verified !== 1) {
+        return redirect()->route('driver.dashboard')->with('error', 'your account is not validated');
+    }
+
+    $trip = Trip::findOrFail($id);
+    
+    DB::transaction(function () use ($trip) {
+        
         $trip->update([
-            'status' => 'terminer',
+            'status'       => 'terminer',
             'termine_time' => now(),
         ]);
 
-        return redirect()->route('driver.dashboard')->with('success', 'your trip is finished');
-    }
+        // ✅ notification للـ passenger
+        Notification::create([
+            'user_id' => $trip->passenger_id,
+            'type'    => Notification::TYPE_TRIP_FINISHED,
+            'message' => 'Votre trajet est terminé',
+            'trip_id' => $trip->id,
+        ]);
+
+        // ✅ notification للـ driver
+        Notification::create([
+            'user_id' => auth()->id(),
+            'type'    => Notification::TYPE_TRIP_FINISHED,
+            'message' => 'Trajet terminé avec succès',
+            'trip_id' => $trip->id,
+        ]);
+    });
+
+    return redirect()->route('driver.dashboard')->with('success', 'Trip finished');
+}
 
     /**
      * Remove the specified resource from storage.

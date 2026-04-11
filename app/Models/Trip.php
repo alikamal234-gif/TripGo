@@ -41,4 +41,8 @@ class Trip extends Model
     {
         return $this->belongsTo(Address::class, 'destination_address_id');
     }
+
+    public function notifications(){
+        return $this->hasMany(Notification::class);
+    }
 }
