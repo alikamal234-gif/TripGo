@@ -55,12 +55,12 @@
                         <i class="fas fa-search text-gray-600 group-hover:text-white"></i>
                     </button> --}}
 
-                    <button
-                        class="relative p-2 rounded-full bg-gray-100 hover:bg-indigo-600 hover:text-white transition-all duration-300 group">
-                        <i class="fas fa-bell text-gray-600 group-hover:text-white"></i>
-                        <span
-                            class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5">3</span>
-                    </button>
+                    <div class="relative">
+                        <a href="/notifications"><button class="relative p-2 hover:bg-indrive-gray rounded-lg transition-colors">
+                                <i class="fas fa-bell text-indrive-dark text-xl"></i>
+                                <span class="notification-dot absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                            </button></a>
+                    </div>
 
                     <div class="flex gap-2">
                         <a href="{{ route('profile') }}"><button class="flex items-center space-x-2 hover:opacity-80 transition-opacity">

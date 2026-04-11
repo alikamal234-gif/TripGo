@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DriverController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PassengerController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TripController;
@@ -31,7 +32,8 @@ Route::prefix('passenger')->middleware('auth')->group(function (){
     Route::patch('/trip/ratie/{id}',[TripController::class,'rate'])->name('trips.rate');
 });
 
-Route::middleware('auth')->group(function (){
+Route::middleware('auth')->group(function () {
+   Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications');
     Route::get('/profile',[ProfileController::class,'index'])->name('profile');
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });

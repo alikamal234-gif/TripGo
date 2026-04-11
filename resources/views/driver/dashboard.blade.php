@@ -171,11 +171,11 @@
 
                     <!-- Notifications -->
                     <div class="relative">
-                        <button class="relative p-2 hover:bg-indrive-gray rounded-lg transition-colors">
+                        <a href="/notifications"><button class="relative p-2 hover:bg-indrive-gray rounded-lg transition-colors">
                             <i class="fas fa-bell text-indrive-dark text-xl"></i>
                             <span
                                 class="notification-dot absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-                        </button>
+                        </button></a>
                     </div>
 
                     <!-- Profile -->
