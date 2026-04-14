@@ -23,7 +23,7 @@
                     </div>
                     <span class="text-xl font-bold">TripGo Admin</span>
                 </div>
-                
+
                 <nav class="space-y-2">
                     <a href="{{ route('admin.dashboard') }}" class="flex items-center space-x-3 px-4 py-3 hover:bg-indigo-800 rounded-lg transition-colors">
                         <i class="fas fa-tachometer-alt"></i>
@@ -68,7 +68,7 @@
                         <div class="flex-1 max-w-md">
                             <div class="relative">
                                 <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                                <input type="text" placeholder="Rechercher un utilisateur..." 
+                                <input type="text" placeholder="Rechercher un utilisateur..."
                                        class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
                             </div>
                         </div>
@@ -106,7 +106,7 @@
                                     <tr class="user-row transition-colors">
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center">
-                                                <img src="https://picsum.photos/seed/{{ $user->id }}/40/40" alt="{{ $user->name }}" 
+                                                <img src="https://picsum.photos/seed/{{ $user->id }}/40/40" alt="{{ $user->name }}"
                                                      class="w-10 h-10 rounded-full mr-3">
                                                 <div>
                                                     <div class="text-sm font-medium text-gray-900">{{ $user->name }}</div>
@@ -115,7 +115,7 @@
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                            <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full
                                                 @if($user->role->name === 'admin') bg-purple-100 text-purple-800
                                                 @elseif($user->role->name === 'driver') bg-green-100 text-green-800
                                                 @else bg-blue-100 text-blue-800
@@ -127,15 +127,15 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                             {{ $user->created_at->format('d/m/Y') }}
                                         </td>
-                                        
+
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                             <div class="flex items-center space-x-2">
-                                                <button class="text-indigo-600 hover:text-indigo-900" title="Voir">
+                                                <a href="{{ route('admin.users.show', $user->id) }}" class="text-indigo-600 hover:text-indigo-900" title="Voir">
                                                     <i class="fas fa-eye"></i>
-                                                </button>
-                                                <button class="text-yellow-600 hover:text-yellow-900" title="Modifier">
+                                                </a>
+                                                <a href="{{ route('admin.user.edit', $user->id) }}" class="text-yellow-600 hover:text-yellow-900" title="Modifier">
                                                     <i class="fas fa-edit"></i>
-                                                </button>
+                                                </a>
                                                 <button class="text-red-600 hover:text-red-900" title="Supprimer">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
@@ -146,7 +146,7 @@
                             </tbody>
                         </table>
                     </div>
-                    
+
                     <!-- Pagination -->
                     <div class="bg-gray-50 px-6 py-3 flex items-center justify-between border-t">
                         <div class="text-sm text-gray-700">

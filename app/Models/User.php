@@ -51,6 +51,17 @@ class User extends Authenticatable
         ];
     }
 
+
+public function tripsAsDriver()
+{
+    return $this->hasMany(Trip::class, 'driver_id');
+}
+
+public function tripsAsPassenger()
+{
+    return $this->hasMany(Trip::class, 'passenger_id');
+}
+
     public function role(){
         return $this->belongsTo(Role::class);
     }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\NotificationController;
@@ -53,5 +54,8 @@ Route::prefix('admin')
 
         Route::get('/drivers', [AdminController::class, 'drivers'])->name('admin.drivers');
         Route::patch('/driver/{id}/valide', [AdminController::class,'valider'])->name('driver.valide');
-}); 
+        Route::get('/users/show/{id}', [AdminController::class,'showUser'])->name('admin.users.show');
+        Route::get('/users/edit/{id}', [UserController::class, 'edit'])->name('admin.user.edit');
+        Route::PUT('/users/edit/{id}', [UserController::class, 'update'])->name('admin.user.update');
+});
 include "auth.php";

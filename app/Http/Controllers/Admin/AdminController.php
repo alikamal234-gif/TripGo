@@ -82,7 +82,40 @@ class AdminController extends Controller
             'message' => 'driver was verified'
         ]);
     }
+    public function showUser(string $id)
+{
+    $user = User::findOrFail($id);
+
+    $user->load('tripsAsDriver', 'tripsAsPassenger');
+    $user->trips = $user->tripsAsDriver->merge($user->tripsAsPassenger);
+
+    return view('admin.show_users', compact('user'));
 }
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
