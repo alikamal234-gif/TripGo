@@ -74,11 +74,6 @@
                 <div class="px-6 py-4 flex items-center justify-between">
                     <h1 class="text-2xl font-bold text-gray-800">Gestion des Trajets</h1>
                     <div class="flex items-center space-x-4">
-                        <button
-                            class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
-                            <i class="fas fa-download mr-2"></i>
-                            Exporter
-                        </button>
                     </div>
                 </div>
             </header>
@@ -95,13 +90,13 @@
                     <div class="bg-white rounded-lg p-4 text-center">
                         <i class="fas fa-clock text-yellow-500 text-2xl mb-2"></i>
                         <p class="text-2xl font-bold text-gray-800">{{ $stats['avenir'] }}
-                       
-                       
-                        
+
+
+
                         </p>
                         <p class="text-sm text-gray-600">Lancés</p>
                     </div>
-                   
+
                     <div class="bg-white rounded-lg p-4 text-center">
                         <i class="fas fa-car text-indigo-500 text-2xl mb-2"></i>
                         <p class="text-2xl font-bold text-gray-800">
@@ -121,20 +116,23 @@
                         <div class="flex-1 max-w-md">
                             <div class="relative">
                                 <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                                <input type="text" placeholder="Rechercher un trajet..." 
+                                <input type="text" placeholder="Rechercher un trajet..."
                                        class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
                             </div>
                         </div>
                         <div class="flex items-center space-x-4">
-                            <select class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
-                                <option>Tous les statuts</option>
-                                <option>En attente</option>
-                                <option>Accepté</option>
-                                <option>En cours</option>
-                                <option>Terminé</option>
-                                <option>Annulé</option>
-                            </select>
-                            <input type="date" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+                        <select id="statusFilter" class="px-4 py-2 border rounded-lg">
+
+                            <option value="">Tous les statuts</option>
+
+                            @foreach($trips->pluck('status')->unique() as $status)
+                                <option value="{{ $status }}">
+                                    {{ ucfirst($status) }}
+                                </option>
+                            @endforeach
+
+                        </select>
+                            <input id="dateFilter" type="date" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
                             <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
                                 <i class="fas fa-filter mr-2"></i>
                                 Filtres
@@ -161,99 +159,100 @@
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
                                 @foreach($trips as $trip)
-                                    <tr class="trip-row transition-colors">
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                            #{{ str_pad($trip->id, 5, '0', STR_PAD_LEFT) }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="flex items-center">
-                                                <img src="https://picsum.photos/seed/passenger{{ $trip->passenger->id }}/32/32" 
-                                                     alt="{{ $trip->passenger->name }}" class="w-8 h-8 rounded-full mr-2">
-                                                <div>
-                                                    <div class="text-sm font-medium text-gray-900">{{ $trip->passenger->name }}</div>
-                                                    <div class="text-xs text-gray-500">{{ $trip->passenger->phone ?? 'N/A' }}</div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            @if($trip->driver)
-                                                <div class="flex items-center">
-                                                    <img src="https://picsum.photos/seed/driver{{ $trip->driver->id }}/32/32" 
-                                                         alt="{{ $trip->driver->name }}" class="w-8 h-8 rounded-full mr-2">
-                                                    <div>
-                                                        <div class="text-sm font-medium text-gray-900">{{ $trip->driver->name }}</div>
-                                                        <div class="text-xs text-gray-500">{{ $trip->driver?->voiture_marque }}</div>
-                                                    </div>
-                                                </div>
-                                            @else
-                                                <span class="text-sm text-gray-500">Non assigné</span>
-                                            @endif
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <div class="text-sm">
-                                                <div class="flex items-center text-gray-900">
-                                                    <i class="fas fa-map-marker-alt text-green-500 mr-1 text-xs"></i>
-                                                    {{ Str::limit($trip->departureAddress->name, 20) }}
-                                                </div>
-                                                <div class="flex items-center text-gray-500 mt-1">
-                                                    <i class="fas fa-flag-checkered text-red-500 mr-1 text-xs"></i>
-                                                    {{ Str::limit($trip->destinationAddress->name, 20) }}
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                            {{ $trip->departure_time }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="text-sm font-semibold text-gray-900">{{ $trip->price }} DH</span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full
-                                                @if($trip->status === '') 
+                                                                    <tr class="trip-row transition-colors"  data-status="{{ $trip->status }}"
+                                    data-date="{{ \Carbon\Carbon::parse($trip->departure_time)->format('Y-m-d') }}">
+                                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                                            #{{ str_pad($trip->id, 5, '0', STR_PAD_LEFT) }}
+                                                                        </td>
+                                                                        <td class="px-6 py-4 whitespace-nowrap">
+                                                                            <div class="flex items-center">
+                                                                                <img src="https://picsum.photos/seed/passenger{{ $trip->passenger->id }}/32/32"
+                                                                                     alt="{{ $trip->passenger->name }}" class="w-8 h-8 rounded-full mr-2">
+                                                                                <div>
+                                                                                    <div class="text-sm font-medium text-gray-900">{{ $trip->passenger->name }}</div>
+                                                                                    <div class="text-xs text-gray-500">{{ $trip->passenger->phone ?? 'N/A' }}</div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="px-6 py-4 whitespace-nowrap">
+                                                                            @if($trip->driver)
+                                                                                <div class="flex items-center">
+                                                                                    <img src="https://picsum.photos/seed/driver{{ $trip->driver->id }}/32/32"
+                                                                                         alt="{{ $trip->driver->name }}" class="w-8 h-8 rounded-full mr-2">
+                                                                                    <div>
+                                                                                        <div class="text-sm font-medium text-gray-900">{{ $trip->driver->name }}</div>
+                                                                                        <div class="text-xs text-gray-500">{{ $trip->driver?->voiture_marque }}</div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            @else
+                                                                                <span class="text-sm text-gray-500">Non assigné</span>
+                                                                            @endif
+                                                                        </td>
+                                                                        <td class="px-6 py-4">
+                                                                            <div class="text-sm">
+                                                                                <div class="flex items-center text-gray-900">
+                                                                                    <i class="fas fa-map-marker-alt text-green-500 mr-1 text-xs"></i>
+                                                                                    {{ Str::limit($trip->departureAddress->name, 20) }}
+                                                                                </div>
+                                                                                <div class="flex items-center text-gray-500 mt-1">
+                                                                                    <i class="fas fa-flag-checkered text-red-500 mr-1 text-xs"></i>
+                                                                                    {{ Str::limit($trip->destinationAddress->name, 20) }}
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                                            {{ $trip->departure_time }}
+                                                                        </td>
+                                                                        <td class="px-6 py-4 whitespace-nowrap">
+                                                                            <span class="text-sm font-semibold text-gray-900">{{ $trip->price }} DH</span>
+                                                                        </td>
+                                                                        <td class="px-6 py-4 whitespace-nowrap">
+                                                                            <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full
+                                                                                @if($trip->status === '')
 
-                                                @elseif($trip->status === 'avenir') 
-                                                    bg-blue-100 text-blue-800
-                                                @elseif($trip->status === 'encours') 
-                                                    bg-indigo-100 text-indigo-800 status-badge
-                                                @elseif($trip->status === 'terminer') 
-                                                    bg-green-100 text-green-800
-                                                @else 
-                                                    bg-red-100 text-red-800
-                                                @endif">
-                                                {{ $trip->status === 'encours' ? 'En cours' :
+                                                                                @elseif($trip->status === 'avenir')
+                                                                                    bg-blue-100 text-blue-800
+                                                                                @elseif($trip->status === 'encours')
+                                                                                    bg-indigo-100 text-indigo-800 status-badge
+                                                                                @elseif($trip->status === 'terminer')
+                                                                                    bg-green-100 text-green-800
+                                                                                @else
+                                                                                    bg-red-100 text-red-800
+                                                                                @endif">
+                                                                                {{ $trip->status === 'encours' ? 'En cours' :
         ($trip->status === 'terminer' ? 'Terminé' :
             ($trip->status === 'avenir' ? 'Accepté' : 'anuller'))
-                                                   
-                                                }}
-                                            </span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                            <div class="flex items-center space-x-2">
-                                                <button class="text-indigo-600 hover:text-indigo-900" title="Voir détails" 
-                                                        onclick="showTripDetails({{ $trip->id }})">
-                                                    <i class="fas fa-eye"></i>
-                                                </button>
-                                                @if($trip->status === 'pending')
-                                                    <button class="text-green-600 hover:text-green-900" title="Assigner chauffeur">
-                                                        <i class="fas fa-user-plus"></i>
-                                                    </button>
-                                                @endif
-                                                @if($trip->status === 'in_progress')
-                                                    <button class="text-yellow-600 hover:text-yellow-900" title="Suivre en temps réel">
-                                                        <i class="fas fa-location-arrow"></i>
-                                                    </button>
-                                                @endif
-                                                <button class="text-gray-600 hover:text-gray-900" title="Plus d'actions">
-                                                    <i class="fas fa-ellipsis-v"></i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
+
+                                                                                }}
+                                                                            </span>
+                                                                        </td>
+                                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                                            <div class="flex items-center space-x-2">
+                                                                                <button class="text-indigo-600 hover:text-indigo-900" title="Voir détails"
+                                                                                        onclick="showTripDetails({{ $trip->id }})">
+                                                                                    <i class="fas fa-eye"></i>
+                                                                                </button>
+                                                                                @if($trip->status === 'pending')
+                                                                                    <button class="text-green-600 hover:text-green-900" title="Assigner chauffeur">
+                                                                                        <i class="fas fa-user-plus"></i>
+                                                                                    </button>
+                                                                                @endif
+                                                                                @if($trip->status === 'in_progress')
+                                                                                    <button class="text-yellow-600 hover:text-yellow-900" title="Suivre en temps réel">
+                                                                                        <i class="fas fa-location-arrow"></i>
+                                                                                    </button>
+                                                                                @endif
+                                                                                <button class="text-gray-600 hover:text-gray-900" title="Plus d'actions">
+                                                                                    <i class="fas fa-ellipsis-v"></i>
+                                                                                </button>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
-                    
+
                     <!-- Pagination -->
                     <div class="bg-gray-50 px-6 py-3 flex items-center justify-between border-t">
                         <div class="text-sm text-gray-700">
@@ -281,7 +280,7 @@
                         <i class="fas fa-times text-xl"></i>
                     </button>
                 </div>
-                
+
                 <div id="tripDetailsContent">
                     <!-- Content will be loaded dynamically -->
                 </div>
@@ -294,7 +293,7 @@
         function showTripDetails(tripId) {
             const modal = document.getElementById('tripModal');
             const content = document.getElementById('tripDetailsContent');
-            
+
             // Simulate loading trip details
             content.innerHTML = `
                 <div class="space-y-4">
@@ -319,7 +318,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="grid grid-cols-2 gap-4">
                         <div class="bg-blue-50 rounded-lg p-4">
                             <h4 class="font-semibold text-gray-800 mb-2">Passager</h4>
@@ -331,7 +330,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="bg-green-50 rounded-lg p-4">
                             <h4 class="font-semibold text-gray-800 mb-2">Chauffeur</h4>
                             <div class="flex items-center space-x-3">
@@ -343,7 +342,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="bg-gray-50 rounded-lg p-4">
                         <h4 class="font-semibold text-gray-800 mb-2">Itinéraire</h4>
                         <div class="space-y-2">
@@ -357,7 +356,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="flex justify-end space-x-3 pt-4 border-t">
                         <button onclick="closeTripModal()" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors">
                             Fermer
@@ -369,15 +368,15 @@
                     </div>
                 </div>
             `;
-            
+
             modal.classList.remove('hidden');
         }
-        
+
         // Close trip modal
         function closeTripModal() {
             document.getElementById('tripModal').classList.add('hidden');
         }
-        
+
         // Close modal when clicking outside
         document.getElementById('tripModal').addEventListener('click', function(e) {
             if (e.target === this) {
@@ -385,5 +384,37 @@
             }
         });
     </script>
+
+
+<script>
+    const statusFilter = document.getElementById('statusFilter');
+    const dateFilter = document.getElementById('dateFilter');
+    const rows = document.querySelectorAll('.trip-row');
+
+    function filterTrips() {
+
+        const status = statusFilter.value;
+        const date = dateFilter.value;
+
+        rows.forEach(row => {
+
+            const rowStatus = row.dataset.status;
+            const rowDate = row.dataset.date;
+
+            let matchStatus = status === '' || rowStatus === status;
+            let matchDate = date === '' || rowDate === date;
+
+            if (matchStatus && matchDate) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+
+        });
+    }
+
+    statusFilter.addEventListener('change', filterTrips);
+    dateFilter.addEventListener('change', filterTrips);
+</script>
 </body>
 </html>

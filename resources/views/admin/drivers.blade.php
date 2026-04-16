@@ -28,7 +28,7 @@
                     </div>
                     <span class="text-xl font-bold">TripGo Admin</span>
                 </div>
-                
+
                 <nav class="space-y-2">
                     <a href="{{ route('admin.dashboard') }}" class="flex items-center space-x-3 px-4 py-3 hover:bg-indigo-800 rounded-lg transition-colors">
                         <i class="fas fa-tachometer-alt"></i>
@@ -57,10 +57,6 @@
                 <div class="px-6 py-4 flex items-center justify-between">
                     <h1 class="text-2xl font-bold text-gray-800">Gestion des Chauffeurs</h1>
                     <div class="flex items-center space-x-4">
-                        <button class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
-                            <i class="fas fa-plus mr-2"></i>
-                            Ajouter un chauffeur
-                        </button>
                     </div>
                 </div>
             </header>
@@ -86,7 +82,7 @@
                             <i class="fas fa-check-circle text-green-500 text-2xl"></i>
                         </div>
                     </div>
-                    
+
                     <div class="bg-white rounded-lg p-4 border-l-4 border-red-500">
                         <div class="flex items-center justify-between">
                             <div>
@@ -113,23 +109,17 @@
                         <div class="flex-1 max-w-md">
                             <div class="relative">
                                 <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                                <input type="text" placeholder="Rechercher un chauffeur..." 
+                                <input type="text" placeholder="Rechercher un chauffeur..."
                                        class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
                             </div>
                         </div>
                         <div class="flex items-center space-x-4">
-                            <select class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
-                                <option>Tous les statuts</option>
-                                <option>Actif</option>
-                                <option>En attente</option>
-                                <option>Inactif</option>
+                            <select id="statusFilter" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+                                <option value="">Tous les statuts</option>
+                                <option value="1">valide</option>
+                                <option value="0">not valide</option>
                             </select>
-                            <select class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
-                                <option>Toutes les villes</option>
-                                <option>Casablanca</option>
-                                <option>Rabat</option>
-                                <option>Marrakech</option>
-                            </select>
+
                         </div>
                     </div>
                 </div>
@@ -137,87 +127,88 @@
                 <!-- Drivers Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     @foreach($drivers as $driver)
-                        <div class="driver-card bg-white rounded-xl shadow-lg overflow-hidden">
-                            <div class="p-6">
-                                <div class="flex items-center justify-between mb-4">
-                                    <div class="flex items-center space-x-3">
-                                        <img src="https://picsum.photos/seed/driver{{ $driver->id }}/50/50" alt="{{ $driver->user->name }}" 
-                                             class="w-12 h-12 rounded-full">
-                                        <div>
-                                            <h3 class="font-semibold text-gray-800">{{ $driver->user->name }}</h3>
-                                            <p class="text-sm text-gray-500">{{ $driver->ville }}</p>
-                                        </div>
-                                    </div>
-                                    <span class="px-2 py-1 text-xs font-semibold rounded-full
-                                        @if($driver->status === 'active') bg-green-100 text-green-800
-                                        @elseif($driver->status === 'pending') bg-yellow-100 text-yellow-800
-                                        @else bg-red-100 text-red-800
-                                        @endif">
-                                        {{ ucfirst($driver->status) }}
-                                    </span>
-                                </div>
+                                                                <div class="driver-card bg-white rounded-xl shadow-lg overflow-hidden"
+                                                                    data-status="{{ $driver->is_verified }}">
+                                                                    <div class="p-6">
+                                                                        <div class="flex items-center justify-between mb-4">
+                                                                            <div class="flex items-center space-x-3">
+                                                                                <img src="https://picsum.photos/seed/driver{{ $driver->id }}/50/50" alt="{{ $driver->user->name }}"
+                                                                                     class="w-12 h-12 rounded-full">
+                                                                                <div>
+                                                                                    <h3 class="font-semibold text-gray-800">{{ $driver->user->name }}</h3>
+                                                                                    <p class="text-sm text-gray-500">{{ $driver->ville }}</p>
+                                                                                </div>
+                                                                            </div>
+                                                                            <span class="px-2 py-1 text-xs font-semibold rounded-full
+                                                                                @if($driver->status === 'active') bg-green-100 text-green-800
+                                                                                @elseif($driver->status === 'pending') bg-yellow-100 text-yellow-800
+                                                                                @else bg-red-100 text-red-800
+                                                                                @endif">
+                                                                                {{ ucfirst($driver->status) }}
+                                                                            </span>
+                                                                        </div>
 
-                                <div class="space-y-2 mb-4">
-                                    <div class="flex items-center text-sm text-gray-600">
-                                        <i class="fas fa-phone w-5 text-gray-400"></i>
-                                        <span>{{ $driver->user->phone ?? 'Non défini' }}</span>
-                                    </div>
-                                    <div class="flex items-center text-sm text-gray-600">
-                                        <i class="fas fa-envelope w-5 text-gray-400"></i>
-                                        <span class="truncate">{{ $driver->user->email }}</span>
-                                    </div>
-                                    <div class="flex items-center text-sm text-gray-600">
-                                        <i class="fas fa-car w-5 text-gray-400"></i>
-                                        <span>{{ $driver->vehicle->vehicle_plate }}</span>
-                                    </div>
-                                    <div class="flex items-center text-sm text-gray-600">
-                                        <i class="fas fa-id-card w-5 text-gray-400"></i>
-                                        <span>{{ $driver->license_number }}</span>
-                                    </div>
-                                    <div class="flex items-center text-sm text-gray-600">
-                                        <i class="fas fa-id-card w-5 text-gray-400"></i>
-                                        <form class="verify-form mt-2" data-id="{{ $driver->id }}" data-url="{{ route('driver.valide', $driver->id) }}" ">
-                                            @csrf
-                                            @method('PATCH')
+                                                                        <div class="space-y-2 mb-4">
+                                                                            <div class="flex items-center text-sm text-gray-600">
+                                                                                <i class="fas fa-phone w-5 text-gray-400"></i>
+                                                                                <span>{{ $driver->user->phone ?? 'Non défini' }}</span>
+                                                                            </div>
+                                                                            <div class="flex items-center text-sm text-gray-600">
+                                                                                <i class="fas fa-envelope w-5 text-gray-400"></i>
+                                                                                <span class="truncate">{{ $driver->user->email }}</span>
+                                                                            </div>
+                                                                            <div class="flex items-center text-sm text-gray-600">
+                                                                                <i class="fas fa-car w-5 text-gray-400"></i>
+                                                                                <span>{{ $driver->vehicle->vehicle_plate }}</span>
+                                                                            </div>
+                                                                            <div class="flex items-center text-sm text-gray-600">
+                                                                                <i class="fas fa-id-card w-5 text-gray-400"></i>
+                                                                                <span>{{ $driver->license_number }}</span>
+                                                                            </div>
+                                                                            <div class="flex items-center text-sm text-gray-600">
+                                                                                <i class="fas fa-id-card w-5 text-gray-400"></i>
+                                                                                <form class="verify-form mt-2" data-id="{{ $driver->id }}" data-url="{{ route('driver.valide', $driver->id) }}" ">
+                                                                                    @csrf
+                                                                                    @method('PATCH')
 
-                                            <select name="verification" class="verify-select p-2 border rounded w-full">
-                                                <option value="1" {{ $driver->is_verified == 1 ? 'selected' : '' }}>is valide</option>
-                                                <option value="0" {{ $driver->is_verified == 0 ? 'selected' : '' }}>is not valide</option>
-                                            </select>
-                                        </form>
-                                    </div>
-                                </div>
+                                                                                    <select name="verification" class="verify-select p-2 border rounded w-full">
+                                                                                        <option value="1" {{ $driver->is_verified == 1 ? 'selected' : '' }}>is valide</option>
+                                                                                        <option value="0" {{ $driver->is_verified == 0 ? 'selected' : '' }}>is not valide</option>
+                                                                                    </select>
+                                                                                </form>
+                                                                            </div>
+                                                                        </div>
 
-                                <div class="flex items-center justify-between pt-4 border-t">
-                                    <div class="flex items-center space-x-1">
-                                    @php
-                                        $avgRating = $driver->trips->avg('rating') ?? 0;
-                                    @endphp
+                                                                        <div class="flex items-center justify-between pt-4 border-t">
+                                                                            <div class="flex items-center space-x-1">
+                                                                            @php
+    $avgRating = $driver->trips->avg('rating') ?? 0;
+                                                                            @endphp
 
-                                    @for($i = 1; $i <= 5; $i++)
-                                        <i class="fas fa-star text-sm 
-                                                {{ $i <= round($avgRating) ? 'text-yellow-400' : 'text-gray-300' }}">
-                                        </i>
-                                    @endfor
-                                    <span class="text-xs text-gray-600 ml-1">({{ number_format($avgRating, 1) }})</span>
-                                        
-                                    </div>
-                                    <div class="flex items-center space-x-2">
-                                        <button class="p-2 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors" title="Voir">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="p-2 text-yellow-600 hover:bg-yellow-50 rounded-lg transition-colors" title="Modifier">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        @if($driver->status === 'pending')
-                                            <button class="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors" title="Approuver">
-                                                <i class="fas fa-check"></i>
-                                            </button>
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                                                                            @for($i = 1; $i <= 5; $i++)
+                                                                                <i class="fas fa-star text-sm
+                                                                                        {{ $i <= round($avgRating) ? 'text-yellow-400' : 'text-gray-300' }}">
+                                                                                </i>
+                                                                            @endfor
+                                                                            <span class="text-xs text-gray-600 ml-1">({{ number_format($avgRating, 1) }})</span>
+
+                                                                            </div>
+                                                                            <div class="flex items-center space-x-2">
+                                                                                <button class="p-2 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors" title="Voir">
+                                                                                    <i class="fas fa-eye"></i>
+                                                                                </button>
+                                                                                <button class="p-2 text-yellow-600 hover:bg-yellow-50 rounded-lg transition-colors" title="Modifier">
+                                                                                    <i class="fas fa-edit"></i>
+                                                                                </button>
+                                                                                @if($driver->status === 'pending')
+                                                                                    <button class="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors" title="Approuver">
+                                                                                        <i class="fas fa-check"></i>
+                                                                                    </button>
+                                                                                @endif
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                     @endforeach
                 </div>
             </div>
@@ -262,4 +253,26 @@
         const box = textmessage.closest('.box-message')
         box.style.display = 'block'
 }
+
+    const statusFilter = document.getElementById('statusFilter');
+    const cards = document.querySelectorAll('.driver-card');
+
+    function filterDrivers() {
+
+            const status = statusFilter.value;
+
+            cards.forEach(card => {
+
+                const cardStatus = card.dataset.status;
+
+                if (status === '' || cardStatus == status) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+
+            });
+        }
+
+    statusFilter.addEventListener('change', filterDrivers);
 </script>

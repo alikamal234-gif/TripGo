@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Chart.js pour les graphiques -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
+
     <style>
         @keyframes slideUp {
             from { transform: translateY(20px); opacity: 0; }
@@ -74,8 +74,8 @@
                 <div class="flex items-center space-x-3">
                     <img src="https://picsum.photos/seed/admin/40/40" alt="Admin" class="w-10 h-10 rounded-full">
                     <div>
-                        <p class="font-semibold">Admin User</p>
-                        <p class="text-xs text-indigo-300">admin@tripgo.com</p>
+                        <p class="font-semibold">{{ auth()->user()->name }}</p>
+                        <p class="text-xs text-indigo-300">{{ auth()->user()->email }}</p>
                     </div>
                 </div>
             </div>
@@ -222,7 +222,7 @@
                     <div class="bg-white rounded-xl shadow-md p-6 animate-slide-up" style="animation-delay: 0.7s">
                         <div class="flex items-center justify-between mb-4">
                             <h2 class="text-lg font-semibold text-gray-800">Trajets Récents</h2>
-                            <a href="{{ route('admin.trips') }}" class="text-sm text-indigo-600 hover:underline">Voir tout</a>
+                            {{-- <a href="{{ route('admin.trips') }}" class="text-sm text-indigo-600 hover:underline">Voir tout</a> --}}
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-left">
@@ -260,7 +260,7 @@
                     <div class="bg-white rounded-xl shadow-md p-6 animate-slide-up" style="animation-delay: 0.8s">
                         <div class="flex items-center justify-between mb-4">
                             <h2 class="text-lg font-semibold text-gray-800">Nouveaux Utilisateurs</h2>
-                            <a href="{{ route('admin.users') }}" class="text-sm text-indigo-600 hover:underline">Voir tout</a>
+                            {{-- <a href="{{ route('admin.users') }}" class="text-sm text-indigo-600 hover:underline">Voir tout</a> --}}
                         </div>
                         <div class="space-y-3">
                             @foreach($recent_users as $user)

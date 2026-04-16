@@ -52,10 +52,6 @@
                 <div class="px-6 py-4 flex items-center justify-between">
                     <h1 class="text-2xl font-bold text-gray-800">Gestion des Utilisateurs</h1>
                     <div class="flex items-center space-x-4">
-                        <button class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
-                            <i class="fas fa-plus mr-2"></i>
-                            Ajouter un utilisateur
-                        </button>
                     </div>
                 </div>
             </header>
@@ -68,21 +64,15 @@
                         <div class="flex-1 max-w-md">
                             <div class="relative">
                                 <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                                <input type="text" placeholder="Rechercher un utilisateur..."
+                                <input id="searchInput" type="text" placeholder="Rechercher un utilisateur..."
                                        class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
                             </div>
                         </div>
                         <div class="flex items-center space-x-4">
-                            <select class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
-                                <option>Tous les rôles</option>
-                                <option>Passager</option>
-                                <option>Chauffeur</option>
-                            </select>
-                            <select class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
-                                <option>Tous les statuts</option>
-                                <option>Actif</option>
-                                <option>Inactif</option>
-                                <option>Suspendu</option>
+                            <select onchange="FilterRole(this)" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+                                <option class="optient-role" value="">Tous les rôles</option>
+                                <option class="optient-role" value="passenger">Passager</option>
+                                <option class="optient-role" value="driver">Chauffeur</option>
                             </select>
                         </div>
                     </div>
@@ -103,7 +93,7 @@
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
                                 @foreach($users as $user)
-                                    <tr class="user-row transition-colors">
+                                    <tr class="user-row transition-colors" data-role="{{ $user->role->name }}">
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center">
                                                 <img src="https://picsum.photos/seed/{{ $user->id }}/40/40" alt="{{ $user->name }}"
@@ -114,6 +104,7 @@
                                                 </div>
                                             </div>
                                         </td>
+
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full
                                                 @if($user->role->name === 'admin') bg-purple-100 text-purple-800
@@ -136,7 +127,7 @@
                                                 <a href="{{ route('admin.user.edit', $user->id) }}" class="text-yellow-600 hover:text-yellow-900" title="Modifier">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
-                                                <form action="{{ route('admin.user.delete',$user->id) }}" method="post">
+                                                <form action="{{ route('admin.user.delete', $user->id) }}" method="post">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="text-red-600 hover:text-red-900" title="Supprimer">
@@ -169,3 +160,22 @@
     </div>
 </body>
 </html>
+<script>
+    function FilterRole(select) {
+
+        const selectedRole = select.value;
+        const rows = document.querySelectorAll('.user-row');
+
+        rows.forEach(row => {
+
+            const role = row.dataset.role;
+
+            if (selectedRole === '' || role === selectedRole) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+
+        });
+    }
+</script>
