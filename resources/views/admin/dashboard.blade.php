@@ -89,10 +89,13 @@
                     <h1 class="text-2xl font-bold text-gray-800">Tableau de bord</h1>
                     <div class="flex items-center space-x-4">
                         <span class="text-sm text-gray-500"><i class="far fa-calendar-alt mr-2"></i>{{ now()->format('d M Y') }}</span>
-                        <button class="relative p-2 text-gray-600 hover:text-gray-900">
-                            <i class="fas fa-bell"></i>
-                            <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
-                        </button>
+                        <form action="{{ route('logout') }}" method="POST">
+                            @csrf
+                            <button type="submit"
+                                class="bg-red-500 hover:bg-red-600 text-white p-2 rounded-lg relative w-8 h-8 flex items-center justify-center">
+                                <i class="fas fa-power-off text-sm"></i>
+                            </button>
+                        </form>
                     </div>
                 </div>
             </header>
@@ -242,8 +245,8 @@
                                         <td class="py-3 text-sm font-medium">{{ $trip->price }} MAD</td>
                                         <td class="py-3">
                                             @php
-                                                $statusColor = ['avenir' => 'blue', 'encours' => 'yellow', 'terminer' => 'green'][$trip->status] ?? 'gray';
-                                                $statusLabel = ['avenir' => 'À venir', 'encours' => 'En cours', 'terminer' => 'Terminé'][$trip->status] ?? $trip->status;
+    $statusColor = ['avenir' => 'blue', 'encours' => 'yellow', 'terminer' => 'green'][$trip->status] ?? 'gray';
+    $statusLabel = ['avenir' => 'À venir', 'encours' => 'En cours', 'terminer' => 'Terminé'][$trip->status] ?? $trip->status;
                                             @endphp
                                             <span class="px-2 py-1 text-xs rounded-full bg-{{ $statusColor }}-100 text-{{ $statusColor }}-700">
                                                 {{ $statusLabel }}

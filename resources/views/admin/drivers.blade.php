@@ -188,7 +188,8 @@
                                                 {{ $i <= round($avgRating) ? 'text-yellow-400' : 'text-gray-300' }}">
                                         </i>
                                     @endfor
-                                    < class="text-xs text-gray-600 ml-1">({{ number_format($avgRating, 1) }
+                                    <span class="text-xs text-gray-600 ml-1">({{ number_format($avgRating, 1) }})</span>
+
                                     </div>
                                     <div class="flex items-center space-x-2">
                                         <button class="p-2 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors" title="Voir">

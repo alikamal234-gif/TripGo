@@ -190,8 +190,8 @@
                             </div>
                         </div>
                     </div>
-                    
-                    @elseif ($notif->type == 'trip_refused' && $notif->trip->user_id == auth()->id())
+
+                    @elseif ($notif->type == 'trip_refused' && $notif->trip?->user_id == auth()->id())
                     <div class="bg-white rounded-xl shadow-sm p-5 border-l-4 border-red-500 hover:shadow-md transition-shadow">
                         <div class="flex items-start gap-4">
                             <div
@@ -220,7 +220,7 @@
                     </div>
 
                     <!-- CARTE : TRIP TERMINÉ -->
-                @elseif ($notif->type == 'trip_finished' && $notif->trip->driver_id == auth()->id() || $notif->trip->passenger_id == auth()->id())
+                @elseif ($notif->type == 'trip_finished' && $notif->trip?->driver_id && $notif->trip?->passenger_id && $notif->trip?->driver_id == auth()->id() || $notif->trip?->passenger_id == auth()->id())
                     <div class="bg-white rounded-xl shadow-sm p-5 border-l-4 border-purple-500 hover:shadow-md transition-shadow">
                         <div class="flex items-start gap-4">
                             <div
