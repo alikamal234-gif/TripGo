@@ -115,9 +115,7 @@
                     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                         <div class="flex-1 max-w-md">
                             <div class="relative">
-                                <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                                <input type="text" placeholder="Rechercher un trajet..."
-                                       class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                                <h3 class="font-bold text-2xl">Recherche avec status et date : </h3>
                             </div>
                         </div>
                         <div class="flex items-center space-x-4">
