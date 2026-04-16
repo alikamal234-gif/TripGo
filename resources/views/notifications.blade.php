@@ -116,142 +116,70 @@
 
     @if($notifications->count() > 0)
         <div class="space-y-4">
-            @foreach ($notifications as $notif)
+        @foreach ($notifications as $notif)
 
-                <!-- CARTE : TRIP CRÉÉ (Pour le passager qui l'a créé) -->
-                @if ($notif->type == 'trip_created')
-                    <div class="bg-white rounded-xl shadow-sm p-5 border-l-4 border-blue-500 hover:shadow-md transition-shadow">
-                        <div class="flex items-start gap-4">
-                            <div
-                                class="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                                <i class="fas fa-plus"></i>
-                            </div>
-                            <div class="flex-1">
-                                <h4 class="font-bold text-gray-800 mb-1">{{ $notif->message }}</h4>
-                                @if($notif->trip)
-                                    <div class="flex items-center gap-2 text-sm text-gray-600 bg-gray-50 rounded-lg p-2.5 mb-2">
-                                        <i class="fas fa-map-marker-alt text-red-400 text-xs"></i>
-                                        <span>{{ $notif->trip->departureAddress->name ?? 'Inconnu' }}</span>
-                                        <i class="fas fa-arrow-right text-gray-300 text-xs"></i>
-                                        <i class="fas fa-map-pin text-green-400 text-xs"></i>
-                                        <span>{{ $notif->trip->destinationAddress->name ?? 'Inconnu' }}</span>
-                                    </div>
-                                    <div class="flex items-center gap-4 text-xs text-gray-400">
-                                        <span><i
-                                                class="far fa-calendar mr-1"></i>{{ \Carbon\Carbon::parse($notif->trip->departure_time)->format('d M Y à H:i') }}</span>
-                                        <span><i class="fas fa-euro-sign mr-1"></i>{{ number_format($notif->trip->price, 2) }} €</span>
-                                        <span class="ml-auto time-ago" data-time="{{ $notif->created_at->toIso8601String() }}"></span>
-                                    </div>
-                                @endif
-                            </div>
+            @if ($notif->user_id == auth()->id())
+
+                <div class="bg-white rounded-xl shadow-sm p-5 border-l-4 border-indigo-500 hover:shadow-md transition-shadow">
+
+                    <div class="flex items-start gap-4">
+
+                        <!-- ICON -->
+                        <div class="w-10 h-10 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mt-1">
+                            <i class="fas fa-bell"></i>
                         </div>
+
+                        <!-- CONTENT -->
+                        <div class="flex-1">
+
+                            <!-- MESSAGE -->
+                            <h4 class="font-bold text-gray-800 mb-1">
+                                {{ $notif->message }}
+                            </h4>
+
+                            <!-- TRIP INFO -->
+                            @if($notif->trip)
+                                <div class="flex items-center gap-2 text-sm text-gray-600 bg-gray-50 rounded-lg p-2 mb-2">
+
+                                    <i class="fas fa-map-marker-alt text-red-400 text-xs"></i>
+                                    <span>{{ $notif->trip->departureAddress->name ?? '---' }}</span>
+
+                                    <i class="fas fa-arrow-right text-gray-300 text-xs"></i>
+
+                                    <i class="fas fa-map-pin text-green-400 text-xs"></i>
+                                    <span>{{ $notif->trip->destinationAddress->name ?? '---' }}</span>
+
+                                </div>
+
+                                <div class="flex items-center gap-4 text-xs text-gray-400">
+
+                                    <span>
+                                        <i class="far fa-calendar mr-1"></i>
+                                        {{ \Carbon\Carbon::parse($notif->trip->departure_time)->format('d M Y H:i') }}
+                                    </span>
+
+                                    <span>
+                                        <i class="fas fa-euro-sign mr-1"></i>
+                                        {{ $notif->trip->price }} DH
+                                    </span>
+
+                                </div>
+                            @endif
+
+                            <!-- TIME -->
+                            <div class="text-xs text-gray-400 mt-2">
+                                {{ $notif->created_at->diffForHumans() }}
+                            </div>
+
+                        </div>
+
                     </div>
 
-                    <!-- CARTE : TRIP ACCEPTÉ (Pour les deux) -->
-                @elseif ($notif->type == 'trip_accepted' && $notif->user_id == auth()->id())
-                    <div class="bg-white rounded-xl shadow-sm p-5 border-l-4 border-green-500 hover:shadow-md transition-shadow">
-                        <div class="flex items-start gap-4">
-                            <div
-                                class="w-10 h-10 bg-green-100 text-green-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                                <i class="fas fa-check"></i>
-                            </div>
-                            <div class="flex-1">
-                                <h4 class="font-bold text-gray-800 mb-1">{{ $notif->message }}</h4>
-                                <p class="text-sm text-gray-500 mb-2">Par <span
-                                        class="font-semibold text-gray-700">{{ $notif->trip->driver->name ?? '' }}</span></p>
+                </div>
 
-                                @if($notif->trip)
-                                    <div class="flex items-center gap-2 text-sm text-gray-600 bg-gray-50 rounded-lg p-2.5 mb-2">
-                                        <i class="fas fa-map-marker-alt text-red-400 text-xs"></i>
-                                        <span>{{ $notif->trip->departureAddress->name ?? 'Inconnu' }}</span>
-                                        <i class="fas fa-arrow-right text-gray-300 text-xs"></i>
-                                        <i class="fas fa-map-pin text-green-400 text-xs"></i>
-                                        <span>{{ $notif->trip->destinationAddress->name ?? 'Inconnu' }}</span>
-                                    </div>
+            @endif
 
-                                    <!-- Affichage du véhicule uniquement si accepté -->
-                                    @if($notif->driver_vehicle)
-                                        <div
-                                            class="flex items-center gap-2 text-sm text-blue-700 bg-blue-50 border border-blue-100 rounded-lg p-2.5 mb-2">
-                                            <i class="fas fa-car"></i>
-                                            <span class="font-medium">{{ $notif->driver_vehicle->type }}</span>
-                                            <span class="text-blue-400">|</span>
-                                            <span>{{ $notif->driver_vehicle->vehicle_plate }}</span>
-                                        </div>
-                                    @endif
-
-                                    <div class="flex items-center gap-4 text-xs text-gray-400">
-                                        <span><i
-                                                class="far fa-calendar mr-1"></i>{{ \Carbon\Carbon::parse($notif->trip->departure_time)->format('d M Y à H:i') }}</span>
-                                        <span><i class="fas fa-euro-sign mr-1"></i>{{ number_format($notif->trip->price, 2) }} €</span>
-                                        <span class="ml-auto time-ago" data-time="{{ $notif->created_at->toIso8601String() }}"></span>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-
-                    @elseif ($notif->type == 'trip_refused' && $notif->trip?->user_id == auth()->id())
-                    <div class="bg-white rounded-xl shadow-sm p-5 border-l-4 border-red-500 hover:shadow-md transition-shadow">
-                        <div class="flex items-start gap-4">
-                            <div
-                                class="w-10 h-10 bg-red-100 text-red-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                                <i class="fas fa-times"></i>
-                            </div>
-                            <div class="flex-1">
-                                <h4 class="font-bold text-gray-800 mb-1 text-red-700">{{ $notif->message }}</h4>
-                                <p class="text-sm text-gray-500 mb-2">Par <span
-                                        class="font-semibold text-gray-700">{{ $notif->author_name ?? '' }}</span></p>
-
-                                @if($notif->trip)
-                                    <div class="flex items-center gap-2 text-sm text-gray-600 bg-gray-50 rounded-lg p-2.5 mb-2">
-                                        <i class="fas fa-map-marker-alt text-red-400 text-xs"></i>
-                                        <span>{{ $notif->trip->departureAddress->name ?? 'Inconnu' }}</span>
-                                        <i class="fas fa-arrow-right text-gray-300 text-xs"></i>
-                                        <i class="fas fa-map-pin text-green-400 text-xs"></i>
-                                        <span>{{ $notif->trip->destinationAddress->name ?? 'Inconnu' }}</span>
-                                    </div>
-                                    <div class="flex items-center gap-4 text-xs text-gray-400">
-                                        <span class="ml-auto time-ago" data-time="{{ $notif->created_at->toIso8601String() }}"></span>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- CARTE : TRIP TERMINÉ -->
-                @elseif ($notif->type == 'trip_finished' && $notif->trip?->driver_id && $notif->trip?->passenger_id && $notif->trip?->driver_id == auth()->id() || $notif->trip?->passenger_id == auth()->id())
-                    <div class="bg-white rounded-xl shadow-sm p-5 border-l-4 border-purple-500 hover:shadow-md transition-shadow">
-                        <div class="flex items-start gap-4">
-                            <div
-                                class="w-10 h-10 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                                <i class="fas fa-flag-checkered"></i>
-                            </div>
-                            <div class="flex-1">
-                                <h4 class="font-bold text-gray-800 mb-1">{{ $notif->message }}</h4>
-
-                                @if($notif->trip)
-                                    <div class="flex items-center gap-2 text-sm text-gray-600 bg-gray-50 rounded-lg p-2.5 mb-2">
-                                        <i class="fas fa-map-marker-alt text-red-400 text-xs"></i>
-                                        <span>{{ $notif->trip->departureAddress->name ?? 'Inconnu' }}</span>
-                                        <i class="fas fa-arrow-right text-gray-300 text-xs"></i>
-                                        <i class="fas fa-map-pin text-green-400 text-xs"></i>
-                                        <span>{{ $notif->trip->destinationAddress->name ?? 'Inconnu' }}</span>
-                                    </div>
-
-                                    <div class="flex items-center gap-4 text-xs text-gray-400">
-                                        <span class="text-green-500 font-semibold"><i
-                                                class="fas fa-euro-sign mr-1"></i>{{ number_format($notif->trip->price, 2) }} €
-                                            payés</span>
-                                        <span class="ml-auto time-ago" data-time="{{ $notif->created_at->toIso8601String() }}"></span>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-                @endif
-
-            @endforeach
+        @endforeach
         </div>
     @else
         <!-- État vide -->
