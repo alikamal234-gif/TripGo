@@ -74,4 +74,26 @@ class UserController extends Controller
         ]);
         return redirect()->back();
     }
+
+    public function destroy(string $id)
+{
+    $user = User::findOrFail($id);
+
+    DB::transaction(function () use ($user) {
+
+        if ($user->driver) {
+
+            if ($user->driver->vehicle) {
+                $user->driver->vehicle->delete();
+            }
+            $user->driver->delete();
+        }
+        if ($user->passenger) {
+            $user->passenger->delete();
+        }
+        $user->delete();
+    });
+
+    return back()->with('success', 'Utilisateur supprimé avec succès');
+}
 }

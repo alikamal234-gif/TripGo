@@ -24,6 +24,9 @@ class DatabaseSeeder extends Seeder
         Role::factory()->create([
             'name' => 'passenger',
         ]);
-        
+        Role::factory()->create([
+            'name' => 'admin',
+        ]);
+
     }
 }

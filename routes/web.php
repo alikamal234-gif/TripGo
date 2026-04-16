@@ -57,5 +57,6 @@ Route::prefix('admin')
         Route::get('/users/show/{id}', [AdminController::class,'showUser'])->name('admin.users.show');
         Route::get('/users/edit/{id}', [UserController::class, 'edit'])->name('admin.user.edit');
         Route::PUT('/users/edit/{id}', [UserController::class, 'update'])->name('admin.user.update');
+        Route::delete('/users/delete/{id}', [UserController::class, 'destroy'])->name('admin.user.delete');
 });
 include "auth.php";

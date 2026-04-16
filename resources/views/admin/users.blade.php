@@ -136,9 +136,13 @@
                                                 <a href="{{ route('admin.user.edit', $user->id) }}" class="text-yellow-600 hover:text-yellow-900" title="Modifier">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
-                                                <button class="text-red-600 hover:text-red-900" title="Supprimer">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
+                                                <form action="{{ route('admin.user.delete',$user->id) }}" method="post">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="text-red-600 hover:text-red-900" title="Supprimer">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </form>
                                             </div>
                                         </td>
                                     </tr>

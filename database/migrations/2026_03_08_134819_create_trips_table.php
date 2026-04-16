@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('trips', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('passenger_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('passenger_id')->nullable()->constrained()->cascadeOnDelete();
             $table->foreignId('driver_id')->nullable()->constrained()->cascadeOnDelete();
             $table->foreignId('departure_address_id')->constrained('addresses')->cascadeOnDelete();
             $table->foreignId('destination_address_id')->constrained('addresses')->cascadeOnDelete();
