@@ -41,10 +41,11 @@ class PaymentController extends Controller
 
     }
     public function confirme(string $id){
-        $payment = Payment::findOrFail($id);
+
+        $payment = Payment::where('trip_id',$id);
         $payment->update([
             'status' => "paid"
         ]);
-        return redirect()->back();
+        return redirect()->route('driver.dashboard');
     }
 }

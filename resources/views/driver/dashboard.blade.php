@@ -437,7 +437,9 @@
                                             <i class="fas fa-receipt"></i>
                                         </button>
                                     </div>
-                                    <form method="POST" action="{{ route('driver.payment.confirme',$trip->id) }}">
+                                    @if ($trip->payment?->status !== "paid")
+
+                                    <form method="POST" action="{{ route('driver.payment.confirme', $trip->id) }}">
                                         @csrf
                                         @method('PATCH')
 
@@ -456,6 +458,24 @@
                                             </button>
                                         </div>
                                     </form>
+                                    @elseif($trip->payment->status == 'pending')
+                                        <span
+                                            class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-yellow-100 text-yellow-700 border border-yellow-200 animate-pulse">
+                                            <i class="fas fa-clock"></i> En attente
+                                        </span>
+
+                                    @elseif($trip->payment->status == 'paid')
+                                        <span
+                                            class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700 border border-green-200">
+                                            <i class="fas fa-check-circle"></i> Payé
+                                        </span>
+
+                                    @elseif($trip->payment->status == 'refused')
+                                        <span
+                                            class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-700 border border-red-200">
+                                            <i class="fas fa-times-circle"></i> Refusé
+                                        </span>
+                                    @endif
                                 </div>
                             @endif
                         @endforeach
