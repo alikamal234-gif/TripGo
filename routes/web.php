@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PassengerController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TripController;
 use Illuminate\Support\Facades\Route;
@@ -24,13 +25,15 @@ Route::prefix('driver')->middleware('auth')->group(function (){
     Route::post('/dashboard/trip/{id}/accept',[TripController::class,'accept'])->name('trip.accept');
     Route::post('/dashboard/trip/{id}/start',[TripController::class,'start'])->name('trip.start');
     Route::post('/dashboard/trip/{id}/terminer',[TripController::class,'terminer'])->name('trip.terminer');
-
+    Route::patch('/confirme/payment/{id}', [PaymentController::class, 'confirme'])->name('driver.payment.confirme');
 });
 
 Route::prefix('passenger')->middleware('auth')->group(function (){
     Route::get('/dashboard',[PassengerController::class,'index'])->name('passenger.dashboard');
     Route::post('/lance-trip',[TripController::class,'store'])->name('passenger.trip');
     Route::patch('/trip/ratie/{id}',[TripController::class,'rate'])->name('trips.rate');
+    Route::post('/payment/', [PaymentController::class, 'method'])->name('passenger.payment');
+    Route::delete('/trip/delete/{id}',[TripController::class,'destroy'])->name('trips.delete');
 });
 
 Route::middleware('auth')->group(function () {

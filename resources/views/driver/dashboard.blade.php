@@ -373,59 +373,89 @@
                                 </div>
                             @elseif ($trip->status == "terminer")
                                 <!-- Trajet accepté 3 - Terminé aujourd'hui -->
-                                <div class="border-2 border-green-500 bg-green-50 rounded-xl p-4 opacity-75">
+                                <div class="border-2 border-green-500 bg-green-50 rounded-xl p-4 shadow-sm opacity-95 transition-all hover:shadow-md">
+
+                                    <!-- Header: Passenger & Status -->
                                     <div class="flex items-start justify-between mb-3">
                                         <div class="flex items-center space-x-3">
-                                            <img src="https://picsum.photos/seed/accepted3/40/40.jpg" alt="Passager" class="w-10 h-10 rounded-full">
+                                            <img src="{{ $trip->passenger->profile_photo ?? 'https://picsum.photos/seed/accepted3/40/40.jpg' }}"
+                                                alt="Passager" class="w-10 h-10 rounded-full border border-green-200 object-cover">
                                             <div>
-                                                <p class="font-bold text-indrive-dark">{{ $trip->passenger->name }}</p>
-                                                <p class="text-xs text-gray-600">⭐ {{ $trip->rating }} Terminé</p>
+                                                <p class="font-bold text-gray-800 text-sm">{{ $trip->passenger->name }}</p>
+                                                <p class="text-xs text-gray-500">⭐ {{ $trip->rating ?? 0 }} Terminé</p>
                                             </div>
                                         </div>
-                                        <span class="bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold">
+                                        <span class="bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-sm">
                                             TERMINÉ
                                         </span>
                                     </div>
 
+                                    <!-- Route Info -->
                                     <div class="space-y-2 mb-3">
                                         <div class="flex items-center text-sm">
-                                            <i class="fas fa-map-marker-alt text-green-500 w-5"></i>
-                                            <span class="text-gray-700 ml-2">{{ $trip->departureAddress->name}}</span>
+                                            <div class="w-5 flex justify-center"><i class="fas fa-map-marker-alt text-green-500"></i></div>
+                                            <span class="text-gray-700 ml-2 truncate">{{ $trip->departureAddress->name }}</span>
                                         </div>
                                         <div class="flex items-center text-sm">
-                                            <i class="fas fa-flag-checkered text-red-500 w-5"></i>
-                                            <span class="text-gray-700 ml-2">{{ $trip->destinationAddress->name }}</span>
+                                            <div class="w-5 flex justify-center"><i class="fas fa-flag-checkered text-red-500"></i></div>
+                                            <span class="text-gray-700 ml-2 truncate">{{ $trip->destinationAddress->name }}</span>
                                         </div>
                                     </div>
 
+                                    <!-- Stats & Price -->
                                     <div class="flex items-center justify-between pt-3 border-t border-green-200">
                                         <div class="flex items-center space-x-4">
-                                            <span class="text-sm text-gray-600">
-                                                <i class="fas fa-road mr-1"></i>4.2 km
+                                            <span class="text-sm text-gray-600 font-medium">
+                                                <i class="fas fa-road mr-1 text-green-600"></i> {{ $trip->distance ?? '4.2' }} km
                                             </span>
-                                            <span class="text-sm text-gray-600">
-                                                <i class="fas fa-clock mr-1"></i>15 min
+                                            <span class="text-sm text-gray-600 font-medium">
+                                                <i class="fas fa-clock mr-1 text-green-600"></i> {{ $trip->duration ?? '15' }} min
                                             </span>
                                         </div>
                                         <div class="text-right">
-                                            <p class="text-lg font-bold text-indrive-yellow">{{ $trip->price }}</p>
-                                            <p class="text-xs text-gray-600">payé</p>
+                                            <p class="text-lg font-bold text-indigo-600">{{ $trip->price }} DH</p>
+                                            <!-- Hna khassek tverifier ila 3ndk variable 'paid_status' wla direct 'Payé' -->
+                                            <p class="text-xs text-green-600 font-bold uppercase tracking-wide">Payé (Cash)</p>
+
                                         </div>
                                     </div>
 
+                                    <!-- Rating Section -->
                                     <div class="flex items-center justify-between mt-4 pt-3 border-t border-green-200">
                                         <div class="flex items-center space-x-2">
-                                            <i class="fas fa-star @if($trip->rating > 0) text-yellow-500 @endif "></i>
-                                            <i class="fas fa-star @if($trip->rating > 1) text-yellow-500 @endif "></i>
-                                            <i class="fas fa-star @if($trip->rating > 2) text-yellow-500 @endif "></i>
-                                            <i class="fas fa-star @if($trip->rating > 3) text-yellow-500 @endif "></i>
-                                            <i class="fas fa-star @if($trip->rating > 4) text-yellow-500 @endif "></i>
+                                            <!-- Logic dyal les étoiles -->
+                                            @for ($i = 1; $i <= 5; $i++)
+                                                <i class="fas fa-star {{ $trip->rating >= $i ? 'text-yellow-400' : 'text-gray-300' }} text-sm"></i>
+                                            @endfor
                                             <span class="text-sm text-gray-600 ml-2">Excellent trajet!</span>
                                         </div>
-                                        <button class="text-indrive-yellow hover:text-yellow-400 transition-colors">
+
+                                        <!-- Button Reçu -->
+                                        <button
+                                            class="text-gray-500 hover:text-indigo-600 transition-colors bg-white p-2 rounded-full border border-gray-200 hover:border-indigo-300"
+                                            title="Voir le reçu">
                                             <i class="fas fa-receipt"></i>
                                         </button>
                                     </div>
+                                    <form method="POST" action="{{ route('driver.payment.confirme',$trip->id) }}">
+                                        @csrf
+                                        @method('PATCH')
+
+                                        <div class="flex flex-col sm:flex-row items-center justify-between gap-3 mt-4">
+                                            <!-- Message l driver -->
+                                            <span class="text-sm font-semibold text-gray-700 text-center sm:text-left">
+                                                <i class="fas fa-hand-holding-usd text-yellow-600 mr-1"></i>
+                                                Avez-vous reçu le paiement ?
+                                            </span>
+
+                                            <!-- Button dyal confirmation -->
+                                            <button type="submit"
+                                                class="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-all transform active:scale-95 flex items-center justify-center gap-2">
+                                                <i class="fas fa-check-circle text-lg"></i>
+                                                Confirmer Paiement
+                                            </button>
+                                        </div>
+                                    </form>
                                 </div>
                             @endif
                         @endforeach
@@ -528,8 +558,8 @@ $nouveau = true;
                                                                                 </button>
                                                                             </div>
                                                                         </div>
-                                                                        @php    
-                            $nouveau = false;
+                                                                        @php
+    $nouveau = false;
                                                                         @endphp
                         @endforeach
                     </div>

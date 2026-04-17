@@ -18,7 +18,7 @@ class PassengerController extends Controller
      */
     public function index()
     {
-        $user = Passenger::with('trips.driver','trips.departureAddress', 'trips.destinationAddress')
+        $user = Passenger::with('trips.driver','trips.departureAddress', 'trips.destinationAddress','trips.payment')
             ->findOrFail(auth()->id());
 
         $trips = $user->trips;

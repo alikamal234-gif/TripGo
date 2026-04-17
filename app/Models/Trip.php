@@ -31,7 +31,7 @@ class Trip extends Model
     {
         return $this->belongsTo(User::class, 'driver_id');
     }
-   
+
     public function tripsAsDriver()
 {
     return $this->hasMany(Trip::class, 'driver_id');
@@ -55,5 +55,9 @@ public function tripsAsPassenger()
 
     public function notifications(){
         return $this->hasMany(Notification::class);
+    }
+
+    public function payment(){
+        return $this->hasOne(Payment::class);
     }
 }

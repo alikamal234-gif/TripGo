@@ -75,7 +75,7 @@
                                 <i class="fas fa-power-off text-sm"></i>
                             </button>
                         </form>
-                        
+
                     </div>
                 </div>
             </div>
@@ -187,65 +187,70 @@
                 @if ($trip->status == "avenir")
 
 
-                <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition-all border border-gray-100">
+                    <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition-all border border-gray-100">
 
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="flex items-center gap-3">
-                                <div class="bg-indigo-100 p-3 rounded-full">
-                                    <i class="fas fa-car text-indigo-600"></i>
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="bg-indigo-100 p-3 rounded-full">
+                                        <i class="fas fa-car text-indigo-600"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500">Trip</p>
+                                        <p class="font-semibold text-gray-800">
+                                            {{ optional($trip->departureAddress)->name }}
+                                        </p>
+                                    </div>
                                 </div>
+
+                                <span class="px-3 py-1 text-xs rounded-full
+                                    @if($trip->status === 'pending') bg-yellow-100 text-yellow-700
+                                    @elseif($trip->status === 'completed') bg-green-100 text-green-700
+                                    @else bg-gray-100 text-gray-600
+                                    @endif
+                                ">
+                                    {{ ucfirst($trip->status) }}
+                                </span>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4 text-sm text-gray-600">
+
                                 <div>
-                                    <p class="text-sm text-gray-500">Trip</p>
+                                    <p class="text-gray-400">Departure</p>
                                     <p class="font-semibold text-gray-800">
-                                        {{ optional($trip->departureAddress)->name }}
+                                        {{ \Carbon\Carbon::parse($trip->departure_time)->format('d M - H:i') }}
                                     </p>
                                 </div>
+
+                                <div>
+                                    <p class="text-gray-400">Seats</p>
+                                    <p class="font-semibold text-gray-800">
+                                        {{ $trip->available_seats }}
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <p class="text-gray-400">Price</p>
+                                    <p class="font-semibold text-gray-800">
+                                        {{ $trip->price }} DH
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <p class="text-gray-400">Destination</p>
+                                    <p class="font-semibold text-gray-800">
+                                        {{ optional($trip->destinationAddress)->name }}
+                                    </p>
+                                </div>
+
                             </div>
-
-                            <span class="px-3 py-1 text-xs rounded-full
-                                @if($trip->status === 'pending') bg-yellow-100 text-yellow-700
-                                @elseif($trip->status === 'completed') bg-green-100 text-green-700
-                                @else bg-gray-100 text-gray-600
-                                @endif
-                            ">
-                                {{ ucfirst($trip->status) }}
-                            </span>
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-4 text-sm text-gray-600">
-
-                            <div>
-                                <p class="text-gray-400">Departure</p>
-                                <p class="font-semibold text-gray-800">
-                                    {{ \Carbon\Carbon::parse($trip->departure_time)->format('d M - H:i') }}
-                                </p>
-                            </div>
-
-                            <div>
-                                <p class="text-gray-400">Seats</p>
-                                <p class="font-semibold text-gray-800">
-                                    {{ $trip->available_seats }}
-                                </p>
-                            </div>
-
-                            <div>
-                                <p class="text-gray-400">Price</p>
-                                <p class="font-semibold text-gray-800">
-                                    {{ $trip->price }} DH
-                                </p>
-                            </div>
-
-                            <div>
-                                <p class="text-gray-400">Destination</p>
-                                <p class="font-semibold text-gray-800">
-                                    {{ optional($trip->destinationAddress)->name }}
-                                </p>
-                            </div>
+                            <form action="{{ route('trips.delete', $trip->id) }}" method="post">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="rounded-lg m-2 mt-3 p-2 bg-red-600 text-white">supprimer</button>
+                            </form>
 
                         </div>
-
-                    </div>
-                    @endif
+                @endif
             @endforeach
 
         </section>
@@ -300,7 +305,6 @@ $trips_completed = $trips->where('status', 'accepted');
             <section class="bg-white rounded-2xl shadow-lg p-6 animate-slide-in">
                 <h2 class="text-xl font-semibold text-gray-800 mb-6 flex items-center justify-between">
                     <span><i class="fas fa-history mr-2 text-indigo-600"></i>Recent Trips</span>
-                    <a href="#" class="text-sm text-indigo-600 hover:text-indigo-700">View All</a>
                 </h2>
 
                 <div class="space-y-4">
@@ -308,43 +312,129 @@ $trips_completed = $trips->where('status', 'accepted');
                     @foreach ($trips as $trip)
                         @if(isset($trip->driver))
                             <div
-                                class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-all hover:border-indigo-300">
-                                <div class="flex justify-between items-start mb-2">
+                                class="border border-gray-200 rounded-lg p-4 hover:shadow-lg transition-all duration-300 hover:border-indigo-400 bg-white">
+
+                                <!-- Header: Driver & Status -->
+                                <div class="flex justify-between items-start mb-4">
                                     <div class="flex items-center space-x-3">
                                         <img src="https://picsum.photos/seed/driver1/40/40" alt="Driver"
-                                            class="w-10 h-10 rounded-full">
+                                            class="w-12 h-12 rounded-full border border-gray-100 object-cover">
                                         <div>
-                                            <p class="font-semibold text-gray-800">{{ $trip?->driver->name }}</p>
-                                            <p class="text-sm text-gray-500">{{ $trip?->driver->ville }}</p>
+                                            <h3 class="font-bold text-gray-900">{{ $trip?->driver->name }}</h3>
+                                            <p class="text-xs text-gray-500 flex items-center gap-1">
+                                                <i class="fas fa-car-side"></i> {{ $trip?->driver->ville }}
+                                            </p>
                                         </div>
                                     </div>
-                                    <span
-                                        class="px-3 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-full">{{ $trip->status }}</span>
-                                </div>
-                                <div class="text-sm text-gray-600 space-y-1">
-                                    <p><i class="fas fa-map-marker-alt text-green-500 mr-2"></i>{{ $trip->departureAddress->name }}</p>
-                                    <p><i class="fas fa-flag-checkered text-red-500 mr-2"></i>{{ $trip->destinationAddress->name }}</p>
-                                </div>
-                                <div class="flex justify-between items-center mt-3 pt-3 border-t border-gray-100">
-                                    <span class="text-lg font-bold text-gray-800">{{ $trip->price }} DH</span>
-                                    <span class="text-xs text-gray-500">{{ $trip->departure_time }}</span>
+                                    <span class="px-3 py-1 bg-green-100 text-green-700 text-xs font-bold uppercase rounded-full tracking-wide">
+                                        {{ $trip->status }}
+                                    </span>
                                 </div>
 
-                                @if ($trip->status == "terminer")
-                                <form class="flex justify-between items-center mt-3 pt-3 border-t border-gray-100" action="{{ route('trips.rate', $trip->id) }}" method="post">
-                                    @csrf
-                                    @method('PATCH')
-                                    <span class="text-xs text-gray-500">Rating : </span>
-                                    <div class="flex gap-3">
-                                        <input value="{{ $trip->rating }}" class="border-2 pr-2 pl-2 border-black w-50" type="number" name="rating" min="1" max="5" placeholder="rating"> <p class="font-bold ">/5</p>
+                                <!-- Trip Details -->
+                                <div class="text-sm text-gray-600 space-y-2 mb-4">
+                                    <div class="flex items-start">
+                                        <div class="mt-1 mr-3 w-5 flex justify-center"><i class="fas fa-map-marker-alt text-green-500"></i></div>
+                                        <p class="font-medium text-gray-800">{{ $trip->departureAddress->name }}</p>
                                     </div>
-                                    <button type="submit" class="bg-yellow-400 text-black text-1xl font-bold p-3 rounded-lg">submit Rating</button>
-                                </form>
+                                    <div class="flex items-start">
+                                        <div class="mt-1 mr-3 w-5 flex justify-center"><i class="fas fa-flag-checkered text-red-500"></i></div>
+                                        <p class="font-medium text-gray-800">{{ $trip->destinationAddress->name }}</p>
+                                    </div>
+                                </div>
+
+                                <!-- Price & Time -->
+                                <div class="flex justify-between items-center pb-4 border-b border-gray-100 mb-4">
+                                    <div>
+                                        <span class="text-xl font-extrabold text-indigo-600">{{ $trip->price }} DH</span>
+                                    </div>
+                                    <div class="text-right">
+                                        <span class="text-xs text-gray-400 block">Departure</span>
+                                        <span class="text-sm font-semibold text-gray-700">{{ $trip->departure_time }}</span>
+                                    </div>
+                                </div>
+
+                                <!-- Actions (Only if Terminated) -->
+                                @if ($trip->status == "terminer")
+                                    <div class="space-y-4">
+
+                                        <!-- Rating Form -->
+                                        <form action="{{ route('trips.rate', $trip->id) }}" method="POST">
+                                            @csrf
+                                            @method('PATCH')
+                                            <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+                                                <span class="text-sm font-semibold text-gray-700">Noter le chauffeur :</span>
+                                                <div class="flex items-center gap-2 bg-gray-50 px-3 py-1.5 rounded-md border border-gray-200">
+                                                    <input type="number" name="rating" value="{{ $trip->rating }}" min="1" max="5" placeholder="5"
+                                                        class="w-12 text-center font-bold bg-transparent focus:outline-none text-indigo-600">
+                                                    <span class="text-gray-500 font-bold">/5</span>
+                                                </div>
+                                                <button type="submit"
+                                                    class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold py-2 px-4 rounded-lg transition-colors shadow-sm">
+                                                    Noter
+                                                </button>
+                                            </div>
+                                        </form>
+
+                                        @if (!$trip->payment)
+
+                                        <div class="w-full">
+                                            <div class="flex items-center gap-3">
+                                                <select id="select-method" name="payment" onchange="methodPayment(this)"
+                                                    class="flex-1 w-full bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block p-2.5">
+                                                    <option value="cash" {{ old('payment') == 'cash' ? 'selected' : '' }}>Cash (Espèces)</option>
+                                                    <option value="online" {{ old('payment') == 'online' ? 'selected' : '' }}>Online (Carte)</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!-- Payment Form -->
+                                        <form id="payment-formuler-cash" action="{{ route('passenger.payment') }}" method="post" class="w-full">
+                                            @csrf
+                                            <div class="flex items-center gap-3">
+                                                <input class="hidden" name="amount" type="number" value="{{ $trip->price }}">
+                                                <input class="hidden" name="method" type="text" value="cash">
+                                                <input class="hidden" name="trip_id" type="text" value="{{ $trip->id }}">
+                                                <input class="hidden" name="driver_id" type="text" value="{{ $trip->driver_id }}">
+                                                <input class="hidden" name="passenger_id" type="text" value="{{ $trip->passenger_id }}">
+
+                                                <button type="submit"
+                                                    class="whitespace-nowrap bg-yellow-400 hover:bg-yellow-500 text-black text-sm font-bold py-2.5 px-5 rounded-lg transition-transform active:scale-95">
+                                                    Payer cash
+                                                </button>
+                                            </div>
+                                        </form>
+                                        <form id="payment-formuler-online" action="{{ route('passenger.payment') }}" method="post">
+                                            @csrf
+                                                <input class="hidden" name="method" type="text" value="online">
+                                            <button type="submit"
+                                                class="whitespace-nowrap bg-yellow-400 hover:bg-yellow-500 text-black text-sm font-bold py-2.5 px-5 rounded-lg transition-transform active:scale-95">
+                                                Payer Online
+                                            </button>
+                                        </form>
+                                        @elseif($trip->payment->status == 'pending')
+                                             <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-yellow-100 text-yellow-700 border border-yellow-200 animate-pulse">
+                                                <i class="fas fa-clock"></i> En attente
+                                            </span>
+
+                                        @elseif($trip->payment->status == 'paid')
+                                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700 border border-green-200">
+                                                <i class="fas fa-check-circle"></i> Payé
+                                            </span>
+
+                                        @elseif($trip->payment->status == 'refused')
+                                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-700 border border-red-200">
+                                                <i class="fas fa-times-circle"></i> Refusé
+                                            </span>
+                                        @endif
+
+                                    </div>
                                 @endif
 
                             </div>
                         @endif
                     @endforeach
+
+
 
             </section>
 
@@ -357,39 +447,39 @@ $trips_completed = $trips->where('status', 'accepted');
                 <div class="mt-4 flex items-center justify-between text-sm">
                     <div class="flex items-center space-x-4">
                         <span class="flex items-center">
-                            <span class="w-3 h-3 bg-green-500 rounded-full mr-2"></span>
-                            Available Drivers (5)
-                        </span>
-                        <span class="flex items-center">
                             <span class="w-3 h-3 bg-blue-500 rounded-full mr-2"></span>
-                            Your Location
+                            chose Your Location
                         </span>
                     </div>
                     <button class="text-green-600 hover:text-indigo-700 font-medium" onclick="locationStart()">
-                        <i
-                            class="fas fa-map-marker-alt absolute left-3 top-1/2 transform -translate-y-1/2 text-green-500"></i>
-                        Pickup Location
-                    </button>
-                    <button class="text-red-600 hover:text-indigo-700 font-medium" onclick="locationDestination()">
-                        <i
-                            class="fas fa-flag-checkered absolute left-3 top-1/2 transform -translate-y-1/2 text-red-500"></i>
-                        Destination
-                    </button>
-                    <button class="text-indigo-600 hover:text-indigo-700 font-medium">
-                        <i class="fas fa-sync-alt mr-1"></i> Refresh
-                    </button>
+
                 </div>
             </section>
         </div>
     </main>
 
-    <div id="toast"
-        class="fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg transform translate-y-full transition-transform duration-300 z-50">
-        <div class="flex items-center">
-            <i class="fas fa-check-circle mr-2"></i>
-            <span id="toastMessage">Success!</span>
-        </div>
-    </div>
+    <script>
+        const formuler_cash = document.getElementById('payment-formuler-cash')
+        const formuler_online = document.getElementById('payment-formuler-online')
+        function methodPayment(select){
+            const value = select.value
+            if(value == "cash"){
+                formuler_cash.style.display = 'block'
+                formuler_online.style.display = 'none'
+            }else if (value == "online"){
+                formuler_cash.style.display = 'none'
+                formuler_online.style.display = 'block'
+
+            }
+        }
+       document.addEventListener('DOMContentLoaded', function () {
+
+            const select = document.getElementById('select-method');
+
+            methodPayment(select);
+       })
+    </script>
+
 
     <script>
         const map = L.map('map').setView([33.5731, -7.5898], 13);

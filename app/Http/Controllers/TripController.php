@@ -58,7 +58,7 @@ class TripController extends Controller
                 'message' => 'Trip is Lancer',
                 'trip_id' => $trip->id,
             ]);
-            
+
 
         });
 
@@ -94,7 +94,7 @@ class TripController extends Controller
 
     if (!$trip->driver_id) {
         DB::transaction(function () use ($trip) {
-            
+
             $trip->update(['driver_id' => auth()->id()]);
 
             Notification::create([
@@ -137,9 +137,9 @@ class TripController extends Controller
     }
 
     $trip = Trip::findOrFail($id);
-    
+
     DB::transaction(function () use ($trip) {
-        
+
         $trip->update([
             'status'       => 'terminer',
             'termine_time' => now(),
@@ -170,6 +170,11 @@ class TripController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $trip = Trip::findOrFail($id);
+        if($trip->status !== "avenir"){
+            return redirect()->back()->with('error','this trip is access or terminer by driver');
+        }
+        $trip->delete();
+        return redirect()->back()->with('success', 'this trip removed with successful');
     }
 }

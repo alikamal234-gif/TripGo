@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->integer('amount');
-            $table->string('method');
+            $table->enum('method',['cash','online']);
             $table->enum('status',['pending','paid','failed']);
             $table->dateTime('paid_at');
         });
