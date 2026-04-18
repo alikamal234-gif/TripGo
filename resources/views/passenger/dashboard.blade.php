@@ -335,10 +335,10 @@ $trips_completed = $trips->where('status', 'accepted');
                                 <!-- Header: Driver & Status -->
                                 <div class="flex justify-between items-start mb-4">
                                     <div class="flex items-center space-x-3">
-                                        <img src="https://picsum.photos/seed/driver1/40/40" alt="Driver"
-                                            class="w-12 h-12 rounded-full border border-gray-100 object-cover">
+                                        <a href="{{ route('profile.driver', $trip?->driver->id) }}"><img src="https://picsum.photos/seed/driver1/40/40" alt="Driver"
+                                            class="w-12 h-12 rounded-full border border-gray-100 object-cover"></a>
                                         <div>
-                                            <h3 class="font-bold text-gray-900">{{ $trip?->driver->name }}</h3>
+                                            <a href="{{ route('profile.driver', $trip?->driver->id) }}"><h3 class="font-bold text-gray-900">{{ $trip?->driver->name }}</h3></a>
                                             <p class="text-xs text-gray-500 flex items-center gap-1">
                                                 <i class="fas fa-car-side"></i> {{ $trip?->driver->ville }}
                                             </p>

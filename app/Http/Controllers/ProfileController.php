@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Driver;
 use App\Models\Trip;
 use App\Models\User;
 use App\Models\Vehicle;
@@ -44,7 +45,7 @@ class ProfileController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-   
+
 
     /**
      * Store a newly created resource in storage.
@@ -57,9 +58,11 @@ class ProfileController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function showDriver(string $id)
     {
-        //
+        $driver = Driver::with('vehicle','trips','user')->findOrFail($id);
+        return view('profileDriver',compact('driver'));
+
     }
 
     /**

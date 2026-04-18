@@ -42,7 +42,9 @@ Route::prefix('passenger')->middleware('auth')->group(function (){
 Route::middleware('auth')->group(function () {
    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications');
     Route::get('/profile',[ProfileController::class,'index'])->name('profile');
+    Route::get('/profile/{id}',[ProfileController::class,'showDriver'])->name('profile.driver');
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
 });
 
 

@@ -146,7 +146,6 @@ class TripController extends Controller
             'termine_time' => now(),
         ]);
 
-        // ✅ notification للـ passenger
         Notification::create([
             'user_id' => $trip->passenger_id,
             'type'    => Notification::TYPE_TRIP_FINISHED,
@@ -154,7 +153,6 @@ class TripController extends Controller
             'trip_id' => $trip->id,
         ]);
 
-        // ✅ notification للـ driver
         Notification::create([
             'user_id' => auth()->id(),
             'type'    => Notification::TYPE_TRIP_FINISHED,
