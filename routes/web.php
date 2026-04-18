@@ -34,6 +34,9 @@ Route::prefix('passenger')->middleware('auth')->group(function (){
     Route::patch('/trip/ratie/{id}',[TripController::class,'rate'])->name('trips.rate');
     Route::post('/payment/', [PaymentController::class, 'method'])->name('passenger.payment');
     Route::delete('/trip/delete/{id}',[TripController::class,'destroy'])->name('trips.delete');
+    Route::post('/payment/intent', [PaymentController::class, 'createIntent']);
+    Route::get('/payment/success', [PaymentController::class, 'success'])
+    ->name('payment.success');
 });
 
 Route::middleware('auth')->group(function () {

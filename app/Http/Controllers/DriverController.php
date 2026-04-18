@@ -20,6 +20,7 @@ class DriverController extends Controller
 
     $trips_accept = Trip::with('payment')
         ->where('driver_id', auth()->id())
+        ->latest()
         ->get();
 
     return view('driver.dashboard', compact('trips', 'trips_accept'));

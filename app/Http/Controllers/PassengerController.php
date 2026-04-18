@@ -21,8 +21,7 @@ class PassengerController extends Controller
         $user = Passenger::with('trips.driver','trips.departureAddress', 'trips.destinationAddress','trips.payment')
             ->findOrFail(auth()->id());
 
-        $trips = $user->trips;
-        // dd($trips[1]->driver->name);
+        $trips = $user->trips()->latest()->get();
         return view('passenger.dashboard', compact('trips'));
     }
 
