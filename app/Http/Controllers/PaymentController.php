@@ -37,7 +37,7 @@ class PaymentController extends Controller
             'trip_id' =>$data['trip_id'],
             'paid_at' => now()
         ]);
-        return redirect()->back();
+        return redirect()->back()->with('success','Paiement effectué attente pour le driver complete le confirmation');
     }
 
     public function online($data){

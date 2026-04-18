@@ -86,6 +86,21 @@
     </nav>
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        @if(session('success'))
+            <div id="alert-success"
+                class="bg-green-100 border border-green-300 text-green-800 px-4 py-3 rounded-lg mb-4 flex items-center justify-between shadow-md">
+
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-check-circle text-green-600"></i>
+                    <span>{{ session('success') }}</span>
+                </div>
+
+                <button onclick="document.getElementById('alert-success').remove()"
+                    class="text-green-700 hover:text-green-900 font-bold">
+                    ✕
+                </button>
+            </div>
+        @endif
         <section class="mb-8 animate-slide-in">
             <h1 class="text-3xl font-bold text-gray-800 mb-2">Welcome back, Alex Johnson</h1>
             <p class="text-gray-600">Find a ride quickly and travel easily.</p>

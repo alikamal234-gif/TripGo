@@ -25,6 +25,7 @@ class TripController extends Controller
             'departure_time' => ['required', 'date'],
             'available_seats' => ['required'],
             'price' => ['required', 'numeric'],
+
         ]);
 
         DB::transaction(function () use ($data) {
