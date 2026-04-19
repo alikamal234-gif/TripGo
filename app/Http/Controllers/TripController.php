@@ -164,6 +164,14 @@ class TripController extends Controller
     return redirect()->route('driver.dashboard')->with('success', 'Trip finished');
 }
 
+    public function show(string $id){
+        $notification = Notification::findOrFail($id);
+        Notification::findOrFail($id)
+        ->update(['is_read' => true]);
+        $trip = Trip::with('destinationAddress', 'departureAddress', 'passenger', 'driver', 'payment')->findOrFail($notification->trip_id);
+        return view('trips.show', compact('trip'));
+    }
+
     /**
      * Remove the specified resource from storage.
      */

@@ -37,6 +37,7 @@ Route::prefix('passenger')->middleware('auth')->group(function (){
     Route::post('/payment/intent', [PaymentController::class, 'createIntent']);
     Route::get('/payment/success', [PaymentController::class, 'success'])
     ->name('payment.success');
+    Route::get('/trip/{id}', [TripController::class, 'show'])->name('trip.show');
 });
 
 Route::middleware('auth')->group(function () {
