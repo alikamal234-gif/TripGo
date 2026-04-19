@@ -116,70 +116,93 @@
 
     @if($notifications->count() > 0)
         <div class="space-y-4">
-        @foreach ($notifications as $notif)
+            @foreach ($notifications as $notif)
 
-            @if ($notif->user_id == auth()->id())
+    @if ($notif->user_id == auth()->id())
 
-                <div class="bg-white rounded-xl shadow-sm p-5 border-l-4 border-indigo-500 hover:shadow-md transition-shadow">
+        <div class="relative w-full">
 
-                    <div class="flex items-start gap-4">
+            <!-- --- HNA HADI L LOGIC DYAL READ/UNREAD (Classes dyal Card) --- -->
+            <div class="rounded-xl shadow-sm p-5 border-l-4 transition-all duration-300
+                {{ $notif->is_read
+                    ? 'bg-gray-50 border-gray-300 opacity-70'
+                    : 'bg-white border-indigo-500' }}
+                hover:shadow-md hover:translate-x-1">
 
-                        <!-- ICON -->
-                        <div class="w-10 h-10 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mt-1">
-                            <i class="fas fa-bell"></i>
-                        </div>
+                <div class="flex items-start gap-4">
 
-                        <!-- CONTENT -->
-                        <div class="flex-1">
+                    <!-- ICON (Beddel loun 3la 7sab Read) -->
+                    <div class="w-10 h-10 rounded-full flex items-center justify-center mt-1
+                        {{ $notif->is_read
+                            ? 'bg-gray-100 text-gray-400'
+                            : 'bg-indigo-100 text-indigo-600' }}">
+                        <i class="fas fa-bell"></i>
+                    </div>
 
-                            <!-- MESSAGE -->
-                            <h4 class="font-bold text-gray-800 mb-1">
-                                {{ $notif->message }}
-                            </h4>
+                    <div class="flex-1">
 
-                            <!-- TRIP INFO -->
-                            @if($notif->trip)
-                                <div class="flex items-center gap-2 text-sm text-gray-600 bg-gray-50 rounded-lg p-2 mb-2">
+                        <h4 class="mb-1 transition-all
+                            {{ $notif->is_read
+                                ? 'font-medium text-gray-600'
+                                : 'font-bold text-gray-800' }}">
+                            {{ $notif->message }}
+                        </h4>
 
-                                    <i class="fas fa-map-marker-alt text-red-400 text-xs"></i>
-                                    <span>{{ $notif->trip->departureAddress->name ?? '---' }}</span>
+                        <!-- TRIP INFO -->
+                        @if($notif->trip)
+                            <a href="{{ route('trip.show', $notif->id) }}" class="block group mb-2">
+                                <div class="flex items-center justify-between border border-gray-100 rounded-xl p-3 shadow-sm transition-all duration-200
+                                    {{ $notif->is_read ? 'bg-gray-100/50' : 'bg-white hover:border-yellow-200' }}">
 
-                                    <i class="fas fa-arrow-right text-gray-300 text-xs"></i>
+                                    <div class="flex-1 pr-4 min-w-0">
+                                        <div class="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-1 overflow-hidden whitespace-nowrap">
+                                            <span class="truncate max-w-[100px]">
+                                                <i class="fas fa-map-marker-alt text-red-500 mr-1"></i>
+                                                {{ $notif->trip->departureAddress->name ?? '---' }}
+                                            </span>
+                                            <i class="fas fa-long-arrow-alt-right text-gray-300 text-xs"></i>
+                                            <span class="truncate max-w-[100px]">
+                                                <i class="fas fa-map-pin text-green-500 mr-1"></i>
+                                                {{ $notif->trip->destinationAddress->name ?? '---' }}
+                                            </span>
+                                        </div>
+                                        <div class="flex items-center gap-3 text-xs text-gray-500">
+                                            <span>
+                                                <i class="far fa-calendar mr-1"></i>
+                                                {{ \Carbon\Carbon::parse($notif->trip->departure_time)->format('d M') }}
+                                            </span>
+                                            <span class="font-bold text-gray-700">
+                                                <i class="fas fa-coins text-yellow-500 mr-1"></i>
+                                                {{ $notif->trip->price }} DH
+                                            </span>
+                                        </div>
+                                    </div>
 
-                                    <i class="fas fa-map-pin text-green-400 text-xs"></i>
-                                    <span>{{ $notif->trip->destinationAddress->name ?? '---' }}</span>
+                                    <div class="flex-shrink-0">
+                                        <div class="w-9 h-9 rounded-full bg-yellow-50 text-yellow-600 flex items-center justify-center group-hover:bg-yellow-500 group-hover:text-white transition-colors duration-200 shadow-sm border border-yellow-100">
+                                            <i class="fas fa-arrow-right text-xs"></i>
+                                        </div>
+                                    </div>
 
                                 </div>
+                            </a>
+                        @endif
 
-                                <div class="flex items-center gap-4 text-xs text-gray-400">
-
-                                    <span>
-                                        <i class="far fa-calendar mr-1"></i>
-                                        {{ \Carbon\Carbon::parse($notif->trip->departure_time)->format('d M Y H:i') }}
-                                    </span>
-
-                                    <span>
-                                        <i class="fas fa-euro-sign mr-1"></i>
-                                        {{ $notif->trip->price }} DH
-                                    </span>
-
-                                </div>
-                            @endif
-
-                            <!-- TIME -->
-                            <div class="text-xs text-gray-400 mt-2">
-                                {{ $notif->created_at->diffForHumans() }}
-                            </div>
-
+                        <!-- TIME -->
+                        <div class="text-xs text-gray-400 mt-1">
+                            {{ $notif->created_at->diffForHumans() }}
                         </div>
 
                     </div>
 
                 </div>
 
-            @endif
+            </div>
+        </div>
 
-        @endforeach
+    @endif
+
+@endforeach
         </div>
     @else
         <!-- État vide -->
