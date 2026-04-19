@@ -102,16 +102,19 @@
             </div>
         @endif
         <section class="mb-8 animate-slide-in">
-            <h1 class="text-3xl font-bold text-gray-800 mb-2">Welcome back, Alex Johnson</h1>
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">Welcome back, {{ auth()->user()->name }}</h1>
             <p class="text-gray-600">Find a ride quickly and travel easily.</p>
         </section>
 
+
+
+
+<div class="grid grid-cols-2 grid-rows-1 gap-2">
         <section class="bg-white rounded-2xl shadow-lg p-6 mb-8 animate-slide-in">
             <h2 class="text-xl font-semibold text-gray-800 mb-6 flex items-center">
                 <i class="fas fa-route mr-2 text-indigo-600"></i>
                 Request a Ride
             </h2>
-
             <form action="{{ route('passenger.trip') }}" method="post">
                 @csrf
                 <div class="grid md:grid-cols-2 gap-4 mb-4">
@@ -180,9 +183,9 @@
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Offer Price (Optional)</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Offer Price</label>
                         <div class="relative">
-                            <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
+                            <span class="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500 ">DH</span>
                             <input type="number" placeholder="0.00" name="price"
                                 class="w-full pl-8 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
                         </div>
@@ -195,8 +198,27 @@
                     Find a Ride
                 </button>
             </form>
-        </section>
 
+
+        </section>
+        <section class="bg-white rounded-2xl shadow-lg p-6 animate-slide-in">
+            <h2 class="text-xl font-semibold text-gray-800 mb-6 flex items-center">
+                <i class="fas fa-map mr-2 text-indigo-600"></i>
+                Live Map
+            </h2>
+            <div id="map" class="rounded-lg overflow-hidden"></div>
+            <div class="mt-4 flex items-center justify-between text-sm">
+                <div class="flex items-center space-x-4">
+                    <span class="flex items-center">
+                        <span class="w-3 h-3 bg-blue-500 rounded-full mr-2"></span>
+                        chose Your Location
+                    </span>
+                </div>
+                <button class="text-green-600 hover:text-indigo-700 font-medium" onclick="locationStart()">
+
+            </div>
+        </section>
+</div>
 
 
         <section class="grid md:grid-cols-2 gap-6 mb-8">
@@ -319,7 +341,8 @@ $trips_completed = $trips->where('status', 'accepted');
             </div>
         </section>
 
-        <div class="grid lg:grid-cols-2 gap-8">
+        <div class="grid lg:grid-cols-1 gap-8">
+
             <section class="bg-white rounded-2xl shadow-lg p-6 animate-slide-in">
                 <h2 class="text-xl font-semibold text-gray-800 mb-6 flex items-center justify-between">
                     <span><i class="fas fa-history mr-2 text-indigo-600"></i>Recent Trips</span>
@@ -508,23 +531,7 @@ $trips_completed = $trips->where('status', 'accepted');
 
             </section>
 
-            <section class="bg-white rounded-2xl shadow-lg p-6 animate-slide-in">
-                <h2 class="text-xl font-semibold text-gray-800 mb-6 flex items-center">
-                    <i class="fas fa-map mr-2 text-indigo-600"></i>
-                    Live Map
-                </h2>
-                <div id="map" class="rounded-lg overflow-hidden"></div>
-                <div class="mt-4 flex items-center justify-between text-sm">
-                    <div class="flex items-center space-x-4">
-                        <span class="flex items-center">
-                            <span class="w-3 h-3 bg-blue-500 rounded-full mr-2"></span>
-                            chose Your Location
-                        </span>
-                    </div>
-                    <button class="text-green-600 hover:text-indigo-700 font-medium" onclick="locationStart()">
 
-                </div>
-            </section>
         </div>
     </main>
 
