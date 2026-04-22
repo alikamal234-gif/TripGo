@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::create('vehicles', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('driver_id')->constrained('drivers')->cascadeOnDelete();
+            $table->foreignId('driver_id')
+              ->unique()
+              ->constrained('drivers')
+              ->cascadeOnDelete();
             $table->string('vehicle_plate');
             $table->string('type');
             $table->integer('num_seats');

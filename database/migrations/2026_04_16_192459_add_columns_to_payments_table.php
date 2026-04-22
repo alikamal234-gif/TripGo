@@ -10,19 +10,15 @@ return new class extends Migration
         Schema::table('payments', function (Blueprint $table) {
 
             $table->foreignId('trip_id')
-                ->nullable()
-                ->constrained()
-                ->cascadeOnDelete();
+            ->unique()
+            ->constrained()
+            ->cascadeOnDelete();
 
             $table->foreignId('passenger_id')
                 ->nullable()
                 ->constrained('passengers')
                 ->cascadeOnDelete();
 
-            $table->foreignId('driver_id')
-                ->nullable()
-                ->constrained('drivers')
-                ->cascadeOnDelete();
 
             $table->timestamps();
         });
