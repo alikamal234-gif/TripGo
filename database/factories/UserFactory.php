@@ -26,9 +26,12 @@ class UserFactory extends Factory
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
+            'phone' => fake()->phoneNumber(),
+            'date_birth' => fake()->date('Y-m-d', '-18 years'),
+            'postal_code' => fake()->postcode(),
+            'ville' => fake()->city(),
             'password' => static::$password ??= Hash::make('password'),
-            'remember_token' => Str::random(10),
+            'role_id' => \App\Models\Role::factory(),
         ];
     }
 
