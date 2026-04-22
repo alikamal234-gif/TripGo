@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Driver extends Model
 {
+    use HasFactory;
     public $incrementing = false;
 
     protected $keyType = 'int';
@@ -13,7 +15,7 @@ class Driver extends Model
         'id',
         'license_number',
         'is_verified',
-        
+
     ];
     public function user()
     {
@@ -21,9 +23,9 @@ class Driver extends Model
     }
 
     public function vehicle()
-    {
-        return $this->hasOne(Vehicle::class, 'driver_id');
-    }
+{
+    return $this->hasOne(Vehicle::class);
+}
     public function trips(){
         return $this->hasMany(Trip::class);
     }
