@@ -11,7 +11,6 @@ class Payment extends Model
     protected $fillable = [
         'trip_id',
         'passenger_id',
-        'driver_id',
         'amount',
         'paid_at',
         'method',
@@ -19,9 +18,6 @@ class Payment extends Model
 
     ];
 
-    public function drivers(){
-        return $this->hasMany(Driver::class);
-    }
 
     public function passengers(){
         return $this->hasMany(Passenger::class);

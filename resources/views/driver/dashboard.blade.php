@@ -155,7 +155,7 @@
                     <div class="w-10 h-10 bg-indrive-yellow rounded-lg flex items-center justify-center">
                         <i class="fas fa-bolt text-black text-xl font-bold"></i>
                     </div>
-                    <span class="text-indrive-dark font-bold text-xl">inDrive</span>
+                    <span class="text-indrive-dark font-bold text-xl">TripGo</span>
                     <span
                         class="bg-indrive-yellow text-black px-2 py-1 rounded-full text-xs font-bold ml-2">CHAUFFEUR</span>
                 </div>
@@ -165,7 +165,7 @@
                     <!-- Earnings -->
                     <div class="hidden md:flex items-center space-x-2 bg-indrive-gray px-4 py-2 rounded-lg">
                         <i class="fas fa-euro-sign text-indrive-yellow"></i>
-                        <span class="font-bold text-indrive-dark">142.50€</span>
+                        <span class="font-bold text-indrive-dark">{{ $trips_accept->where('driver_id', auth()->id())->sum('price')  }} DH</span>
                         <span class="text-xs text-gray-600">aujourd'hui</span>
                     </div>
 
@@ -226,17 +226,23 @@
                     </div>
                     <div id="driverMap" class="rounded-xl"></div>
                 </div>
+                @php
+$todayTrips = $trips->filter(function ($trip) {
+    return \Carbon\Carbon::parse($trip->created_at)->isToday();
+});
+                @endphp
 
                 <!-- Quick Stats -->
                 <div class="grid grid-cols-3 gap-4">
                     <div class="bg-white rounded-xl p-4 text-center">
                         <i class="fas fa-route text-indrive-yellow text-2xl mb-2"></i>
-                        <p class="text-2xl font-bold text-indrive-dark">12</p>
+                        <p class="text-2xl font-bold text-indrive-dark">{{ $todayTrips->count() }}</p>
                         <p class="text-sm text-gray-600">Trajets aujourd'hui</p>
                     </div>
+
                     <div class="bg-white rounded-xl p-4 text-center">
                         <i class="fas fa-star text-indrive-yellow text-2xl mb-2"></i>
-                        <p class="text-2xl font-bold text-indrive-dark">4.9</p>
+                        <p class="text-2xl font-bold text-indrive-dark">{{ $trips_accept->where('driver_id', auth()->id())->avg('rating') ?? 0 }}</p>
                         <p class="text-sm text-gray-600">Note moyenne</p>
                     </div>
                     <div class="bg-white rounded-xl p-4 text-center">
@@ -253,7 +259,7 @@
                         <div class="flex items-center space-x-2">
                             <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold">
                                 <i class="fas fa-check-circle text-blue-500 text-xs mr-1"></i>
-                                3 trajets en cours
+                                {{ $trips->where('status', 'encours')->count() }} trajets en cours
                             </span>
                         </div>
                     </div>
@@ -372,7 +378,6 @@
                                     </div>
                                 </div>
                             @elseif ($trip->status == "terminer")
-                                <!-- Trajet accepté 3 - Terminé aujourd'hui -->
                                 <div class="border-2 border-green-500 bg-green-50 rounded-xl p-4 shadow-sm opacity-95 transition-all hover:shadow-md">
 
                                     <!-- Header: Passenger & Status -->
@@ -414,7 +419,6 @@
                                         </div>
                                         <div class="text-right">
                                             <p class="text-lg font-bold text-indigo-600">{{ $trip->price }} DH</p>
-                                            <!-- Hna khassek tverifier ila 3ndk variable 'paid_status' wla direct 'Payé' -->
                                             <p class="text-xs text-green-600 font-bold uppercase tracking-wide">Payé (Cash)</p>
 
                                         </div>
@@ -423,7 +427,6 @@
                                     <!-- Rating Section -->
                                     <div class="flex items-center justify-between mt-4 pt-3 border-t border-green-200">
                                         <div class="flex items-center space-x-2">
-                                            <!-- Logic dyal les étoiles -->
                                             @for ($i = 1; $i <= 5; $i++)
                                                 <i class="fas fa-star {{ $trip->rating >= $i ? 'text-yellow-400' : 'text-gray-300' }} text-sm"></i>
                                             @endfor
@@ -499,7 +502,7 @@
             <!-- Right Column - Trips List -->
             <div class="space-y-6">
                 <!-- Filter & Sort -->
-                <div class="bg-white rounded-2xl shadow-lg p-4">
+                <div class="bg-white rounded-2xl shadow-lg p-6">
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="text-lg font-bold text-indrive-dark">Nouveaux trajets</h3>
                         <button class="text-indrive-yellow hover:text-yellow-400 transition-colors">
@@ -509,78 +512,78 @@
 
                     <!-- Trips List -->
                     <div class="space-y-3 max-h-96 overflow-y-auto" id="tripsList">
+                        <div>
+                            <input class="w-full p-2 rounded-3xl border border-black" type="search" placeholder="searching..."  id="search-input">
+                        </div>
                         <!-- Trip 1 - New -->
-
                         @php
 $nouveau = true;
                         @endphp
                         @foreach($trips as $trip)
+                            <div
+                                class="trip-card bg-white border-2 border-indrive-yellow rounded-xl p-4 cursor-pointer new-trip">
+                                <div class="flex items-start justify-between mb-2">
+                                    <div class="flex items-center space-x-2">
+                                        <img src="https://picsum.photos/seed/passenger1/32/32.jpg" alt="Passenger"
+                                            class="w-8 h-8 rounded-full">
+                                        <div>
+                                            <p class="font-bold text-indrive-dark">{{ $trip->passenger->name }}</p>
+                                            {{-- <p class="text-xs text-gray-600">⭐ 4.8 • 23 trajets</p> --}}
+                                        </div>
+                                    </div>
+                                    @if($nouveau)
+                                    <span
+                                        class="bg-indrive-yellow text-black px-2 py-1 rounded-full text-xs font-bold animate-pulse-slow">
+                                        NOUVEAU
+                                    </span>
+                                    @endif
+                                </div>
 
+                                <div class="space-y-2 items-start">
+                                    <div class="flex items-center text-sm">
+                                        <i class="fas fa-map-marker-alt text-green-500 w-5"></i>
+                                        <span class="ville-trip text-gray-700 ml-2">{{ $trip->departureAddress->name }}  {{ $trip->id }}</span>
+                                    </div>
+                                    <div class="flex items-center text-sm">
+                                        <i class="fas fa-flag-checkered text-red-500 w-5"></i>
+                                        <span class="text-gray-700 ml-2">{{ $trip->destinationAddress->name }}</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between mt-3 pt-3 border-t">
+                                    <div class="flex items-center space-x-4">
+                                        <span class="text-sm text-gray-600">
+                                            <i class="fas fa-road mr-1"></i>5.2 km
+                                        </span>
+                                        <span class="text-sm text-gray-600">
+                                            <i class="fas fa-clock mr-1"></i>{{ $trip->departue_time }}
+                                        </span>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="text-lg font-bold text-indrive-yellow">{{ $trip->price }}</p>
+                                        <p class="text-xs text-gray-600">proposé</p>
+                                    </div>
+                                </div>
 
-                                                                        <div
-                                                                            class="trip-card bg-white border-2 border-indrive-yellow rounded-xl p-4 cursor-pointer new-trip">
-                                                                            <div class="flex items-start justify-between mb-2">
-                                                                                <div class="flex items-center space-x-2">
-                                                                                    <img src="https://picsum.photos/seed/passenger1/32/32.jpg" alt="Passenger"
-                                                                                        class="w-8 h-8 rounded-full">
-                                                                                    <div>
-                                                                                        <p class="font-bold text-indrive-dark">{{ $trip->passenger->name }}</p>
-                                                                                        {{-- <p class="text-xs text-gray-600">⭐ 4.8 • 23 trajets</p> --}}
-                                                                                    </div>
-                                                                                </div>
-                                                                                @if($nouveau)
-                                                                                <span
-                                                                                    class="bg-indrive-yellow text-black px-2 py-1 rounded-full text-xs font-bold animate-pulse-slow">
-                                                                                    NOUVEAU
-                                                                                </span>
-                                                                                @endif
-                                                                            </div>
-
-                                                                            <div class="space-y-2 items-start">
-                                                                                <div class="flex items-center text-sm">
-                                                                                    <i class="fas fa-map-marker-alt text-green-500 w-5"></i>
-                                                                                    <span class="text-gray-700 ml-2">{{ $trip->departureAddress->name }}  {{ $trip->id }}</span>
-                                                                                </div>
-                                                                                <div class="flex items-center text-sm">
-                                                                                    <i class="fas fa-flag-checkered text-red-500 w-5"></i>
-                                                                                    <span class="text-gray-700 ml-2">{{ $trip->destinationAddress->name }}</span>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="flex items-center justify-between mt-3 pt-3 border-t">
-                                                                                <div class="flex items-center space-x-4">
-                                                                                    <span class="text-sm text-gray-600">
-                                                                                        <i class="fas fa-road mr-1"></i>5.2 km
-                                                                                    </span>
-                                                                                    <span class="text-sm text-gray-600">
-                                                                                        <i class="fas fa-clock mr-1"></i>{{ $trip->departue_time }}
-                                                                                    </span>
-                                                                                </div>
-                                                                                <div class="text-right">
-                                                                                    <p class="text-lg font-bold text-indrive-yellow">{{ $trip->price }}</p>
-                                                                                    <p class="text-xs text-gray-600">proposé</p>
-                                                                                </div>
-                                                                            </div>
-
-                                                                            <div class="flex space-x-2 mt-3 ">
-                                                                                <form action="{{ route('trip.accept', $trip->id) }}" method="post">
-                                                                                    @csrf
-                                                                                    <button @if (!auth()->user()->driver->is_verified)
-                                                                                        disabled
-                                                                                    @endif type="submit" class="
-                                                                                        {{ auth()->user()->driver->is_verified ? 'bg-indrive-yellow hover:bg-yellow-400 cursor-pointer' : 'bg-gray-400 cursor-not-allowed' }}
-                                                                                    flex-1  text-black font-bold py-2 rounded-lg  transition-colors">
-                                                                                        Accepter
-                                                                                    </button>
-                                                                                </form>
-                                                                                <button
-                                                                                    class=" detail-trip flex-1 bg-gray-200 text-gray-700 font-bold py-2 rounded-lg hover:bg-gray-300 transition-colors">
-                                                                                    Détails
-                                                                                </button>
-                                                                            </div>
-                                                                        </div>
-                                                                        @php
+                                <div class="flex space-x-2 mt-3 ">
+                                    <form action="{{ route('trip.accept', $trip->id) }}" method="post">
+                                        @csrf
+                                        <button @if (!auth()->user()->driver->is_verified)
+                                            disabled
+                                        @endif type="submit" class="
+                                            {{ auth()->user()->driver->is_verified ? 'bg-indrive-yellow hover:bg-yellow-400 cursor-pointer' : 'bg-gray-400 cursor-not-allowed' }}
+                                        flex-1  text-black font-bold py-2 rounded-lg  transition-colors">
+                                            Accepter
+                                        </button>
+                                    </form>
+                                    <button
+                                        class=" detail-trip flex-1 bg-gray-200 text-gray-700 font-bold py-2 rounded-lg hover:bg-gray-300 transition-colors">
+                                        Détails
+                                    </button>
+                                </div>
+                            </div>
+                            @php
     $nouveau = false;
-                                                                        @endphp
+                            @endphp
                         @endforeach
                     </div>
                 </div>
@@ -851,5 +854,26 @@ $nouveau = true;
     //       driverMap.setView([48.8566, 2.3522],14)
     //     })
     // });
+
+
+
+    const search_input = document.getElementById('search-input');
+const cards_trips = document.querySelectorAll('.trip-card');
+
+search_input.addEventListener('input', function () {
+    const value = this.value.toLowerCase();
+
+    cards_trips.forEach(card => {
+
+        const ville = card.querySelector('.ville-trip').textContent.toLowerCase();
+
+        if (ville.includes(value)) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
+
+    });
+});
 </script>
 </html>

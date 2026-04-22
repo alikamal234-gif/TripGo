@@ -15,7 +15,6 @@ class PaymentController extends Controller
         $data = $request->validate([
             'method' => ['required', Rule::in(['cash','online'])],
             'amount' => ['required','numeric','min:0'],
-            'driver_id' => ['required','exists:drivers,id'],
             'passenger_id' => ['required','exists:passengers,id'],
             'trip_id' => ['required','exists:trips,id'],
         ]);
@@ -30,7 +29,6 @@ class PaymentController extends Controller
     public function cash($data){
         Payment::create([
             'amount' => $data['amount'],
-            'driver_id' => $data['driver_id'],
             'method' => "cash",
             'passenger_id' => auth()->id(),
             'status' => "pending",
@@ -80,7 +78,6 @@ class PaymentController extends Controller
     Payment::create([
         'trip_id' => $trip->id,
         'passenger_id' => $trip->passenger_id,
-        'driver_id' => $trip->driver_id,
         'amount' => $trip->price,
         'status' => 'paid',
         'method' => 'online',
