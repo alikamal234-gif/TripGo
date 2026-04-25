@@ -35,7 +35,8 @@ Route::prefix('passenger')->middleware('auth')->group(function (){
     Route::post('/payment/', [PaymentController::class, 'method'])->name('passenger.payment');
     Route::delete('/trip/delete/{id}',[TripController::class,'destroy'])->name('trips.delete');
     Route::post('/payment/intent', [PaymentController::class, 'createIntent']);
-    Route::get('/payment/success', [PaymentController::class, 'success'])
+    Route::get('/payment/success', [PaymentController::class, 'success']);
+    Route::get('/payment/historique', [PaymentController::class, 'historique'])->name('payment.historique')
     ->name('payment.success');
     Route::get('/trip/{id}', [TripController::class, 'show'])->name('trip.show');
 });
