@@ -201,6 +201,9 @@
                     </div>
 
                 <!-- Champ Mot de passe -->
+                @if (!session()->has('google_user'))
+
+
                 <div>
                     <label for="password" class="block text-sm font-medium tripgo-black-text mb-2">
                         Mot de passe
@@ -224,7 +227,6 @@
                         </div>
                     </div>
                 </div>
-
                 <!-- Champ Confirmation du mot de passe -->
                 <div>
                     <label for="confirmPassword" class="block text-sm font-medium tripgo-black-text mb-2">
@@ -249,6 +251,7 @@
                         </div>
                     </div>
                 </div>
+@endif
 
                 <!-- Sélection du rôle -->
                 <div>
@@ -442,7 +445,7 @@
         const togglePassword = document.getElementById('togglePassword');
         const passwordInput = document.getElementById('password');
         const eyeIcon = document.getElementById('eyeIcon');
-
+if(togglePassword && passwordInput){
         togglePassword.addEventListener('click', function() {
             const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
             passwordInput.setAttribute('type', type);
@@ -475,7 +478,7 @@
                 eyeIconConfirm.classList.add('fa-eye-slash');
             }
         });
-
+    }
         // Role selection
         const passengerOption = document.getElementById('passengerOption');
         const driverOption = document.getElementById('driverOption');
