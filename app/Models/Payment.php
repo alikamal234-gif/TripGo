@@ -22,7 +22,7 @@ class Payment extends Model
     public function passengers(){
         return $this->hasMany(Passenger::class);
     }
-    public function trips(){
-        return $this->hasMany(Trip::class);
+    public function trip(){
+        return $this->belongsTo(Trip::class);
     }
 }

@@ -38,9 +38,7 @@ class PaymentController extends Controller
         return redirect()->back()->with('success','Paiement effectué attente pour le driver complete le confirmation');
     }
 
-    public function online($data){
 
-    }
     public function confirme(string $id){
 
         $payment = Payment::where('trip_id',$id);
@@ -87,4 +85,10 @@ class PaymentController extends Controller
     return redirect()->route('passenger.dashboard')
         ->with('success','Paiement effectué');
 }
+
+    public function historique(){
+        $payments = Payment::where('passenger_id',auth()->id())->get();
+        // dd($payments);
+        return view('payments.historique',compact('payments'));
+    }
 }
