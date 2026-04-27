@@ -587,21 +587,7 @@ $nouveau = true;
                         @endforeach
                     </div>
                 </div>
-                <!-- Status Toggle -->
-                <div class="bg-white rounded-2xl shadow-lg p-4">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="font-bold text-indrive-dark">Statut de disponibilité</p>
-                            <p class="text-sm text-gray-600">Recevoir des demandes de trajets</p>
-                        </div>
-                        <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" checked class="sr-only peer">
-                            <div
-                                class="w-14 h-7 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-indrive-yellow">
-                            </div>
-                        </label>
-                    </div>
-                </div>
+                
             </div>
         </div>
     </main>

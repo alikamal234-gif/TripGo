@@ -104,12 +104,12 @@ $rating = round($rating ?? 0, 1);
                                 </span>
                             </div>
 
-                            <span class="text-gray-400 text-xs">({{ $driver->trips->count() ?? 120 }} trajets)</span>
+                            <span class="text-gray-400 text-xs">({{ $driver->trips->count() ?? 0 }} trajets)</span>
                         </div>
                     </div>
 
                     <!-- Call Button -->
-                    <a href="tel:{{ $driver->phone }}"
+                    <a href="tel:{{ $driver->user->phone }}"
                         class="flex items-center justify-center w-full bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold py-3.5 rounded-xl mb-6 transition-colors border border-indigo-200 group">
                         <i class="fas fa-phone-alt mr-3 text-indigo-600 group-hover:rotate-12 transition-transform"></i>
                         {{ $driver->user->phone ?? '+212 600 000 000' }}

@@ -106,7 +106,13 @@
                 </div>
 
                 <!-- Champ Email -->
-                <div>
+                <div
+                class="
+                @if (session()->has('google_user'))
+                    hidden
+                @endif
+                "
+                >
                     <label for="email" class="block text-sm font-medium tripgo-black-text mb-2">
                         Adresse e-mail
                     </label>
@@ -125,7 +131,6 @@
                         >
                     </div>
                 </div>
-
                 <!-- Champ Téléphone -->
                 <div>
                     <label for="phone" class="block text-sm font-medium tripgo-black-text mb-2">
