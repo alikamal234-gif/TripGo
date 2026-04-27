@@ -155,17 +155,6 @@ $rating = round($rating ?? 0, 1);
             </div>
             <!-- --- END CARD --- -->
 
-            <!-- Action Buttons (Optional - e.g. Report Passenger) -->
-            <div class="flex gap-4 mb-6">
-                <button
-                    class="flex-1 bg-white border border-red-200 text-red-500 font-semibold py-3 rounded-lg hover:bg-red-50 transition">
-                    <i class="fas fa-flag mr-2"></i> Signaler
-                </button>
-                <button
-                    class="flex-1 bg-white border border-gray-200 text-gray-600 font-semibold py-3 rounded-lg hover:bg-gray-50 transition">
-                    <i class="fas fa-ban mr-2"></i> Bloquer
-                </button>
-            </div>
 
         </div>
     </main>
