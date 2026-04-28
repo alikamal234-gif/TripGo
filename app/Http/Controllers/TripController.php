@@ -77,13 +77,6 @@ class TripController extends Controller
         return redirect()->route('passenger.dashboard');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
 
     public function accept(string $id)
 {
@@ -142,7 +135,7 @@ class TripController extends Controller
     DB::transaction(function () use ($trip) {
 
         $trip->update([
-            'status'       => 'terminer',
+            'status' => 'terminer',
             'termine_time' => now(),
         ]);
 
@@ -166,8 +159,7 @@ class TripController extends Controller
 
     public function show(string $id){
         $notification = Notification::findOrFail($id);
-        Notification::findOrFail($id)
-        ->update(['is_read' => true]);
+        $notification->update(['is_read' => true]);
         $trip = Trip::with('destinationAddress', 'departureAddress', 'passenger', 'driver', 'payment')->findOrFail($notification->trip_id);
         return view('trips.show', compact('trip'));
     }

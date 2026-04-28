@@ -24,6 +24,7 @@ class RegisterController extends Controller
 
     public function registerUser(Request $request)
     {
+
         $data = $request->validate([
             'name' => ['required', 'string', 'min:2'],
             'email' => ['required', 'email', 'unique:users,email'],
@@ -62,7 +63,7 @@ class RegisterController extends Controller
                     ? null
                     : Hash::make($data['password']),
                 'role_id' => $roleId,
-                'google_id' => session('google_user.google_id') ?? null,
+                'google_id' => (string)session('google_user.google_id') ?? null,
             ]);
 
             if ($data['role'] === 'driver') {

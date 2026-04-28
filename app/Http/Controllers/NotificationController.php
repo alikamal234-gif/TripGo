@@ -16,8 +16,8 @@ class NotificationController extends Controller
         $notifications = Notification::with([
                 'trip.departureAddress',
                 'trip.destinationAddress',
-                'trip.driver',         
-                'trip.passenger'      
+                'trip.driver',
+                'trip.passenger'
             ])
             ->orderBy('created_at', 'desc')
             ->get();
@@ -26,11 +26,5 @@ class NotificationController extends Controller
         return view('notifications', compact('notifications'));
     }
 
-    public function markAsRead($id)
-    {
-        $user = auth()->user();
-        $notification = $user->notifications()->findOrFail($id);
-        $notification->update(['is_read' => true]);
-        return response()->json(['success' => true]);
-    }
+
 }

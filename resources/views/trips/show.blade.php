@@ -11,24 +11,19 @@
 
 <body class="bg-gray-50 text-gray-800 pb-20">
 
-    <!-- ==========================
-         HEADER
-    ========================== -->
     <header class="bg-white shadow-sm sticky top-0 z-50">
         <div class="max-w-2xl mx-auto px-4 h-16 flex items-center justify-between">
             <button onclick="history.back()" class="p-2 text-gray-600 hover:text-indigo-600">
                 <i class="fas fa-arrow-left text-xl"></i>
             </button>
             <h1 class="text-lg font-bold text-gray-800">Détails du Trajet</h1>
-            <div class="w-8"></div> <!-- Spacer pour équilibrer -->
+            <div class="w-8"></div>
         </div>
     </header>
 
     <main class="max-w-2xl mx-auto p-4 space-y-6">
 
-        <!-- ==========================
-            TRIP ID & STATUS (Hero)
-        ========================== -->
+
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex justify-between items-center">
             <div>
                 <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">ID Référence</p>
@@ -47,9 +42,7 @@
             </div>
         </div>
 
-        <!-- ==========================
-            ROUTE & PRICE
-        ========================== -->
+
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
             <div class="bg-indigo-50 p-4 border-b border-indigo-100 flex justify-between items-center">
                 <span class="text-indigo-700 font-bold text-sm"><i class="fas fa-route mr-2"></i>Itinéraire</span>
@@ -90,9 +83,6 @@
             </div>
         </div>
 
-        <!-- ==========================
-            PEOPLE (Driver & Passenger)
-        ========================== -->
         <div class="grid grid-cols-2 gap-4">
             <!-- Passenger -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
@@ -122,9 +112,7 @@
             </div>
         </div>
 
-        <!-- ==========================
-            TIMELINE & LOGISTICS
-        ========================== -->
+
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
             <h3 class="text-sm font-bold text-gray-800 mb-4 border-b border-gray-100 pb-2">
                 Horaires & Logistique
@@ -171,9 +159,7 @@
             </div>
         </div>
 
-        <!-- ==========================
-            RATING & META
-        ========================== -->
+   
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex items-center justify-between">
             <div>
                 <p class="text-xs text-gray-400 font-bold uppercase mb-1">Note Passager</p>

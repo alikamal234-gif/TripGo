@@ -587,7 +587,7 @@ $nouveau = true;
                         @endforeach
                     </div>
                 </div>
-                
+
             </div>
         </div>
     </main>
@@ -620,21 +620,12 @@ $nouveau = true;
 </body>
 <script>
 
-
-
-
-
-
-
-
-    // Initialize Driver Map
     let driverMap;
     let driverMarkers = [];
     let tripMarkers = [];
 
     function initDriverMap() {
 
-        // Clean up existing map
         if (driverMap) {
             driverMap.remove();
         }
@@ -642,34 +633,29 @@ $nouveau = true;
         driverMarkers = [];
         tripMarkers = [];
 
-        // Create map
         driverMap = L.map('driverMap', {
             center: [48.8566, 2.3522],
             zoom: 12,
             zoomControl: true
         });
 
-        // Add tiles
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© OpenStreetMap contributors',
             maxZoom: 19
         }).addTo(driverMap);
 
-        // Driver icon
         const driverIcon = L.divIcon({
             html: '<div class="bg-indrive-yellow rounded-full p-3 shadow-lg"><i class="fas fa-car text-black text-xl"></i></div>',
             iconSize: [50, 50],
             className: 'custom-div-icon'
         });
 
-        // Trip request icons
         const tripIcon = L.divIcon({
             html: '<div class="bg-green-500 rounded-full p-2 shadow-lg animate-pulse"><i class="fas fa-user text-white"></i></div>',
             iconSize: [35, 35],
             className: 'custom-div-icon'
         });
 
-        // Sample trip locations
         const tripLocations = [
             @foreach ($trips as $trip)
             @php
@@ -685,7 +671,6 @@ $nouveau = true;
             @endforeach
         ];
         console.log(tripLocations)
-        // Add trip markers
         tripLocations.forEach((trip) => {
             const marker = L.marker([trip.lat, trip.lng], { icon: tripIcon }).addTo(driverMap);
 
@@ -700,7 +685,6 @@ $nouveau = true;
             tripMarkers.push(marker);
         });
 
-        // 🔥 GPS + DRIVER + LINES
         function getDriverCoords() {
             return new Promise((resolve, reject) => {
                 navigator.geolocation.getCurrentPosition(
@@ -719,10 +703,8 @@ $nouveau = true;
 
             const coord = await getDriverCoords();
 
-            // Move map to driver
             driverMap.setView(coord, 14);
 
-            // Add driver marker
             const driverMarker = L.marker(coord, { icon: driverIcon }).addTo(driverMap);
 
             driverMarker
@@ -731,7 +713,6 @@ $nouveau = true;
 
             driverMarkers.push(driverMarker);
 
-            // Draw lines (driver → trips)
             tripLocations.forEach(trip => {
 
                 L.polyline([
@@ -748,15 +729,12 @@ $nouveau = true;
 
         }
 
-        // Call driver function
         setDriver();
     }
 
-    // Initialize map when DOM is loaded
     document.addEventListener('DOMContentLoaded', function () {
         setTimeout(initDriverMap, 100);
 
-        // Simulate notifications
         setInterval(() => {
             const notificationDot = document.querySelector('.notification-dot');
             if (notificationDot) {
@@ -765,7 +743,6 @@ $nouveau = true;
         }, 3000);
     });
 
-    // Handle resize
     let resizeTimer;
     window.addEventListener('resize', function () {
         clearTimeout(resizeTimer);
@@ -776,9 +753,7 @@ $nouveau = true;
         }, 250);
     });
 
-    // Handle details buttons
     const detail = document.querySelector('.detail-trip')
-    // document.querySelectorAll('.trip-card button:last-child').forEach(button => {
         detail.addEventListener('click', function (e) {
             e.stopPropagation();
             const card = this.closest('.trip-card');
@@ -816,9 +791,7 @@ $nouveau = true;
                 }
             });
         });
-    // });
 
-    // Animations
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -833,18 +806,9 @@ $nouveau = true;
         card.style.transform = 'translateY(20px)';
         observer.observe(card);
     });
-    // const carts_trip = getElementsByClassName("trip-card")
-
-    // carts_trip.forEach(cart => {
-    //      cart.addEventListener('click', function (){
-    //       driverMap.setView([48.8566, 2.3522],14)
-    //     })
-    // });
-
-
 
     const search_input = document.getElementById('search-input');
-const cards_trips = document.querySelectorAll('.trip-card');
+    const cards_trips = document.querySelectorAll('.trip-card');
 
 search_input.addEventListener('input', function () {
     const value = this.value.toLowerCase();

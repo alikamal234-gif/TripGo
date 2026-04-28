@@ -11,20 +11,16 @@ class AdminController extends Controller
 {
     public function index()
 {
-    
+
     return view('admin.dashboard', [
-        // Stats de base
         'users_count'   => User::count(),
         'trips_count'   => Trip::count(),
         'drivers_count' => Driver::count(),
-
         'drivers_verified'   => Driver::where('is_verified', 1)->count(),
         'drivers_unverified' => Driver::where('is_verified', 0)->count(),
-
         'trips_avenir'   => Trip::where('status', 'avenir')->count(),
         'trips_encours'  => Trip::where('status', 'encours')->count(),
         'trips_terminer' => Trip::where('status', 'terminer')->count(),
-
         'total_revenue'  => Trip::where('status', 'terminer')->sum('price'),
         'revenue_today'  => Trip::where('status', 'terminer')
                                ->whereDate('updated_at', today())
@@ -89,7 +85,6 @@ class AdminController extends Controller
 
     $user->load('tripsAsDriver', 'tripsAsPassenger');
     $user->trips = $user->tripsAsDriver->merge($user->tripsAsPassenger);
-
     return view('admin.show_users', compact('user'));
 }
 

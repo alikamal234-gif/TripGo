@@ -370,12 +370,10 @@
             modal.classList.remove('hidden');
         }
 
-        // Close trip modal
         function closeTripModal() {
             document.getElementById('tripModal').classList.add('hidden');
         }
 
-        // Close modal when clicking outside
         document.getElementById('tripModal').addEventListener('click', function(e) {
             if (e.target === this) {
                 closeTripModal();

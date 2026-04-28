@@ -41,7 +41,7 @@ class UserController extends Controller
 
         ]);
         $user = User::findOrFail($id);
-        DB::transaction(function () use ($id,$user,$data,$request) {
+        DB::transaction(function () use ($id,$user,$data) {
 
             $roleId = DB::table('roles')
                 ->where('name',$data['role'])

@@ -84,33 +84,33 @@
                         @if (!auth()->check())
                             <a href="{{ route('register') }}" class="px-8 py-4 bg-indrive-yellow text-black font-bold rounded-xl hover:bg-yellow-400 transform hover:scale-105 transition-all duration-300 shadow-lg text-lg">
                                 <i class="fas fa-bolt mr-2"></i>
-                                Get free account 
+                                Get free account
                             </a>
                         @elseif (auth()->user()->is_driver())
-                        
+
                             <a href="{{ route('driver.dashboard') }}"
                                 class="px-8 py-4 bg-indrive-yellow text-black font-bold rounded-xl hover:bg-yellow-400 transform hover:scale-105 transition-all duration-300 shadow-lg text-lg">
                                 <i class="fas fa-bolt mr-2"></i>
                                 Go to dashboard driver
                             </a>
                         @elseif (auth()->user()->is_passenger())
-                        
+
                             <a href="{{ route('passenger.dashboard') }}"
                                 class="px-8 py-4 bg-indrive-yellow text-black font-bold rounded-xl hover:bg-yellow-400 transform hover:scale-105 transition-all duration-300 shadow-lg text-lg">
                                 <i class="fas fa-bolt mr-2"></i>
                                 Go to dashboard passenger
                             </a>
-                        
+
                         @elseif (auth()->user()->is_admin())
-                        
+
                             <a href="{{ route('admin.dashboard') }}"
                                 class="px-8 py-4 bg-indrive-yellow text-black font-bold rounded-xl hover:bg-yellow-400 transform hover:scale-105 transition-all duration-300 shadow-lg text-lg">
                                 <i class="fas fa-bolt mr-2"></i>
-                                Go to dashboard admin 
+                                Go to dashboard admin
                             </a>
-                        
+
                         @endif
-                        
+
                         <button class="px-8 py-4 bg-white text-indrive-dark font-bold rounded-xl border-2 border-gray-300 hover:border-indrive-yellow hover:text-indrive-yellow transition-all duration-300 shadow-lg text-lg">
                             <i class="fas fa-play-circle mr-2"></i>
                             Comment ça marche
@@ -320,49 +320,40 @@
     </footer>
 
     <script>
-        // Initialize Hero Map
         let heroMap;
         function initHeroMap() {
-            // S'assurer que la carte n'existe pas déjà
             if (heroMap) {
                 heroMap.remove();
             }
 
-            // Créer la carte
             heroMap = L.map('heroMap', {
                 center: [48.8566, 2.3522],
                 zoom: 13,
                 zoomControl: false
             });
 
-            // Ajouter les tuiles
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '© OpenStreetMap contributors',
                 maxZoom: 19
             }).addTo(heroMap);
 
-            // Désactiver le zoom avec la molette pour éviter les bugs
             heroMap.scrollWheelZoom.disable();
 
-            // Icône personnalisée pour l'utilisateur
             const userIcon = L.divIcon({
                 html: '<div class="bg-indrive-yellow rounded-full p-2 shadow-lg"><i class="fas fa-user text-black"></i></div>',
                 iconSize: [40, 40],
                 className: 'custom-div-icon'
             });
 
-            // Marqueur de l'utilisateur
             L.marker([48.8566, 2.3522], {icon: userIcon}).addTo(heroMap)
                 .bindPopup('Votre Position');
 
-            // Icône pour les chauffeurs
             const driverIcon = L.divIcon({
                 html: '<div class="bg-green-500 rounded-full p-2 shadow-lg"><i class="fas fa-car text-white"></i></div>',
                 iconSize: [35, 35],
                 className: 'custom-div-icon'
             });
 
-            // Positions des chauffeurs
             const driverLocations = [
                 [48.8616, 2.3562],
                 [48.8516, 2.3482],
@@ -371,20 +362,16 @@
                 [48.8466, 2.3522]
             ];
 
-            // Ajouter les marqueurs des chauffeurs
             driverLocations.forEach((loc, index) => {
                 L.marker(loc, {icon: driverIcon}).addTo(heroMap)
                     .bindPopup(`Chauffeur ${index + 1} - Disponible`);
             });
         }
 
-        // Initialiser la carte quand le DOM est chargé
         document.addEventListener('DOMContentLoaded', function() {
-            // Attendre un peu pour s'assurer que le conteneur est prêt
             setTimeout(initHeroMap, 100);
         });
 
-        // Smooth scroll to booking section
         function scrollToBooking() {
             document.getElementById('booking').scrollIntoView({
                 behavior: 'smooth',
@@ -392,7 +379,6 @@
             });
         }
 
-        // Gérer le redimensionnement de la fenêtre
         let resizeTimer;
         window.addEventListener('resize', function() {
             clearTimeout(resizeTimer);
@@ -403,7 +389,6 @@
             }, 250);
         });
 
-        // Add scroll animations
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
@@ -418,7 +403,6 @@
             });
         }, observerOptions);
 
-        // Observer toutes les sections
         document.querySelectorAll('section').forEach(section => {
             section.style.opacity = '0';
             section.style.transform = 'translateY(20px)';

@@ -173,13 +173,11 @@
             </div>
         </div>
 
-        <!-- Message d'erreur (caché par défaut) -->
         <div id="errorMessage" class="mt-4 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 hidden">
             <p class="font-medium">Erreur de connexion</p>
             <p class="text-sm">L'e-mail ou le mot de passe est incorrect.</p>
         </div>
 
-        <!-- Message de succès (caché par défaut) -->
         <div id="successMessage" class="mt-4 p-4 bg-green-50 border-l-4 border-green-500 text-green-700 hidden">
             <p class="font-medium">Connexion réussie</p>
             <p class="text-sm">Redirection en cours...</p>
@@ -187,7 +185,6 @@
     </div>
 
     <script>
-        // Toggle password visibility
         const togglePassword = document.getElementById('togglePassword');
         const passwordInput = document.getElementById('password');
         const eyeIcon = document.getElementById('eyeIcon');
@@ -196,7 +193,6 @@
             const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
             passwordInput.setAttribute('type', type);
 
-            // Change the icon
             if (type === 'password') {
                 eyeIcon.classList.remove('fa-eye-slash');
                 eyeIcon.classList.add('fa-eye');

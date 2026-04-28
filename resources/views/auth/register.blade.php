@@ -446,7 +446,6 @@
     </div>
 
     <script>
-        // Toggle password visibility
         const togglePassword = document.getElementById('togglePassword');
         const passwordInput = document.getElementById('password');
         const eyeIcon = document.getElementById('eyeIcon');
@@ -455,7 +454,6 @@ if(togglePassword && passwordInput){
             const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
             passwordInput.setAttribute('type', type);
 
-            // Change the icon
             if (type === 'password') {
                 eyeIcon.classList.remove('fa-eye-slash');
                 eyeIcon.classList.add('fa-eye');
@@ -465,7 +463,6 @@ if(togglePassword && passwordInput){
             }
         });
 
-        // Toggle confirm password visibility
         const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
         const confirmPasswordInput = document.getElementById('confirmPassword');
         const eyeIconConfirm = document.getElementById('eyeIconConfirm');
@@ -474,7 +471,6 @@ if(togglePassword && passwordInput){
             const type = confirmPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
             confirmPasswordInput.setAttribute('type', type);
 
-            // Change the icon
             if (type === 'password') {
                 eyeIconConfirm.classList.remove('fa-eye-slash');
                 eyeIconConfirm.classList.add('fa-eye');
@@ -484,7 +480,6 @@ if(togglePassword && passwordInput){
             }
         });
     }
-        // Role selection
         const passengerOption = document.getElementById('passengerOption');
         const driverOption = document.getElementById('driverOption');
         const roleInput = document.getElementById('role');
@@ -496,7 +491,6 @@ if(togglePassword && passwordInput){
             driverOption.classList.remove('selected');
             driverFields.classList.add('hidden');
 
-            // Remove required attribute from driver fields
             const driverInputs = driverFields.querySelectorAll('input, select');
             driverInputs.forEach(input => {
                 input.removeAttribute('required');
@@ -509,7 +503,6 @@ if(togglePassword && passwordInput){
             passengerOption.classList.remove('selected');
             driverFields.classList.remove('hidden');
 
-            // Add required attribute to driver fields
             const driverInputs = driverFields.querySelectorAll('input, select');
             driverInputs.forEach(input => {
                 input.setAttribute('required', 'required');
@@ -518,7 +511,6 @@ if(togglePassword && passwordInput){
 
 
 
-        // Set default role to passenger
         passengerOption.click();
     </script>
 </body>

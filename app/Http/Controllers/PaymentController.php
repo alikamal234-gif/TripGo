@@ -11,84 +11,90 @@ use Stripe\Stripe;
 
 class PaymentController extends Controller
 {
-    public function method(Request $request){
+    public function method(Request $request)
+    {
         $data = $request->validate([
-            'method' => ['required', Rule::in(['cash','online'])],
-            'amount' => ['required','numeric','min:0'],
-            'passenger_id' => ['required','exists:passengers,id'],
-            'trip_id' => ['required','exists:trips,id'],
+            'method' => ['required', Rule::in(['cash', 'online'])],
+            'amount' => ['required', 'numeric', 'min:0'],
+            'trip_id' => ['required', 'exists:trips,id'],
         ]);
 
-        if($data['method'] == "cash"){
+        if ($data['method'] == 'cash') {
             return $this->cash($data);
-        }else if($data['method'] == "online"){
-            return $this->online($data);
         }
     }
 
-    public function cash($data){
+    public function cash($data)
+    {
         Payment::create([
             'amount' => $data['amount'],
-            'method' => "cash",
+            'method' => 'cash',
             'passenger_id' => auth()->id(),
-            'status' => "pending",
-            'trip_id' =>$data['trip_id'],
-            'paid_at' => now()
+            'status' => 'pending',
+            'trip_id' => $data['trip_id'],
+            'paid_at' => now(),
         ]);
-        return redirect()->back()->with('success','Paiement effectué attente pour le driver complete le confirmation');
+
+        return redirect()->back()->with('success', 'Paiement effectué attente pour le driver complete le confirmation');
     }
 
-
-    public function confirme(string $id){
-
-        $payment = Payment::where('trip_id',$id);
+    public function confirme(string $id)
+    {
+        if (! auth()->user()->is_driver()) {
+            abort(403);
+        }
+        $payment = Payment::where('trip_id', $id);
         $payment->update([
-            'status' => "paid"
+            'status' => 'paid',
         ]);
+
         return redirect()->route('driver.dashboard');
     }
 
     public function createIntent(Request $request)
-{
-    $request->validate([
-        'trip_id' => 'required|exists:trips,id'
-    ]);
+    {
+        $request->validate([
+            'trip_id' => 'required|exists:trips,id',
+        ]);
 
-    $trip = Trip::findOrFail($request->trip_id);
+        $trip = Trip::findOrFail($request->trip_id);
 
-    Stripe::setApiKey(config('services.stripe.secret'));
+        Stripe::setApiKey(config('services.stripe.secret'));
 
-   $intent = PaymentIntent::create([
-    'amount' => (int) ($trip->price * 100),
-    'currency' => 'eur',
-    'payment_method_types' => ['card'],
-    'metadata' => ['trip_id' => $trip->id]
-]);
+        $intent = PaymentIntent::create([
+            'amount' => (int) ($trip->price * 100),
+            'currency' => 'eur',
+            'payment_method_types' => ['card'],
+            'metadata' => ['trip_id' => $trip->id],
+        ]);
 
-    return response()->json([
-        'clientSecret' => $intent->client_secret
-    ]);
-}
+        return response()->json([
+            'clientSecret' => $intent->client_secret,
+        ]);
+    }
+
     public function success(Request $request)
-{
-    $trip = Trip::findOrFail($request->trip_id);
+    {
+        $trip = Trip::findOrFail($request->trip_id);
 
-    Payment::create([
-        'trip_id' => $trip->id,
-        'passenger_id' => $trip->passenger_id,
-        'amount' => $trip->price,
-        'status' => 'paid',
-        'method' => 'online',
-        'paid_at' => now()
-    ]);
+        Payment::create([
+            'trip_id' => $trip->id,
+            'passenger_id' => $trip->passenger_id,
+            'amount' => $trip->price,
+            'status' => 'paid',
+            'method' => 'online',
+            'paid_at' => now(),
+        ]);
 
-    return redirect()->route('passenger.dashboard')
-        ->with('success','Paiement effectué');
-}
+        return redirect()->route('passenger.dashboard')
+            ->with('success', 'Paiement effectué');
+    }
 
-    public function historique(){
-        $payments = Payment::where('passenger_id',auth()->id())->get();
+    public function historique()
+    {
+        $payments = Payment::where('passenger_id', auth()->id())->get();
+
         // dd($payments);
-        return view('payments.historique',compact('payments'));
+        return view('payments.historique', compact('payments'));
     }
 }
