@@ -21,7 +21,6 @@ class NotificationFactory extends Factory
                 Notification::TYPE_TRIP_REFUSED,
                 Notification::TYPE_TRIP_FINISHED
             ]),
-            'message' => $this->faker->sentence(),
             'trip_id' => 1,
             'is_read' => $this->faker->boolean(),
         ];

@@ -16,9 +16,7 @@ return new class extends Migration
 
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
 
-            $table->string('type'); 
-
-            $table->text('message');
+            $table->string('type');
 
             $table->foreignId('trip_id')->nullable()->constrained()->nullOnDelete();
 
