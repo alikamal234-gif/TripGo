@@ -490,12 +490,7 @@ $todayTrips = $trips->filter(function ($trip) {
 
                     </div>
 
-                    <!-- Bouton voir plus -->
-                    <div class="mt-6 text-center">
-                        <button class="text-indrive-yellow hover:text-yellow-400 font-semibold transition-colors">
-                            Voir tous mes trajets <i class="fas fa-arrow-right ml-2"></i>
-                        </button>
-                    </div>
+                  
                 </div>
             </div>
 

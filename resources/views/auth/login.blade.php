@@ -150,15 +150,12 @@
                 </div>
 
                 <!-- Boutons de connexion sociale -->
-                <div class="grid grid-cols-2 gap-3">
+                <div class="grid grid-cols-1 gap-3">
                     <a href="/auth/google" type="button" class="w-full inline-flex justify-center py-2.5 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none">
                         <i class="fab fa-google text-red-500 mr-2"></i>
                         Google
                     </a>
-                    <button type="button" class="w-full inline-flex justify-center py-2.5 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none">
-                        <i class="fab fa-facebook text-blue-600 mr-2"></i>
-                        Facebook
-                    </button>
+
                 </div>
             </form>
 

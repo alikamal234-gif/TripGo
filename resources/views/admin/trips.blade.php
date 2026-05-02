@@ -359,10 +359,7 @@
                         <button onclick="closeTripModal()" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors">
                             Fermer
                         </button>
-                        <button class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
-                            <i class="fas fa-print mr-2"></i>
-                            Imprimer
-                        </button>
+                        
                     </div>
                 </div>
             `;

@@ -46,7 +46,7 @@
                     <a href="/" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white">
                         <i class="fas fa-home w-5"></i><span>Home</span>
                     </a>
-                    <a href="#" class="sidebar-item active flex items-center space-x-3 px-4 py-3 rounded-lg text-white">
+                    <a href="{{ route('profile') }}" class="sidebar-item active flex items-center space-x-3 px-4 py-3 rounded-lg text-white">
                         <i class="fas fa-user w-5"></i><span>Mon profil</span>
                     </a>
                 </nav>
@@ -78,7 +78,7 @@
             </div>
 
             <div class="p-6 max-w-6xl mx-auto">
-                
+
                 <!-- CARD INFOS PERSO -->
                 <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
                     <div class="flex flex-col md:flex-row items-start space-y-4 md:space-y-0 md:space-x-6">
@@ -88,7 +88,7 @@
                         <div class="flex-1">
                             <div class="flex flex-wrap items-center gap-3 mb-2">
                                 <h3 class="text-2xl font-bold tripgo-black-text">{{ $user->name }}</h3>
-                                
+
                                 @if($role === 'driver')
                                     @if($user->driver->is_verified)
                                         <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold flex items-center gap-1">
@@ -101,7 +101,7 @@
                                     @endif
                                 @endif
                             </div>
-                            
+
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-2 text-sm text-gray-600">
                                 <div><i class="fas fa-envelope mr-2 text-gray-400"></i>{{ $user->email }}</div>
                                 <div><i class="fas fa-phone mr-2 text-gray-400"></i>{{ $user->phone }}</div>
@@ -207,7 +207,7 @@
                             <button onclick="filterTrips('terminer', this)" class="tab-button px-3 py-1 rounded-md text-sm text-gray-600">Terminés</button>
                         </div>
                     </div>
-                    
+
                     <div id="trips-container" class="divide-y divide-gray-100">
                         @php
 // Utilisation stricte de votre logique de modèles

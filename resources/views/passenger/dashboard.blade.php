@@ -71,6 +71,10 @@
                                     class="w-10 h-10 rounded-full border-2 border-transparent hover:border-indigo-600 transition-all">
                             </button>
                         </a>
+                        <a href="{{ route('payment.historique') }}"
+                            class="sidebar-item active flex items-center space-x-3 px-4 py-3 rounded-lg text-blue-500">
+                            <i class="fas fa-user w-5"></i><span class="font-bold">Payments</span>
+                        </a>
                         <form action="{{ route('logout') }}" method="POST">
                             @csrf
                             <button type="submit"
