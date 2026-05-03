@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Passenger;
 use App\Models\Payment;
 use App\Models\Trip;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Stripe\PaymentIntent;
 use Stripe\Stripe;
@@ -26,14 +28,20 @@ class PaymentController extends Controller
 
     public function cash($data)
     {
-        Payment::create([
-            'amount' => $data['amount'],
-            'method' => 'cash',
-            'passenger_id' => auth()->id(),
-            'status' => 'pending',
-            'trip_id' => $data['trip_id'],
-            'paid_at' => now(),
-        ]);
+        DB::transaction(function () use ($data) {
+            $passenger = Passenger::findOrFail(auth()->id());
+             $passenger->update([
+                    'preferred_payment_method' => 'cash'
+            ]);
+            Payment::create([
+                'amount' => $data['amount'],
+                'method' => 'cash',
+                'passenger_id' => auth()->id(),
+                'status' => 'pending',
+                'trip_id' => $data['trip_id'],
+                'paid_at' => now(),
+            ]);
+        });
 
         return redirect()->back()->with('success', 'Paiement effectué attente pour le driver complete le confirmation');
     }
@@ -76,15 +84,20 @@ class PaymentController extends Controller
     public function success(Request $request)
     {
         $trip = Trip::findOrFail($request->trip_id);
-
-        Payment::create([
-            'trip_id' => $trip->id,
-            'passenger_id' => $trip->passenger_id,
-            'amount' => $trip->price,
-            'status' => 'paid',
-            'method' => 'online',
-            'paid_at' => now(),
-        ]);
+        $passenger = Passenger::findOrFail(auth()->id());
+        DB::transaction(function () use ($trip,$passenger) {
+            $passenger->update([
+                'preferred_payment_method' => 'online'
+            ]);
+            Payment::create([
+                'trip_id' => $trip->id,
+                'passenger_id' => $trip->passenger_id,
+                'amount' => $trip->price,
+                'status' => 'paid',
+                'method' => 'online',
+                'paid_at' => now(),
+            ]);
+        });
 
         return redirect()->route('passenger.dashboard')
             ->with('success', 'Paiement effectué');

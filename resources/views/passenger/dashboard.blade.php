@@ -430,18 +430,13 @@ $trips_completed = $trips->where('status', 'accepted');
 
                                             <div class="w-full">
                                                 <div class="flex items-center gap-3">
-                                                <select id="select-method" name="method" onchange="methodPayment(this)"
-                                                    class="flex-1 w-full bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg p-2.5">
-
-                                                    <option value="cash" {{ auth()->user()->passenger()->preferred_payment_method === 'cash' ? 'selected' : '' }}>
-                                                        Cash (Espèces)
-                                                    </option>
-
-                                                    <option value="online" {{ auth()->user()->passenger()->preferred_payment_method === 'online' ? 'selected' : '' }}>
-                                                        Online (Carte)
-                                                    </option>
-
-                                                </select>
+                                                    <select id="select-method" name="payment" onchange="methodPayment(this)"
+                                                        class="flex-1 w-full bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block p-2.5">
+                                                        <option value="cash"  {{ auth()->user()->passenger->preferred_payment_method === 'cash' ? 'selected' : '' }}>Cash
+                                                            (Espèces) </option>
+                                                        <option value="online"  {{ auth()->user()->passenger->preferred_payment_method === 'online' ? 'selected' : '' }}>Online
+                                                            (Carte)</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                             <!-- Payment Form -->
@@ -550,6 +545,7 @@ $trips_completed = $trips->where('status', 'accepted');
         function methodPayment(select) {
             const value = select.value
             if (value == "cash") {
+
                 formuler_cash.style.display = 'block'
                 formuler_online.style.display = 'none'
             } else if (value == "online") {

@@ -73,7 +73,7 @@ class RegisterController extends Controller
             if ($data['role'] === 'passenger') {
                 Passenger::create([
                     'id' => $user->id,
-                    'num_trip' => 0,
+                    'preferred_payment_method' => 'cash',
                 ]);
             }
 

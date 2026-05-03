@@ -11,7 +11,7 @@ class Passenger extends Model
     public $incrementing = false;
     protected $fillable = [
         'id',
-        'num_trip'
+        'preferred_payment_method'
     ];
 
     public function user(){
