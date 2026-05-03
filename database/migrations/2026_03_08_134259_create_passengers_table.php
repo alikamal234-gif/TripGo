@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('passengers', function (Blueprint $table) {
             $table->foreignId('id')->primary()->unique()->constrained('users')->cascadeOnDelete();
-            $table->integer('num_trip')->default(0);
+            $table->enum('preferred_payment_method',['cash','online'])->default('cash');
             $table->timestamps();
         });
     }

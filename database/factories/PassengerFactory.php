@@ -14,7 +14,7 @@ class PassengerFactory extends Factory
     {
         return [
             'id' => User::factory(),
-            'num_trip' => $this->faker->numberBetween(0, 50),
+            'preferred_payment_method' => 'cash',
         ];
     }
 }

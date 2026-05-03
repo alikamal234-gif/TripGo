@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('passenger_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('driver_id')->nullable()->constrained()->nullOnDelete();
-            $table->foreignId('departure_address_id')->constrained('addresses')->
+            $table->foreignId('departure_address_id')->constrained('addresses');
             $table->foreignId('destination_address_id')->constrained('addresses');
             $table->dateTime('departure_time');
             $table->dateTime('start_time')->nullable();

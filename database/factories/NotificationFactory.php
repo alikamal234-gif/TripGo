@@ -18,8 +18,8 @@ class NotificationFactory extends Factory
             'type' => $this->faker->randomElement([
                 Notification::TYPE_TRIP_CREATED,
                 Notification::TYPE_TRIP_ACCEPTED,
-                Notification::TYPE_TRIP_REFUSED,
-                Notification::TYPE_TRIP_FINISHED
+                Notification::TYPE_TRIP_FINISHED,
+                Notification::TYPE_TRIP_DELETED
             ]),
             'trip_id' => 1,
             'is_read' => $this->faker->boolean(),
