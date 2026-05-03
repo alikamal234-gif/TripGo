@@ -160,7 +160,10 @@ class TripController extends Controller
     public function show(string $id){
         $notification = Notification::findOrFail($id);
         $notification->update(['is_read' => true]);
-        $trip = Trip::with('destinationAddress', 'departureAddress', 'passenger', 'driver', 'payment')->findOrFail($notification->trip_id);
+        $trip = Trip::with('destinationAddress', 'departureAddress', 'passenger', 'driver', 'payment')->find($notification->trip_id);
+        if (!$trip || $trip->trashed()) {
+        return redirect()->route('trip.notfound');
+    }
         return view('trips.show', compact('trip'));
     }
 
@@ -187,4 +190,8 @@ class TripController extends Controller
     return redirect()->back()
         ->with('success', 'Trip deleted successfully.');
 }
+
+    public function notFound(){
+        return view('error.tripNotfound');
+    }
 }
