@@ -24,6 +24,7 @@ return new class extends Migration {
             $table->enum('status', ['encours', 'avenir', 'terminer']);
             $table->integer('rating');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

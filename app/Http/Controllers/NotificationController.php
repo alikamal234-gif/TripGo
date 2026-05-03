@@ -13,14 +13,14 @@ class NotificationController extends Controller
         $user = Auth::user();
         $role = $user->role->name;
 
-        $notifications = Notification::with([
-                'trip.departureAddress',
-                'trip.destinationAddress',
-                'trip.driver',
-                'trip.passenger'
-            ])
-            ->orderBy('created_at', 'desc')
-            ->get();
+       $notifications = Notification::with([
+    'trip' => function ($query) {
+        $query->withTrashed()
+              ->with(['departureAddress', 'destinationAddress', 'driver', 'passenger']);
+    }
+])
+->orderBy('created_at', 'desc')
+->get();
 
 
         return view('notifications', compact('notifications'));

@@ -32,8 +32,8 @@ class Notification extends Model
 
     const TYPE_TRIP_CREATED  = 'trip_created';
     const TYPE_TRIP_ACCEPTED = 'trip_accepted';
-    const TYPE_TRIP_REFUSED  = 'trip_refused';
     const TYPE_TRIP_FINISHED = 'trip_finished';
+    const TYPE_TRIP_DELETED = 'trip_deleted';
 
 
 

@@ -168,12 +168,23 @@ class TripController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
-    {
-        $trip = Trip::findOrFail($id);
-        if($trip->status !== "avenir"){
-            return redirect()->back()->with('error','this trip is access or terminer by driver');
-        }
-        $trip->delete();
-        return redirect()->back()->with('success', 'this trip removed with successful');
+{
+    $trip = Trip::where('id', $id)
+        ->where('passenger_id', auth()->id())
+        ->firstOrFail();
+    if ($trip->status !== "avenir") {
+        return redirect()->back()
+            ->with('error', 'Trip cannot be deleted after it has started or finished.');
     }
+
+    $trip->delete();
+    Notification::create([
+    'user_id' => auth()->id(),
+    'type'    => Notification::TYPE_TRIP_DELETED,
+    'message' => 'Votre trajet a été supprimé',
+    'trip_id' => $trip->id,
+]);
+    return redirect()->back()
+        ->with('success', 'Trip deleted successfully.');
+}
 }

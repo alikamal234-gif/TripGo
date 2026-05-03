@@ -37,7 +37,7 @@ class RegisterController extends Controller
                 'confirmed',
                 Password::min(8)->letters()->numbers(),
             ],
-            'role' => ['required', 'exists:roles,name'],
+            'role' => ['required', 'exists:roles,name', 'in:driver,passenger'],
 
             'licenseNumber' => ['nullable', 'string'],
             'vehicleType' => ['nullable', 'string'],
@@ -63,7 +63,7 @@ class RegisterController extends Controller
                     ? null
                     : Hash::make($data['password']),
                 'role_id' => $roleId,
-                'google_id' => (string)session('google_user.google_id') ?? null,
+                'google_id' => (string) session('google_user.google_id') ?? null,
             ]);
 
             if ($data['role'] === 'driver') {
@@ -97,6 +97,11 @@ class RegisterController extends Controller
 
         return redirect('/dashboard');
     }
+
+    // public function message()
+    // {
+    //     ['role.message' => 'wrong role'];
+    // }
 
     public function registerDriver(string $id, Request $request)
     {
