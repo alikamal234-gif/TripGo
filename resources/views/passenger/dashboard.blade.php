@@ -13,9 +13,75 @@
     <script src="https://js.stripe.com/v3/"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <script src="https://js.stripe.com/v3/"></script>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
     <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+    <style>
+        .star-btn {
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .star-btn:hover .star-icon {
+            transform: scale(1.2) rotate(10deg);
+        }
+
+        .star-btn:focus {
+            outline: none;
+        }
+
+        .star-btn:focus .star-icon {
+            box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.3);
+            border-radius: 50%;
+        }
+
+        @keyframes starPulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.3);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .star-selected {
+            animation: starPulse 0.3s ease;
+        }
+
+        .rating-1 {
+            color: #ef4444;
+            font-weight: 600;
+        }
+
+        .rating-2 {
+            color: #f97316;
+            font-weight: 600;
+        }
+
+        .rating-3 {
+            color: #eab308;
+            font-weight: 600;
+        }
+
+        .rating-4 {
+            color: #22c55e;
+            font-weight: 600;
+        }
+
+        .rating-5 {
+            color: #10b981;
+            font-weight: 600;
+        }
+    </style>
     <style>
         @keyframes slideIn {
             from {
@@ -629,71 +695,6 @@ $trips_completed = $trips->where('status', 'accepted');
 </body>
 
 </html>
-<style>
-    .star-btn {
-        background: none;
-        border: none;
-        padding: 0;
-        cursor: pointer;
-        transition: all 0.2s ease;
-    }
-
-    .star-btn:hover .star-icon {
-        transform: scale(1.2) rotate(10deg);
-    }
-
-    .star-btn:focus {
-        outline: none;
-    }
-
-    .star-btn:focus .star-icon {
-        box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.3);
-        border-radius: 50%;
-    }
-
-    @keyframes starPulse {
-        0% {
-            transform: scale(1);
-        }
-
-        50% {
-            transform: scale(1.3);
-        }
-
-        100% {
-            transform: scale(1);
-        }
-    }
-
-    .star-selected {
-        animation: starPulse 0.3s ease;
-    }
-
-    .rating-1 {
-        color: #ef4444;
-        font-weight: 600;
-    }
-
-    .rating-2 {
-        color: #f97316;
-        font-weight: 600;
-    }
-
-    .rating-3 {
-        color: #eab308;
-        font-weight: 600;
-    }
-
-    .rating-4 {
-        color: #22c55e;
-        font-weight: 600;
-    }
-
-    .rating-5 {
-        color: #10b981;
-        font-weight: 600;
-    }
-</style>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -759,7 +760,6 @@ $trips_completed = $trips->where('status', 'accepted');
         });
     });
 </script>
-<script src="https://js.stripe.com/v3/"></script>
 
 <script>
 
